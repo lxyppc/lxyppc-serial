@@ -210,6 +210,11 @@ inline void assign(T& d, T2 s){
     d = (T)s;
 }
 
+template<typename T, typename T2>
+inline bool same(T d, T2 s){
+    return d == (T)s;
+}
+
 void  UpdatePortSettingString(PortSettings& setting, const QString& str)
 {
     if(str.at(1) != '|')return;
@@ -231,4 +236,23 @@ void  UpdatePortSettingString(PortSettings& setting, const QString& str)
         assign(setting.FlowControl,val);
         return;
     }
+}
+
+bool  isSameSetting(const PortSettings& setting, const QString& str)
+{
+    if(str.at(1) != '|')return false;
+    int val = str.right(str.length()-2).toInt();
+    switch(str.at(0).toAscii()){
+        case 'B':
+        return same(setting.BaudRate,val);
+        case 'D':
+        return same(setting.DataBits,val);
+        case 'P':
+        return same(setting.Parity,val);
+        case 'S':
+        return same(setting.StopBits,val);
+        case 'F':
+        return same(setting.FlowControl,val);
+    }
+    return false;
 }

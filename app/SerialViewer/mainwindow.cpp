@@ -61,6 +61,8 @@ MainWindow::MainWindow(QWidget *parent)
     updateWindowSubMenus();
 
     refreshDeviceList();
+
+    setWindowTitle("Serial View");
 }
 
 MainWindow::~MainWindow()

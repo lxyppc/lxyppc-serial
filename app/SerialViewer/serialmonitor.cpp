@@ -6,8 +6,11 @@ SerialMonitor::SerialMonitor(const QString& portName, QWidget *parent) :
     mPortName(portName)
 {
     setupUi(this);
+
+    settingMenu = 0;
+
     serialPort = new QextSerialPort(portName, QextSerialPort::EventDriven);
-    updateUI();
+
     connect(btnConnect, SIGNAL(clicked()), this, SLOT(openDevice()));
 
     connect(serialPort, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
@@ -22,11 +25,7 @@ SerialMonitor::SerialMonitor(const QString& portName, QWidget *parent) :
 
     connect(btnClearRecv, SIGNAL(clicked()), textRecv, SLOT(clear()));
 
-    settingMenu = new QMenu(this);
-
-    tranverseSetting(addSettingMenuCallback,this);
-
-    btnSetting->setMenu(settingMenu);
+    updateUI();
 }
 
 void SerialMonitor::addSettingMenuCallback(const QString& name, const QString& setting, bool isGroup, void* context)
@@ -44,6 +43,10 @@ void SerialMonitor::addSettingMenu(const QString& name, const QString& setting, 
         curMenu = settingMenu->addMenu(name);
     }else{
         QAction* act = curMenu->addAction(name);
+        act->setCheckable(true);
+        if(isSameSetting(serialPort->portSetting(),setting)){
+            act->setChecked(true);
+        }
         connect(act, SIGNAL(triggered()), settingMapper, SLOT(map()));
         settingMapper->setMapping(act, setting);
     }
@@ -68,6 +71,12 @@ void SerialMonitor::updateUI()
     }
     setWindowTitle(mPortName + "(" + setStr + ")" + openStr);
     btnConnect->setText(connectBtnStr);
+
+    settingMenu = new QMenu(this);
+
+    tranverseSetting(addSettingMenuCallback,this);
+
+    btnSetting->setMenu(settingMenu);
 }
 
 void SerialMonitor::updateSetting(QString setting)

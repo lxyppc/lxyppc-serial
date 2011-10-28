@@ -21,7 +21,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1">
      <property name="topMargin">
       <number>0</number>
      </property>
@@ -35,14 +35,7 @@
      <item>
       <widget class="QPushButton" name="btnSetting">
        <property name="text">
-        <string>Config</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Settings:</string>
+        <string>Settings</string>
        </property>
       </widget>
      </item>
