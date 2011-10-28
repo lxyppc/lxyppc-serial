@@ -10,12 +10,20 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     ../qextserialport/qextserialport.cpp \
     serialmonitor.cpp \
-    serialhelper.cpp
+    serialhelper.cpp \
+    ../hexeditor/commands.cpp \
+    ../hexeditor/qhexedit.cpp \
+    ../hexeditor/qhexedit_p.cpp \
+    ../hexeditor/xbytearray.cpp
 HEADERS += mainwindow.h \
     ../qextserialport/qextserialenumerator.h \
     ../qextserialport/qextserialport.h \
     serialmonitor.h \
-    serialhelper.h
+    serialhelper.h \
+    ../hexeditor/commands.h \
+    ../hexeditor/qhexedit.h \
+    ../hexeditor/qhexedit_p.h \
+    ../hexeditor/xbytearray.h
 unix:SOURCES += ../qextserialport/posix_qextserialport.cpp
 unix:!macx:SOURCES += ../qextserialport/qextserialenumerator_unix.cpp
 macx { 
