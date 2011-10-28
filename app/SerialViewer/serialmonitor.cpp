@@ -54,6 +54,12 @@ SerialMonitor::SerialMonitor(const QString& portName, QWidget *parent) :
     updateTextMode();
 }
 
+SerialMonitor::~SerialMonitor()
+{
+    serialPort->close();
+    delete serialPort;
+}
+
 void SerialMonitor::addSettingMenuCallback(const QString& name, const QString& setting, bool isGroup, void* context)
 {
     ((SerialMonitor*)context)->addSettingMenu(name,setting,isGroup);

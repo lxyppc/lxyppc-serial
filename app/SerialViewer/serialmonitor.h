@@ -11,6 +11,7 @@ class SerialMonitor : public QFrame, public Ui::BasicView
 Q_OBJECT
 public:
     explicit SerialMonitor(const QString& portName, QWidget *parent = 0);
+    ~SerialMonitor();
 
     static void addSettingMenuCallback(const QString& name, const QString& setting, bool isGroup, void* context);
     void addSettingMenu(const QString& name, const QString& setting, bool isGroup);
