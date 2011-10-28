@@ -217,6 +217,27 @@ bool QextSerialPort::isSequential() const
     return true;
 }
 
+/*!
+Sets the port settigns.
+*/
+void QextSerialPort::setPortSetting(const PortSettings& settings)
+{
+    setBaudRate(settings.BaudRate);
+    setDataBits(settings.DataBits);
+    setParity(settings.Parity);
+    setStopBits(settings.StopBits);
+    setFlowControl(settings.FlowControl);
+    setTimeout(settings.Timeout_Millisec);
+}
+
+/*!
+Returns the current setting of the port.
+*/
+PortSettings QextSerialPort::portSetting() const
+{
+    return Settings;
+}
+
 QString QextSerialPort::errorString()
 {
     switch(lastErr)

@@ -243,6 +243,9 @@ class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
         void setFlowControl(FlowType);
         FlowType flowControl() const;
 
+        void setPortSetting(const PortSettings& settings);
+        PortSettings portSetting() const;
+
         void setTimeout(long);
 
         bool open(OpenMode mode);
