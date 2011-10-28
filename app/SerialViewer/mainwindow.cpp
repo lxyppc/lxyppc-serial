@@ -105,14 +105,19 @@ void MainWindow::deviceSelected(QModelIndex index)
 {
     if(index.row() >= deviceInfoList.count())return;
     const QextPortInfo& info = deviceInfoList.at(index.row());
+    QString devName = info.portName;
+    if(info.portName.startsWith("tty")){
+        devName = info.physName;
+    }
+
     foreach(QMdiSubWindow* window, mdiArea->subWindowList()){
-        if(window->widget()->windowTitle().contains(info.physName)){
+        if(window->widget()->windowTitle().contains(devName)){
             mdiArea->setActiveSubWindow(window);
             return;
         }
     }
 
-    SerialMonitor* monitor = new SerialMonitor(info.physName);
+    SerialMonitor* monitor = new SerialMonitor(devName);
     mdiArea->addSubWindow(monitor);
     monitor->show();
 }
