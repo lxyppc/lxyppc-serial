@@ -58,6 +58,8 @@ public:
     QString toRedableString();
     QString selectionToReadableString();
 
+    void scrollToEnd();
+
 signals:
     void currentAddressChanged(int address);
     void currentSizeChanged(int size);

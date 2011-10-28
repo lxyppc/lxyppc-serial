@@ -6,6 +6,7 @@ QT += core \
 TARGET = SerialViewer
 TEMPLATE = app
 INCLUDEPATH += ../qextserialport
+INCLUDEPATH += ../hexeditor
 SOURCES += main.cpp \
     mainwindow.cpp \
     ../qextserialport/qextserialport.cpp \

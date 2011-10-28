@@ -41,6 +41,11 @@ QString QHexEdit::selectionToReadableString()
     return qHexEdit_p->selectionToReadableString();
 }
 
+void QHexEdit::scrollToEnd()
+{
+    qHexEdit_p->scrollToEnd();
+}
+
 void QHexEdit::setAddressArea(bool addressArea)
 {
     qHexEdit_p->setAddressArea(addressArea);
@@ -89,6 +94,11 @@ void QHexEdit::setData(const QByteArray &data)
 QByteArray QHexEdit::data()
 {
     return qHexEdit_p->data();
+}
+
+void QHexEdit::clear()
+{
+    qHexEdit_p->setData(QByteArray());
 }
 
 void QHexEdit::setAddressAreaColor(const QColor &color)

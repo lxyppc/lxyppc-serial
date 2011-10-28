@@ -129,6 +129,10 @@ public:
     */
     QString selectionToReadableString();
 
+    /*! scroll the hexeditor to the end position
+    */
+    void scrollToEnd();
+
     /*! \cond docNever */
     void setAddressOffset(int offset);
     int addressOffset();
@@ -178,6 +182,10 @@ public slots:
       there is no undo step in the undo/redo history, nothing happens.
       */
     void undo();
+
+    /*! clear the content of the hexeditor
+      */
+    void clear();
 
 signals:
 

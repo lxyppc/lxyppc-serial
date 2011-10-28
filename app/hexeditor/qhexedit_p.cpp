@@ -255,6 +255,14 @@ QString QHexEditPrivate::selectionToReadableString()
     return _xData.toRedableString(getSelectionBegin(), getSelectionEnd());
 }
 
+void QHexEditPrivate::scrollToEnd()
+{
+    setCursorPos(_xData.size() * 2);
+    resetSelection(_cursorPosition);
+    _scrollArea->ensureVisible(_cursorX, _cursorY + _charHeight/2, 3, _charHeight/2 + 2);
+    update();
+}
+
 void QHexEditPrivate::keyPressEvent(QKeyEvent *event)
 {
     int charX = (_cursorX - _xPosHex) / _charWidth;

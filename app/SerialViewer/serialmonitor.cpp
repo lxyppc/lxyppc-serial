@@ -7,6 +7,20 @@ SerialMonitor::SerialMonitor(const QString& portName, QWidget *parent) :
 {
     setupUi(this);
 
+    sendHexEdit = new QHexEdit();
+    gridLayoutSend->addWidget(sendHexEdit, 1, 0, 1, 1);
+
+    recvHexEdit = new QHexEdit();
+    gridLayoutRecv->addWidget(recvHexEdit, 1, 0, 1, 1);
+
+    recvHexEdit->setAddressArea(false);
+    recvHexEdit->setOverwriteMode(false);
+    recvHexEdit->setReadOnly(true);
+
+    sendHexEdit->setAddressArea(false);
+    sendHexEdit->setAsciiArea(false);
+    sendHexEdit->setOverwriteMode(false);
+
     settingMenu = 0;
 
     serialPort = new QextSerialPort(portName, QextSerialPort::EventDriven);
@@ -25,7 +39,19 @@ SerialMonitor::SerialMonitor(const QString& portName, QWidget *parent) :
 
     connect(btnClearRecv, SIGNAL(clicked()), textRecv, SLOT(clear()));
 
+    connect(btnClearRecv, SIGNAL(clicked()), recvHexEdit, SLOT(clear()));
+
+    connect(btnRecvTextMode, SIGNAL(clicked()), this, SLOT(switchRecvTextMode()));
+
+    connect(btnSendTextMode, SIGNAL(clicked()), this, SLOT(switchSendTextMode()));
+
+    recvTextModeHex = false;
+
+    sendTextModeHex = false;
+
     updateUI();
+
+    updateTextMode();
 }
 
 void SerialMonitor::addSettingMenuCallback(const QString& name, const QString& setting, bool isGroup, void* context)
@@ -77,6 +103,37 @@ void SerialMonitor::updateUI()
     tranverseSetting(addSettingMenuCallback,this);
 
     btnSetting->setMenu(settingMenu);
+}
+
+void SerialMonitor::switchRecvTextMode()
+{
+    recvTextModeHex = !recvTextModeHex;
+    updateTextMode();
+}
+
+void SerialMonitor::switchSendTextMode()
+{
+    sendTextModeHex = !sendTextModeHex;
+    updateTextMode();
+}
+
+void SerialMonitor::updateTextMode()
+{
+    if(recvTextModeHex){
+        btnRecvTextMode->setText(">>ASCII");
+    }else{
+        btnRecvTextMode->setText(">>Hex");
+    }
+    recvHexEdit->setVisible(recvTextModeHex);
+    textRecv->setVisible(!recvTextModeHex);
+
+    if(sendTextModeHex){
+        btnSendTextMode->setText(">>ASCII");
+    }else{
+        btnSendTextMode->setText(">>Hex");
+    }
+    sendHexEdit->setVisible(sendTextModeHex);
+    textSend->setVisible(!sendTextModeHex);
 }
 
 void SerialMonitor::updateSetting(QString setting)
@@ -144,13 +201,23 @@ void SerialMonitor::onReadyRead()
     bytes.resize(a);
     serialPort->read(bytes.data(), bytes.size());
     textRecv->setPlainText(textRecv->toPlainText()+QString(bytes));
+    recvHexEdit->setData(recvHexEdit->data() + bytes);
+    recvHexEdit->scrollToEnd();
+
+    QTextCursor c = textRecv->textCursor();
+    c.movePosition(QTextCursor::End);
+    textRecv->setTextCursor(c);
 }
 
 void SerialMonitor::wirteData()
 {
     if(serialPort->isOpen()){
-        QString text = textSend->toPlainText();
-        serialPort->write(text.toAscii());
+        if(sendTextModeHex){
+            serialPort->write(sendHexEdit->data());
+        }else{
+            QString text = textSend->toPlainText();
+            serialPort->write(text.toAscii());
+        }
     }
 }
 

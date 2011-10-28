@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
-    <height>332</height>
+    <width>570</width>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,13 +54,20 @@
       <enum>Qt::Vertical</enum>
      </property>
      <widget class="QWidget" name="verticalLayoutWidget">
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayoutRecv">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
+        <layout class="QHBoxLayout" name="horizontalLayoutRecv" stretch="1,0,0">
          <item>
           <widget class="QLabel" name="labelRecv">
            <property name="text">
             <string>Receive Buffer</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnRecvTextMode">
+           <property name="text">
+            <string>Hex</string>
            </property>
           </widget>
          </item>
@@ -74,25 +81,36 @@
         </layout>
        </item>
        <item>
-        <widget class="QTextEdit" name="textRecv">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
+        <layout class="QGridLayout" name="gridLayoutRecv">
+         <item row="0" column="0">
+          <widget class="QTextEdit" name="textRecv">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="verticalLayoutWidget_2">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayoutSend">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,0">
+        <layout class="QHBoxLayout" name="horizontalLayoutSend" stretch="1,0,0,0">
          <item>
           <widget class="QLabel" name="labelSend">
            <property name="text">
             <string>Send Buffer</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSendTextMode">
+           <property name="text">
+            <string>Hex</string>
            </property>
           </widget>
          </item>
@@ -113,7 +131,11 @@
         </layout>
        </item>
        <item>
-        <widget class="QTextEdit" name="textSend"/>
+        <layout class="QGridLayout" name="gridLayoutSend">
+         <item row="0" column="0">
+          <widget class="QTextEdit" name="textSend"/>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -123,8 +145,6 @@
  </widget>
  <tabstops>
   <tabstop>btnConnect</tabstop>
-  <tabstop>textRecv</tabstop>
-  <tabstop>textSend</tabstop>
   <tabstop>btnSendData</tabstop>
  </tabstops>
  <resources/>
