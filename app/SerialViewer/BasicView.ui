@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>542</width>
-    <height>291</height>
+    <width>540</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -63,15 +63,29 @@
      <widget class="QWidget" name="verticalLayoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="labelRecv">
-         <property name="text">
-          <string>Receive Buffer</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
+         <item>
+          <widget class="QLabel" name="labelRecv">
+           <property name="text">
+            <string>Receive Buffer</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnClearRecv">
+           <property name="text">
+            <string>Clear</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTextEdit" name="textRecv">
          <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
           <bool>true</bool>
          </property>
         </widget>
@@ -81,7 +95,7 @@
      <widget class="QWidget" name="verticalLayoutWidget_2">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,0">
          <item>
           <widget class="QLabel" name="labelSend">
            <property name="text">
@@ -93,6 +107,13 @@
           <widget class="QPushButton" name="btnSendData">
            <property name="text">
             <string>Send Data</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSendFile">
+           <property name="text">
+            <string>Send File</string>
            </property>
           </widget>
          </item>

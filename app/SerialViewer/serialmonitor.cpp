@@ -18,6 +18,10 @@ SerialMonitor::SerialMonitor(const QString& portName, QWidget *parent) :
 
     connect(settingMapper, SIGNAL(mapped(QString)), this, SLOT(updateSetting(QString)));
 
+    connect(btnSendFile, SIGNAL(clicked()),this, SLOT(sendFile()));
+
+    connect(btnClearRecv, SIGNAL(clicked()), textRecv, SLOT(clear()));
+
     settingMenu = new QMenu(this);
 
     tranverseSetting(addSettingMenuCallback,this);
@@ -55,10 +59,12 @@ void SerialMonitor::updateUI()
         openStr = "Open";
         connectBtnStr = "Disconnect";
         btnSendData->setEnabled(true);
+        btnSendFile->setEnabled(true);
     }else{
         openStr = "Closed";
         connectBtnStr = "Connect";
         btnSendData->setEnabled(false);
+        btnSendFile->setEnabled(false);
     }
     setWindowTitle(mPortName + "(" + setStr + ")" + openStr);
     btnConnect->setText(connectBtnStr);
@@ -128,14 +134,24 @@ void SerialMonitor::onReadyRead()
     int a = serialPort->bytesAvailable();
     bytes.resize(a);
     serialPort->read(bytes.data(), bytes.size());
-    textRecv->append(QString(bytes));
+    textRecv->setPlainText(textRecv->toPlainText()+QString(bytes));
 }
 
 void SerialMonitor::wirteData()
 {
     if(serialPort->isOpen()){
-        QString text = textSend->windowTitle();
+        QString text = textSend->toPlainText();
         serialPort->write(text.toAscii());
     }
 }
 
+void SerialMonitor::sendFile()
+{
+    if(serialPort->isOpen()){
+        QString name = QFileDialog::getOpenFileName(this);
+        QFile file(name);
+        file.open(QIODevice::ReadOnly);
+        serialPort->write(file.readAll());
+        file.close();
+    }
+}

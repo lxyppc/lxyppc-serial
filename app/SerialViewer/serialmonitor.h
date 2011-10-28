@@ -24,6 +24,7 @@ public slots:
     void updateUI();
     void openDevice();
     void wirteData();
+    void sendFile();
     void onReadyRead();
     void updateSetting(QString setting);
 
