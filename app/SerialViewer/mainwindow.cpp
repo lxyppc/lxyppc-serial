@@ -120,7 +120,7 @@ void MainWindow::deviceSelected(QModelIndex index)
     }
 
     SerialMonitor* monitor = new SerialMonitor(devName);
-    mdiArea->addSubWindow(monitor);
+    mdiArea->addSubWindow(monitor)->setWindowState(Qt::WindowMaximized);
     monitor->show();
 }
 
