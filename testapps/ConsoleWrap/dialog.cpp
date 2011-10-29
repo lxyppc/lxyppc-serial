@@ -17,7 +17,7 @@ Dialog::Dialog(QWidget *parent) :
     connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(procFinished(int,QProcess::ExitStatus)));
     connect(ui->btnClear, SIGNAL(clicked()), ui->textStderr, SLOT(clear()));
     connect(ui->btnClear, SIGNAL(clicked()), ui->textStdout, SLOT(clear()));
-    connect(ui->btnClear, SIGNAL(clicked()), ui->comboLog, SLOT(clear()));
+    connect(ui->btnClear, SIGNAL(clicked()), ui->textLog, SLOT(clear()));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabCurrentChanged(int)));
     ui->tabWidget->setCurrentIndex(0);
     isRunning = false;
@@ -44,14 +44,14 @@ void Dialog::tabCurrentChanged(int index)
 {
     if(index == 0){
         ui->tabWidget->setTabText(0, "Stdout");
-    }else{
+    }else if(index == 1){
         ui->tabWidget->setTabText(1, "Stderr");
     }
 }
 
 void Dialog::openFile()
 {
-    QString path = QFileDialog::getOpenFileName(this);
+    QString path = QFileDialog::getOpenFileName(this, ui->textPath->text());
     if(!path.isEmpty()){
         ui->textPath->setText(path);
     }
@@ -117,6 +117,7 @@ void Dialog::procFinished(int exitCode, QProcess::ExitStatus exitStatus)
 
 void Dialog::logInfo(const QString& info)
 {
-    ui->comboLog->addItem(QTime::currentTime().toString() + ">" + info);
-    ui->comboLog->setCurrentIndex(ui->comboLog->count()-1);
+    ui->textLog->append(QTime::currentTime().toString() + "  " + info);
+    QTextCursor c(ui->textLog->textCursor());
+    c.movePosition(QTextCursor::End);
 }
