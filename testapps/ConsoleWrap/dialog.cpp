@@ -60,11 +60,12 @@ void Dialog::openFile()
 void Dialog::runFile()
 {
     if(isRunning){
-        process->terminate();
+        process->kill();
         isRunning = false;
+    }else{
+        process->start(ui->textPath->text());
+        isRunning = true;
     }
-    process->start(ui->textPath->text());
-    isRunning = true;
 }
 
 void Dialog::sendCommand()
