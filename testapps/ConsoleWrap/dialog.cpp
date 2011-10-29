@@ -21,6 +21,7 @@ Dialog::Dialog(QWidget *parent) :
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabCurrentChanged(int)));
     ui->tabWidget->setCurrentIndex(0);
     isRunning = false;
+    ui->textPath->setText("c:/windows/system32/cmd.exe");
 }
 
 Dialog::~Dialog()
@@ -71,6 +72,7 @@ void Dialog::runFile()
 void Dialog::sendCommand()
 {
     process->write((ui->comboStdin->currentText()+"\r\n").toAscii());
+    ui->comboStdin->clearEditText();
 }
 
 void Dialog::stdoutReady()
