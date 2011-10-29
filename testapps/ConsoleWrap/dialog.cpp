@@ -70,7 +70,7 @@ void Dialog::runFile()
 
 void Dialog::sendCommand()
 {
-    process->write(ui->comboStdin->currentText().toAscii());
+    process->write((ui->comboStdin->currentText()+"\r\n").toAscii());
 }
 
 void Dialog::stdoutReady()
