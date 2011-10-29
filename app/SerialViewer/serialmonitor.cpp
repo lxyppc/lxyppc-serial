@@ -208,7 +208,9 @@ void SerialMonitor::onReadyRead()
     serialPort->read(bytes.data(), bytes.size());
     textRecv->setPlainText(textRecv->toPlainText()+QString(bytes));
     recvHexEdit->setData(recvHexEdit->data() + bytes);
-    recvHexEdit->scrollToEnd();
+
+    QScrollBar *bar = recvHexEdit->verticalScrollBar();
+    bar->setValue(bar->maximum());
 
     QTextCursor c = textRecv->textCursor();
     c.movePosition(QTextCursor::End);
