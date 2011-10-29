@@ -20,6 +20,7 @@ Dialog::Dialog(QWidget *parent) :
     connect(ui->btnClear, SIGNAL(clicked()), ui->comboLog, SLOT(clear()));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabCurrentChanged(int)));
     ui->tabWidget->setCurrentIndex(0);
+    isRunning = false;
 }
 
 Dialog::~Dialog()
@@ -58,7 +59,12 @@ void Dialog::openFile()
 
 void Dialog::runFile()
 {
+    if(isRunning){
+        process->terminate();
+        isRunning = false;
+    }
     process->start(ui->textPath->text());
+    isRunning = true;
 }
 
 void Dialog::sendCommand()
@@ -95,12 +101,17 @@ void Dialog::procStarted()
 {
     ui->btnRun->setText("Stop");
     logInfo(ui->textPath->text() + " started");
+    isRunning = true;
 }
 
 void Dialog::procFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     ui->btnRun->setText("Run");
-    logInfo(ui->textPath->text() + tr(" finished. exitcode = %1, status = %2").arg(exitCode).arg(exitStatus));
+    logInfo(ui->textPath->text() +
+            tr(" finished. exitcode = %1, status = %2")
+            .arg(exitCode)
+            .arg(exitStatus?"Crash":"Normal"));
+    isRunning = false;
 }
 
 void Dialog::logInfo(const QString& info)
