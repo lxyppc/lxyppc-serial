@@ -57,6 +57,7 @@ private:
     QAction *nextAct;
     QAction *previousAct;
     QAction *separatorAct;
+    QAction *refreshAct;
 };
 
 #endif // MAINWINDOW_H

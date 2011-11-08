@@ -165,6 +165,7 @@ void MainWindow::addMenus()
 {
     viewMenu = menuBar()->addMenu(tr("&View"));
     viewMenu->addAction(dockDevList->toggleViewAction());
+    viewMenu->addAction(refreshAct);
     windowMenu = menuBar()->addMenu(tr("&Window"));
 }
 
@@ -209,6 +210,11 @@ void MainWindow::createActions()
     closeAct->setStatusTip(tr("Close the active window"));
     connect(closeAct, SIGNAL(triggered()),
             mdiArea, SLOT(closeActiveSubWindow()));
+
+    refreshAct = new QAction(tr("&Refresh"), this);
+    refreshAct->setStatusTip(tr("Refresh the device list"));
+    connect(refreshAct, SIGNAL(triggered()),
+            this, SLOT(refreshDeviceList()));
 
     closeAllAct = new QAction(tr("Close &All"), this);
     closeAllAct->setStatusTip(tr("Close all the windows"));

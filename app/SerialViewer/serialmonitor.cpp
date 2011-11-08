@@ -226,6 +226,13 @@ void SerialMonitor::wirteData()
             QString text = textSend->toPlainText();
             serialPort->write(text.toAscii());
         }
+
+        if(spinBox->value() != 0){
+            spinBox->setValue(spinBox->value() - 1);
+        }
+        if(spinBox->value() != 0){
+            QTimer::singleShot(1000, this, SLOT(wirteData()));
+        }
     }
 }
 

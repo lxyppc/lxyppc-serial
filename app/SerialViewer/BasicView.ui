@@ -99,13 +99,23 @@
      <widget class="QWidget" name="verticalLayoutWidget_2">
       <layout class="QVBoxLayout" name="verticalLayoutSend">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayoutSend" stretch="1,0,0,0">
+        <layout class="QHBoxLayout" name="horizontalLayoutSend" stretch="1,0,0,0,0,0">
          <item>
           <widget class="QLabel" name="labelSend">
            <property name="text">
             <string>Send Buffer</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelRepeat">
+           <property name="text">
+            <string>Repeat:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="spinBox"/>
          </item>
          <item>
           <widget class="QPushButton" name="btnSendTextMode">
