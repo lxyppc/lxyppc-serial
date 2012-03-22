@@ -541,7 +541,7 @@ if (!_readOnly)
     }
 
     _scrollArea->ensureVisible(_cursorX, _cursorY + _charHeight/2, 3, _charHeight/2 + 2);
-    update();
+    adjust();
 }
 
 void QHexEditPrivate::mouseMoveEvent(QMouseEvent * event)
