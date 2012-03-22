@@ -29,7 +29,6 @@ private:
     Ui::Dialog *ui;
     QProcess*  process;
     void logInfo(const QString& info);
-    bool isRunning;
 };
 
 #endif // DIALOG_H

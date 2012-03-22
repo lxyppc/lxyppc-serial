@@ -20,7 +20,6 @@ Dialog::Dialog(QWidget *parent) :
     connect(ui->btnClear, SIGNAL(clicked()), ui->textLog, SLOT(clear()));
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabCurrentChanged(int)));
     ui->tabWidget->setCurrentIndex(0);
-    isRunning = false;
     ui->textPath->setText("c:/windows/system32/cmd.exe");
 }
 
@@ -60,12 +59,11 @@ void Dialog::openFile()
 
 void Dialog::runFile()
 {
-    if(isRunning){
-        process->kill();
-        isRunning = false;
-    }else{
+
+    if(QProcess::NotRunning == process->state()){
         process->start(ui->textPath->text());
-        isRunning = true;
+    }else{
+        process->kill();
     }
 }
 
@@ -104,7 +102,6 @@ void Dialog::procStarted()
 {
     ui->btnRun->setText("Stop");
     logInfo(ui->textPath->text() + " started");
-    isRunning = true;
 }
 
 void Dialog::procFinished(int exitCode, QProcess::ExitStatus exitStatus)
@@ -114,7 +111,6 @@ void Dialog::procFinished(int exitCode, QProcess::ExitStatus exitStatus)
             tr(" finished. exitcode = %1, status = %2")
             .arg(exitCode)
             .arg(exitStatus?"Crash":"Normal"));
-    isRunning = false;
 }
 
 void Dialog::logInfo(const QString& info)
