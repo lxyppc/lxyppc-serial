@@ -4,10 +4,14 @@ void run_script_init(QMainWindow* mainwindow);
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    //mdi = new QMdiArea(this);
-    //this->setCentralWidget(new QHexEdit(this));
-    this->menuBar()->addMenu("&Help")->addAction("&About...");
     run_script_init(this);
+    menuBar()->addMenu(tr("&Help"))->addAction(tr("&About..."));
+    QFrame* f = new QFrame(this);
+    QVBoxLayout* l = new QVBoxLayout(f);
+    l->addWidget(new QHexEdit(this));
+    l->addWidget(new QHexEdit(this));
+    f->setLayout(l);
+    this->setCentralWidget(f);
 }
 
 MainWindow::~MainWindow()

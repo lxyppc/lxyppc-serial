@@ -52,25 +52,45 @@ QByteArray QLuaSlot::signal() const
 
 void QLuaSlot::general_slot()
 {
-    call_member<void>(m_obj,m_method.toStdString().c_str());
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj);
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str());
+    }
 }
 
 void QLuaSlot::general_slot(char param)
 {
-    call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    if(type(m_obj) == LUA_TFUNCTION){
+         call_function<void>(m_obj,param);
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    }
 }
 
 void QLuaSlot::general_slot(short param)
 {
-    call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj,param);
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    }
 }
 
 void QLuaSlot::general_slot(int param)
 {
-    call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj,param);
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    }
 }
 
 void QLuaSlot::general_slot(QString param)
 {
-    call_member<void>(m_obj,m_method.toStdString().c_str(), param.toStdString().c_str());
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj,param);
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(), param.toStdString().c_str());
+    }
 }

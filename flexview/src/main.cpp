@@ -16,6 +16,6 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     ret = a.exec();
-    lua_close(L);
+    //lua_close(L);
     return ret;
 }

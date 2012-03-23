@@ -16,7 +16,7 @@ struct default_converter<QString>
     {
         size_t len;
         const char* str = lua_tolstring(L,index,&len);
-        return QString(str);
+        return QString::fromLocal8Bit(str);
     }
 
     void to(lua_State* L, QString const& x)

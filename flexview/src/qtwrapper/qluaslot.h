@@ -19,6 +19,8 @@ public:
     ~QLuaSlot();
     QByteArray slot() const;
     QByteArray signal() const;
+    object get_object() const{ return m_obj; }
+    void set_object(const object& obj){ m_obj = obj; }
 signals:
     void general_signal();
     void general_signal(char);

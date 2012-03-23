@@ -71,6 +71,47 @@ QLuaSlot* get_slot(QObject* obj, int index, const char* member)
     }
 }
 
+QLuaSlot* get_slot(const QObject* obj, const char* member)
+{
+    QByteArray mem = QMetaObject::normalizedSignature(member);
+    QVariant v = obj->property(mem);
+    if(v.isValid()){
+        if(v.canConvert<auto_slot >()){
+            auto_slot aslot = v.value<auto_slot>();
+            return aslot.get();
+        }
+    }
+    return 0;
+}
+
+QLuaSlot* set_slot(QObject* obj, object o, const char* member)
+{
+    QByteArray mem = QMetaObject::normalizedSignature(member);
+    QVariant v = obj->property(mem);
+    if(v.isValid()){
+        if(v.canConvert<auto_slot >()){
+            auto_slot aslot = v.value<auto_slot>();
+            aslot.get()->set_object(o);
+            return aslot.get();
+        }
+    }
+    {
+        auto_slot aslot(new QLuaSlot(o, member));
+        QVariant v;
+        v.setValue(aslot);
+        obj->setProperty(mem, v);
+        return aslot.get();
+    }
+}
+
+QLuaSlot* get_slot(object obj)
+{
+    //auto_slot aslot(new QLuaSlot(obj , "dummy()"));
+    //return aslot.get();
+    //qDebug()<<object_cast<void(*)()>(obj);
+    return new QLuaSlot(obj , "dummy()");
+}
+
 bool sigslot_connect(QObject* sender, const char* signal, QObject* recv, const char* member)
 {
     QString s = QString("2%1").arg(signal);
@@ -100,6 +141,26 @@ bool sigslot_connect(QObject* sender, const char* signal, QObject* recv, const c
         // has signal, not slot
         if(!checkMember(3, getName(member).toStdString().c_str())) return false;
         QLuaSlot* p_slot = get_slot(recv, 3, member);
+        res = QObject::connect(sender, s.toStdString().c_str(), p_slot, p_slot->slot());
+    }
+    return res;
+}
+
+bool sigfunc_connect(QObject* sender, const char* signal, object func)
+{
+    QString s = QString("2%1").arg(signal);
+    QByteArray sig = QMetaObject::normalizedSignature(signal);
+    int iSig = sender->metaObject()->indexOfSignal(sig);
+    bool res = false;
+    if(type(func) != LUA_TFUNCTION) return false;
+    if(iSig == -1 ){
+        if(!checkMember(1, getName(signal).toStdString().c_str())) return false;
+        QLuaSlot* p_signal = get_signal(sender, signal);
+        QLuaSlot* p_slot = set_slot(sender,func,signal);
+        res = QObject::connect(p_signal, p_signal->signal() , p_slot, p_slot->slot());
+    }else{
+        // has signal, not slot
+        QLuaSlot* p_slot = set_slot(sender,func,signal);
         res = QObject::connect(sender, s.toStdString().c_str(), p_slot, p_slot->slot());
     }
     return res;
@@ -147,15 +208,21 @@ void register_classes(lua_State* L, char const* name = 0)
     [
         lqobject(),
         lqwidget(),
+        lqmainwindow(),
+        lqtesttype(),
 
         class_<QDialog, QWidget>("QDialog")
             .def(constructor<>()),
 
 
-        class_<QMainWindow, QWidget>("QMainWindow")
+       class_<QToolBar, QWidget>("QToolBar")
             .def(constructor<>())
-            .def("setCentralWidget",&QMainWindow::setCentralWidget)
-            .def("menuBar",(QMenuBar *(QMainWindow::*)()const)&QMainWindow::menuBar),
+            .def(constructor<const QString&>())
+            .def("addAction", (void(QToolBar::*)( QAction*))&QToolBar::addAction)
+            .def("addAction", (QAction*(QToolBar::*)( const QString&))&QToolBar::addAction)
+            .def("addAction", (QAction*(QToolBar::*)(const QIcon&,const QString&))&QToolBar::addAction)
+            .def("toggleViewAction", &QToolBar::toggleViewAction),
+
 
         class_<QFrame,QWidget>("QFrame")
             .def(constructor<>()),
@@ -166,29 +233,22 @@ void register_classes(lua_State* L, char const* name = 0)
         class_<QMdiArea,QAbstractScrollArea>("QMdiArea")
             .def(constructor<>()),
 
-        class_<LuaDialog,QDialog>("LuaDialog")
+        class_<LuaDialog,QDialog>("LuaEditor")
             .def(constructor<>())
             .def("loadScript", &LuaDialog::loadScript)
             .def("saveScript", &LuaDialog::saveScript),
 
-        class_<QAction,QObject>("QAction")
-            .def(constructor<QObject*>())
-            .def(constructor<const QString &, QObject*>())
-            .def(constructor<const QIcon &, const QString &, QObject* >()),
+        lqicon(),
+        lqaction(),
+        lqmenu(),
+        lqmenubar(),
 
-        class_<QMenuBar,QWidget>("QMenuBar")
-            .def(constructor<>())
-            .def("addMenu", (QAction* (QMenuBar::*)(QMenu*))&QMenuBar::addMenu)
-            .def("addMenu",(QMenu* (QMenuBar::*)(const QString &))&QMenuBar::addMenu),
+        //lqstatckedlayout(),
+        //lqboxlayout(),
+        //lqvboxlayout(),
 
-        class_<QMenu, QWidget>("QMenu")
-            .def(constructor<>())
-            .def(constructor<QWidget *>())
-            .def(constructor<const QString&, QWidget *>())
-            .def("addAction", (QAction*(QMenu::*)(const QString &))&QMenu::addAction)
-            .def("addAction", (QAction*(QMenu::*)(const QIcon &, const QString &))&QMenu::addAction),
-
-        def("connect", (bool(*)(QObject* , const char* , QObject* , const char* ))&sigslot_connect),
+        def("connect", (bool(*)(QObject*, const char*, QObject* , const char* ))&sigslot_connect),
+        def("connect", (bool(*)(QObject*, const char*, object))&sigfunc_connect),
         def("emit_signal", (void (*)(QObject*,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object,object))&emit_signal),

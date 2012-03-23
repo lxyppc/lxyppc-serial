@@ -10,7 +10,9 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qobject.cpp \
     src/qtwrapper/lua_qlayout.cpp \
     src/luahighlighter.cpp \
-    src/luadialog.cpp
+    src/luadialog.cpp \
+    src/qtwrapper/lua_qaction.cpp \
+    src/qtwrapper/lua_qmainwindow.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \

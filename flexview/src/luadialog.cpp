@@ -18,7 +18,7 @@ LuaDialog::LuaDialog(QWidget *parent) :
     ui->editLua->setFont(font);
 
     LuaHighlighter *h = new LuaHighlighter(ui->editLua->document());
-    h->addUserKeyword("CANFrame");
+    h->addUserKeyword("LuaEditor");
 
     qDebug()<<"create LuaDialog";
 
@@ -29,7 +29,7 @@ bool LuaDialog::loadScript(const QString& name)
 {
     QFile file(name);
     if(file.open(QFile::ReadOnly|QFile::Text)){
-        ui->editLua->setPlainText(file.readAll().data());
+        ui->editLua->setPlainText(QString::fromLocal8Bit(file.readAll().data()));
         filePath = name;
         QFileInfo info(name);
         setWindowTitle(info.fileName());
