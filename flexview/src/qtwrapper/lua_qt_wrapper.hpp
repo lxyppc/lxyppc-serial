@@ -46,4 +46,8 @@ LQIcon  lqicon();
 class QTestType;
 typedef class_<QTestType>         LQTestType;
 LQTestType lqtesttype();
+
+typedef void (*enum_func_t)(void* context, const object& key, const object& value);
+
+void enum_table(const object& table, enum_func_t enum_func, void* context);
 #endif

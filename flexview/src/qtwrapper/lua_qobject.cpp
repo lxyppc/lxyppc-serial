@@ -1,4 +1,5 @@
 #include "lua_qt_wrapper.hpp"
+#include "boost/function.hpp"
 using namespace luabind;
 
 LQObject lqobject()
@@ -65,32 +66,39 @@ QString get_property(const object& obj, QString def, const char* p1, const char*
     return def;
 }
 
+typedef boost::function<void(QWidget*, int)> set_int_t;
+
+struct my_les{
+bool operator()(const QString& l, const QString& r){
+    return l.compare(r, Qt::CaseInsensitive) < 0;
+}
+};
+
+static std::map<QString, set_int_t,my_les> lqwidget_set_map;
+
 QWidget* lqwidget_init(QWidget* widget, const object& obj)
 {
-    QRect rect = widget->geometry();
+    //QRect rect = widget->geometry();
     QString styleSheet = widget->styleSheet();
-    rect.setX( get_property(obj, rect.x(), "x", "X") );
-    rect.setY( get_property(obj, rect.y(), "y", "Y") );
-    rect.setWidth( get_property(obj, rect.width(), "w", "W", "width", "Width") );
-    rect.setHeight( get_property(obj, rect.height(), "h", "H", "height", "Height") );
+    //rect.setX( get_property(obj, rect.x(), "x", "X") );
+    //rect.setY( get_property(obj, rect.y(), "y", "Y") );
+    //rect.setWidth( get_property(obj, rect.width(), "w", "W", "width", "Width") );
+    //rect.setHeight( get_property(obj, rect.height(), "h", "H", "height", "Height") );
     styleSheet = get_property(obj, styleSheet, "styleSheet");
-    widget->setGeometry( rect );
+    //widget->setGeometry( rect );
     widget->setStyleSheet(styleSheet);
 
     if(type(obj) == LUA_TTABLE){
         for(iterator i(obj), e; i != e; ++i){
-            if(type(*i) == LUA_TUSERDATA){
-                try{
-                    QMainWindow* w = object_cast<QMainWindow*>(*i);
-                    widget-> layout()->addWidget(w);
+            if(type(i.key()) == LUA_TSTRING){
+                QString key = object_cast<QString>(i.key());
+                if(lqwidget_set_map.find(key) != lqwidget_set_map.end()){
+                    if(type(*i) == LUA_TNUMBER){
+                        qDebug()<<"Set key:"<<key<<"val:"<<object_cast<int>(*i);
+                        lqwidget_set_map[key](widget, object_cast<int>(*i));
+                    }
                 }
-                catch (...)
-                {
-                        std::cerr << "Terminated with unknown exception   edsdsg\n";
-                }
-            }else if(type(*i) == LUA_TTABLE){
             }
-            qDebug()<<"obj"<<"  "<<type(*i);
         }
     }
     return widget;
@@ -125,8 +133,40 @@ void lqwidget_set_height(QWidget* w, int height)
     w->setGeometry(rect);
 }
 
+static struct {
+    const char* name[8];
+    set_int_t func;
+}init_map[] = {
+    { {"x"}, lqwidget_set_x},
+    { {"y"}, lqwidget_set_y},
+    { {"w","width"}, lqwidget_set_width},
+    { {"h","height"}, lqwidget_set_height},
+};
+
+template<typename T>
+void for_all(const T& t)
+{
+    for(typename T::const_iterator it = t.begin();it!=t.end();it++){
+        qDebug()<<it->first;
+    }
+}
+
+//boost::function_traits<>::arity
+//boost::function_traits<>:
 LQWidget lqwidget()
 {
+    for(unsigned int i=0;i<sizeof(init_map)/sizeof(init_map[0]);i++){
+        const char** p = init_map[i].name;
+        while(*p){
+            lqwidget_set_map[QString::fromLocal8Bit(*p)] = init_map[i].func;
+            p++;
+        }
+    }
+    //qDebug()<<boost::function_traits<void(int,int)>::arity;
+    //boost::function<void(int,int)>::type;
+    //qDebug()<<boost::function_traits<void(int,int)>::arity;
+//std::map<QString, set_int_t, my_les>::const_iterator
+    for_all(lqwidget_set_map);
     return
     class_<QWidget, QObject>("QWidget")
             .def(constructor<>())

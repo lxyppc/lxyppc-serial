@@ -200,6 +200,33 @@ void emit_signal(QObject* sender, object obj)
     }
 }
 
+static enum_func_t foreach_func = 0;
+void* foreach_context = 0;
+void foreach_callback(const object& key, const object& value)
+{
+    if(foreach_func){
+        foreach_func(foreach_context, key, value);
+    }else{
+        qDebug()<<"key:"<<object_cast<int>(key)<<"value:"<<object_cast<int>(value);
+    }
+}
+
+void enum_table(const object& table, enum_func_t enum_func, void* context)
+{
+    object tb = globals(__pL)["table"];
+    object xxx = globals(__pL)["foreach_callback"];
+    foreach_func = enum_func;
+    foreach_context = context;
+    if(tb && type(table) == LUA_TTABLE){
+        object f = tb["foreach"];
+        if(type(f) == LUA_TFUNCTION && type(xxx) == LUA_TFUNCTION){
+            call_function<void>(f, table, xxx);
+        }
+    }
+    foreach_func = 0;
+    foreach_context = 0;
+}
+
 void register_classes(lua_State* L, char const* name = 0)
 {
     __pL = L;
@@ -252,7 +279,8 @@ void register_classes(lua_State* L, char const* name = 0)
         def("emit_signal", (void (*)(QObject*,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object,object))&emit_signal),
-        def("emit_signal", (void (*)(QObject*,object,object,object,object))&emit_signal)
+        def("emit_signal", (void (*)(QObject*,object,object,object,object))&emit_signal),
+        def("foreach_callback", foreach_callback)
     ];
 }
 
@@ -270,7 +298,10 @@ void run_script_init(QMainWindow* mainwindow)
         return;
     }
     try{
-        char const* str = file.readAll().data();
+        QByteArray data = file.readAll();
+        //qDebug()<<data;
+        char const* str = data.data();
+        //qDebug()<<str;
         lua_pushcclosure(__pL, &pcall_handler, 0);
         if (luaL_loadbuffer(__pL, str, std::strlen(str), str))
         {
@@ -308,5 +339,5 @@ void run_script_init(QMainWindow* mainwindow)
             std::cerr << "Terminated with unknown exception\n";
             return;
     }
-
+    file.close();
 }

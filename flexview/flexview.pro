@@ -19,6 +19,8 @@ HEADERS += ./src/mainwindow.h \
     src/luahighlighter.h \
     src/luadialog.h
 
+HEADERS += ../qextserialport/qextserialenumerator.h \
+    ../qextserialport/qextserialport.h
 # -------------------------------------------------
 # sources for hexeditor
 # -------------------------------------------------
@@ -105,8 +107,7 @@ win32 {
     DEFINES += WINVER=0x0501 # needed for mingw to pull in appropriate dbt business...probably a better way to do this
     LIBS += -lsetupapi
 }
-HEADERS += ../qextserialport/qextserialenumerator.h \
-    ../qextserialport/qextserialport.h
+
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers
