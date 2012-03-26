@@ -1,6 +1,7 @@
 #include "lua_qt_wrapper.hpp"
 #include "luabind/detail/constructor.hpp"
 #include "luabind/class_info.hpp"
+#include "luabind/detail/object_rep.hpp"
 using namespace luabind;
 
 template<typename T>
@@ -18,17 +19,44 @@ QString toString(const object& obj)
         return object_cast<QString>(obj);
     case LUA_TUSERDATA:
     case LUA_TFUNCTION:
+        {
+            detail::object_rep* p = detail::get_instance(obj.interpreter(),0);
+            if(p){
+                qDebug()<<"raw: "<<p->crep()->name();
+            }
+        }
         return QString::fromLocal8Bit(get_class_info(argument(from_stack(obj.interpreter(),0))).name.c_str());
     }
     return QString::fromLocal8Bit("Unkonwn?");
 }
 
+template<class BT, class PFN>
+bool q_cast(const object& obj, PFN(BT::* pfn), BT* m){
+    try{
+        typedef typename boost::function_traits<PFN>::arg1_type T;
+        T t = object_cast<T>(obj);
+        (m->*pfn)(t);
+        return true;
+    }catch(...){
+    }
+    return false;
+}
+
+QWidget* lqwidget_init(QWidget* widget, const object& init_table);
 QMainWindow* lqmainwindow_init(QMainWindow* widget, const object& init_table)
 {
-    for (iterator i(init_table), e; i != e; ++i){
-        qDebug()<<"key:"<<toString(i.key())<<"val:"<<toString(*i);
+    lqwidget_init(widget,init_table);
+    if(type(init_table) == LUA_TTABLE){
+        for (iterator i(init_table), e; i != e; ++i){
+            if(type(*i) == LUA_TUSERDATA){
+                if(q_cast(*i, &QMainWindow::setMenuBar, widget)){
+                }else{
+                    q_cast(*i, &QMainWindow::setCentralWidget, widget);
+                }
+            }
+            qDebug()<<"key:"<<toString(i.key())<<"val:"<<toString(*i);
+        }
     }
-    //enum_table(init_table, qmainwindowparam, widget);
     return widget;
 }
 
@@ -47,7 +75,7 @@ LQMainWindow lqmainwindow()
         .def("addToolBar", (QToolBar *(QMainWindow::*)(const QString &))&QMainWindow::addToolBar)
         .def("addToolBar", (void (QMainWindow::*)(Qt::ToolBarArea, QToolBar *))&QMainWindow::addToolBar)
         .def("addToolBar", (void (QMainWindow::*)(QToolBar *))&QMainWindow::addToolBar)
-        //.def("__call", &lqmainwindow_init)
+        .def("__call", &lqmainwindow_init)
         .def("__init", &table_init_qmainwindow)
         ;
 }
@@ -66,7 +94,6 @@ public:
 
 QTestType* init_test_type(QTestType* x, const object& init_table)
 {
-    enum_table(init_table, 0, x);
     return x;
 }
 

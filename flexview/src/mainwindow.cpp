@@ -6,12 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     run_script_init(this);
     menuBar()->addMenu(tr("&Help"))->addAction(tr("&About..."));
-    QFrame* f = new QFrame(this);
-    QVBoxLayout* l = new QVBoxLayout(f);
-    l->addWidget(new QHexEdit(this));
-    l->addWidget(new QHexEdit(this));
-    f->setLayout(l);
-    this->setCentralWidget(f);
+    //QFrame* f = new QFrame(this);
+    //QVBoxLayout* l = new QVBoxLayout(f);
+    //l->addWidget(new QHexEdit(this));
+    //l->addWidget(new QHexEdit(this));
+    //f->setLayout(l);
+    //this->setCentralWidget(f);
 }
 
 MainWindow::~MainWindow()
