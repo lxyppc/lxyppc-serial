@@ -20,42 +20,16 @@ LQLayout lqlayout()
 }
 */
 
-struct MyQLayout : public QLayout
-{
-    MyQLayout(){}
-    MyQLayout(QWidget*){}
-    virtual void addItem ( QLayoutItem * item ) {}
-    virtual int	count () const {return 0;}
-    virtual int	indexOf ( QWidget * widget ) const{return -1;}
-    virtual QLayoutItem * itemAt ( int index ) const { return 0;}
-    virtual QLayoutItem *	takeAt ( int index ) {return 0;}
-    virtual QSize sizeHint() const {return QSize();}
-    virtual QSize minimumSize() const {return QSize();}
-    virtual QSize maximumSize() const {return QSize();}
-    virtual Qt::Orientations expandingDirections() {return 0;}
-    virtual void setGeometry(const QRect&) {}
-    virtual QRect geometry() const { return QRect();}
-    virtual bool isEmpty() const {return true;}
-    virtual bool hasHeightForWidth() const{ return false;}
-    virtual int heightForWidth(int) const{ return 0;}
-    virtual int minimumHeightForWidth(int) const{ return 0;}
-    virtual void invalidate(){}
-
-    virtual QWidget *widget(){ return 0;}
-    virtual QLayout *layout(){ return 0;}
-    virtual QSpacerItem *spacerItem(){ return 0;}
-};
-MyQLayout x;
-/*
+//*
 LQLayout lqlayout()
 {
     return
-    class_<QLayout,QObject>("QLayout")
+    class_<QLayout,QLayoutWarp>("QLayout")
             .def(constructor<>())
             .def(constructor<QWidget*>())
     ;
 }
-*/
+//*/
 LQStackedLayout lqstatckedlayout()
 {
     return
@@ -87,5 +61,12 @@ LQVBoxLayout lqvboxlayout()
         .def(constructor<QWidget*>())
     ;
 }
-LQHBoxLayout lqhboxlayout();
+LQHBoxLayout lqhboxlayout()
+{
+    return
+    class_<QHBoxLayout, QBoxLayout>("QHBoxLayout")
+        .def(constructor<>())
+        .def(constructor<QWidget*>())
+    ;
+}
 

@@ -54,6 +54,16 @@ void QLuaSlot::general_slot()
 {
     if(type(m_obj) == LUA_TFUNCTION){
         call_function<void>(m_obj);
+    }else if(type(m_obj) == LUA_TTABLE){
+        object c,f;
+        for(iterator i(m_obj),e;i!=e;++i){
+            if(type(*i) == LUA_TUSERDATA){
+                c = *i;
+            }else if(type(*i) == LUA_TFUNCTION){
+                f = *i;
+            }
+        }
+        call_function<void>(f,c);
     }else{
         call_member<void>(m_obj,m_method.toStdString().c_str());
     }

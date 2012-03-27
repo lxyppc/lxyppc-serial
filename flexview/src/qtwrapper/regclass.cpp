@@ -152,7 +152,7 @@ bool sigfunc_connect(QObject* sender, const char* signal, object func)
     QByteArray sig = QMetaObject::normalizedSignature(signal);
     int iSig = sender->metaObject()->indexOfSignal(sig);
     bool res = false;
-    if(type(func) != LUA_TFUNCTION) return false;
+    if(type(func) != LUA_TFUNCTION && type(func) != LUA_TTABLE) return false;
     if(iSig == -1 ){
         if(!checkMember(1, getName(signal).toStdString().c_str())) return false;
         QLuaSlot* p_signal = get_signal(sender, signal);
@@ -209,19 +209,11 @@ void register_classes(lua_State* L, char const* name = 0)
         lqobject(),
         lqwidget(),
         lqmainwindow(),
+        lqdockwidget(),
         lqtesttype(),
 
         class_<QDialog, QWidget>("QDialog")
             .def(constructor<>()),
-
-
-       class_<QToolBar, QWidget>("QToolBar")
-            .def(constructor<>())
-            .def(constructor<const QString&>())
-            .def("addAction", (void(QToolBar::*)( QAction*))&QToolBar::addAction)
-            .def("addAction", (QAction*(QToolBar::*)( const QString&))&QToolBar::addAction)
-            .def("addAction", (QAction*(QToolBar::*)(const QIcon&,const QString&))&QToolBar::addAction)
-            .def("toggleViewAction", &QToolBar::toggleViewAction),
 
 
         class_<QFrame,QWidget>("QFrame")
@@ -242,10 +234,17 @@ void register_classes(lua_State* L, char const* name = 0)
         lqaction(),
         lqmenu(),
         lqmenubar(),
+        lqtoolbar(),
 
-        //lqstatckedlayout(),
-        //lqboxlayout(),
-        //lqvboxlayout(),
+        lqpoint(),
+        lqrect(),
+        lqsize(),
+
+        lqlayout(),
+        lqstatckedlayout(),
+        lqboxlayout(),
+        lqvboxlayout(),
+        lqhboxlayout(),
 
         def("connect", (bool(*)(QObject*, const char*, QObject* , const char* ))&sigslot_connect),
         def("connect", (bool(*)(QObject*, const char*, object))&sigfunc_connect),

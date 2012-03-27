@@ -31,6 +31,56 @@ struct default_converter<QString const&>
 {};
 
 
+//template <>
+//struct default_converter<Qt::ToolBarAreas>
+//  : native_converter_base<Qt::ToolBarAreas>
+//{
+//    static int compute_score(lua_State* L, int index)
+//    {
+//        return lua_type(L, index) == LUA_TNUMBER ? 0 : -1;
+//    }
+//
+//    Qt::ToolBarAreas from(lua_State* L, int index)
+//    {
+//        int x = lua_tonumber(L,index);
+//        return Qt::ToolBarAreas(x);
+//    }
+//
+//    void to(lua_State* L, Qt::ToolBarAreas x)
+//    {
+//        lua_pushnumber(L, x);
+//    }
+//};
+
+
+#define QT_EMUN_CONVERTER(T)        \
+template <>\
+struct default_converter<T>\
+  : native_converter_base<T>\
+{\
+    static int compute_score(lua_State* L, int index)\
+    {\
+        return lua_type(L, index) == LUA_TNUMBER ? 0 : -1;\
+    }\
+\
+    T from(lua_State* L, int index)\
+    {\
+        int x = lua_tonumber(L,index);\
+        return T(x);\
+    }\
+\
+    void to(lua_State* L, T x)\
+    {\
+        lua_pushnumber(L, x);\
+    }\
+};
+
+QT_EMUN_CONVERTER(Qt::ToolBarAreas)
+QT_EMUN_CONVERTER(Qt::Orientation)
+QT_EMUN_CONVERTER(Qt::DockWidgetAreas)
+QT_EMUN_CONVERTER(QDockWidget::DockWidgetFeatures)
+
+
 struct QMainWindow_wrap : QMainWindow, wrap_base
 {
 };

@@ -12,15 +12,16 @@ SOURCES += ./src/main.cpp \
     src/luahighlighter.cpp \
     src/luadialog.cpp \
     src/qtwrapper/lua_qaction.cpp \
-    src/qtwrapper/lua_qmainwindow.cpp
+    src/qtwrapper/lua_qmainwindow.cpp \
+    src/qtwrapper/lua_qrect.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
     src/luahighlighter.h \
     src/luadialog.h
-
 HEADERS += ../qextserialport/qextserialenumerator.h \
     ../qextserialport/qextserialport.h
+
 # -------------------------------------------------
 # sources for hexeditor
 # -------------------------------------------------
@@ -107,7 +108,6 @@ win32 {
     DEFINES += WINVER=0x0501 # needed for mingw to pull in appropriate dbt business...probably a better way to do this
     LIBS += -lsetupapi
 }
-
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers

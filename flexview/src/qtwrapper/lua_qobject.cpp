@@ -120,6 +120,40 @@ LQWidget lqwidget()
             .property("minWidth", &QWidget::minimumWidth, &QWidget::setMinimumWidth)
             .property("minH", &QWidget::minimumHeight, &QWidget::setMinimumHeight)
             .property("minW", &QWidget::minimumWidth, &QWidget::setMinimumWidth)
+
+            .property("geometry", &QWidget::geometry, (void(QWidget::*)(const QRect&))&QWidget::setGeometry)
             ;
 }
 
+bool obj_name_is(const object& obj, const char* name){
+    lua_State* L = obj.interpreter();
+    obj.push(L);
+    //detail::object_rep* obj = detail::get_instance(L, -1);
+
+    detail::object_rep* p = detail::get_instance(L,-1);
+    if(p){
+        return strcmp(p->crep()->name(),name) == 0;
+    }else{
+        return false;
+    }
+}
+
+#define IS_CLASS(name)  \
+    template<>bool is_class<name>(const object& obj){ return obj_name_is(obj,#name);}\
+    template<>bool is_class<name*>(const object& obj){ return obj_name_is(obj,#name);}\
+    template<>bool is_class<const name&>(const object& obj){ return obj_name_is(obj,#name);}\
+    template<>bool is_class<const name*>(const object& obj){ return obj_name_is(obj,#name);}
+
+IS_CLASS(QMenuBar)
+IS_CLASS(QToolBar)
+IS_CLASS(QDockWidget)
+IS_CLASS(QMenu)
+//IS_CLASS(QString)
+IS_CLASS(QIcon)
+IS_CLASS(QAction)
+IS_CLASS(QPoint)
+IS_CLASS(QRect)
+IS_CLASS(QSize)
+
+template<>bool is_class<QString>(const object& ){ return true;}
+template<>bool is_class<QWidget*>(const object& ){ return true;}
