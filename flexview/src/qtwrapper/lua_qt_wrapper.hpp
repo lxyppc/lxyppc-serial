@@ -23,8 +23,8 @@ struct QLayoutWarp : public QLayout, public luabind::wrap_base
     virtual QSize minimumSize() const {return call_member<QSize>(this, "minimumSize");}
     virtual QSize maximumSize() const {return call_member<QSize>(this, "maximumSize");}
     virtual Qt::Orientations expandingDirections() {return call_member<Qt::Orientations>(this, "expandingDirections");}
-    virtual void setGeometry(const QRect& rect) { call_member<void>(this, "setGeometry", rect); }
-    virtual QRect geometry() const { return call_member<QRect>(this, "geometry"); }
+    //virtual void setGeometry(const QRect& rect) { call_member<void>(this, "setGeometry", rect); }
+    //virtual QRect geometry() const { return call_member<QRect>(this, "geometry"); }
     virtual bool isEmpty() const {return call_member<bool>(this, "isEmpty");}
     virtual bool hasHeightForWidth() const{ return call_member<bool>(this, "hasHeightForWidth");}
     virtual int heightForWidth(int h) const{ return call_member<int>(this, "heightForWidth", h);}
@@ -35,6 +35,14 @@ struct QLayoutWarp : public QLayout, public luabind::wrap_base
     virtual QLayout *layout(){ return call_member<QLayout*>(this, "layout");}
     virtual QSpacerItem *spacerItem(){ return call_member<QSpacerItem*>(this, "spacerItem");}
 };
+
+struct QAbstractButtonWrap : public QAbstractButton, public luabind::wrap_base
+{
+    QAbstractButtonWrap(QWidget* w):QAbstractButton(w){}
+    QAbstractButtonWrap(){}
+    virtual void paintEvent(QPaintEvent *e) {  call_member<void>(this, "paintEvent", e); }
+};
+
 typedef class_<QObject>                     LQObject;
 typedef class_<QWidget, QObject>            LQWidget;
 typedef class_<QLayout, QLayoutWarp>        LQLayout;
@@ -57,6 +65,19 @@ typedef class_<QDockWidget,QWidget>         LQDockWidget;
 typedef class_<QPoint>                      LQPoint;
 typedef class_<QRect>                       LQRect;
 typedef class_<QSize>                       LQSize;
+typedef class_<QMargins>                    LQMargins;
+
+typedef class_<QLabel, QFrame>                      LQLabel;
+typedef class_<QTextEdit, QAbstractScrollArea>      LQTextEdit;
+typedef class_<QLineEdit, QWidget>                  LQLineEdit;
+
+typedef class_<QAbstractButton, QAbstractButtonWrap, QWidget> LQAbstractButton;
+typedef class_<QCheckBox, QAbstractButton>          LQCheckBox;
+typedef class_<QPushButton, QAbstractButton>        LQPushButton;
+typedef class_<QRadioButton, QAbstractButton>       LQRadioButton;
+typedef class_<QToolButton, QAbstractButton>        LQToolButton;
+typedef class_<QButtonGroup, QObject>               LQButtonGroup;
+typedef class_<QKeySequence>                        LQKeySequence;
 
 LQObject lqobject();
 LQWidget lqwidget();
@@ -82,6 +103,19 @@ LQIcon  lqicon();
 LQPoint lqpoint();
 LQRect  lqrect();
 LQSize  lqsize();
+LQMargins lqmargins();
+
+LQLabel lqlabel();
+LQTextEdit lqtextedit();
+LQLineEdit lqlineedit();
+
+LQAbstractButton lqabstractbutton();
+LQCheckBox lqcheckbox();
+LQPushButton lqpushbutton();
+LQRadioButton lqradionbutton();
+LQToolButton lqtoolbutton();
+LQButtonGroup lqbuttongroup();
+LQKeySequence lqkeysequence();
 
 QWidget* lqwidget_init(QWidget* widget, const object& init_table);
 
@@ -231,6 +265,12 @@ struct ValueSetter
     void assign_pfn(boost::function<void(T*,const QRect&)> pfn){
         fn_rect = pfn;
     }
+    void assign_pfn(boost::function<void(T*,QLayout*)> pfn){
+        fn_layout = pfn;
+    }
+    void assign_pfn(boost::function<void(T*,const QMargins&)> pfn){
+        fn_margins = pfn;
+    }
 
     void operator()(T* This, const object& obj){
         switch(arg_n){
@@ -256,6 +296,10 @@ struct ValueSetter
                     fn_size(This, object_cast<QSize>(obj));
                 }else if(is_class<QRect>(obj)){
                     fn_rect(This, object_cast<QRect>(obj));
+                }else if(is_class<QMargins>(obj)){
+                    fn_margins(This, object_cast<QMargins>(obj));
+                }else if(is_class<QLayout*>(obj)){
+                    fn_layout(This, object_cast<QLayout*>(obj));
                 }
             }
             break;
@@ -271,6 +315,8 @@ struct ValueSetter
     boost::function<void(T*, const QPoint&)>  fn_point;
     boost::function<void(T*, const QSize&)>  fn_size;
     boost::function<void(T*, const QRect&)>   fn_rect;
+    boost::function<void(T*, QLayout*)>  fn_layout;
+    boost::function<void(T*, const QMargins&)>  fn_margins;
 };
 
 struct my_les{
@@ -284,12 +330,31 @@ struct setter_map : public std::map<QString, ValueSetter<T>, my_les>
 {
 };
 
+template<typename T>
+T* lq_general_init(T* widget, const object& obj, setter_map<T>& set_map)
+{
+    if(type(obj) == LUA_TTABLE){
+        for(iterator i(obj), e; i != e; ++i){
+            if(type(i.key()) == LUA_TSTRING){
+                QString key = object_cast<QString>(i.key());
+                if(set_map.find(key) != set_map.end()){
+                    set_map[key](widget,*i);
+                }
+            }
+        }
+    }
+    return widget;
+}
+
+template<typename T>
+void table_init_general(const luabind::argument & arg, const object& obj);
+
 template<class T, class X1 = detail::unspecified, class X2 = detail::unspecified, class X3 = detail::unspecified>
 struct myclass_ : public class_<T,X1,X2,X3>
 {
     typedef std::map<QString, ValueSetter<T>, my_les >  map_t;
-    myclass_(const char* name, setter_map<T>& mp):class_<T,X1,X2,X3>(name),set_map(&mp){}
-    myclass_(const char* name):class_<T,X1,X2,X3>(name),set_map(0){}
+    myclass_(const char* name, setter_map<T>& mp):class_<T,X1,X2,X3>(name){set_map = &mp;}
+    myclass_(const char* name):class_<T,X1,X2,X3>(name){ set_map = 0; }
     template<class T1>
     myclass_& def(T1 t1){
         class_<T,X1,X2,X3>::def(t1);

@@ -122,6 +122,12 @@ LQWidget lqwidget()
             .property("minW", &QWidget::minimumWidth, &QWidget::setMinimumWidth)
 
             .property("geometry", &QWidget::geometry, (void(QWidget::*)(const QRect&))&QWidget::setGeometry)
+
+            .property("layout", &QWidget::layout, &QWidget::setLayout)
+
+            .scope[
+               def("setTabOrder", &QWidget::setTabOrder)
+            ]
             ;
 }
 
@@ -133,6 +139,19 @@ bool obj_name_is(const object& obj, const char* name){
     detail::object_rep* p = detail::get_instance(L,-1);
     if(p){
         return strcmp(p->crep()->name(),name) == 0;
+    }else{
+        return false;
+    }
+}
+
+bool obj_name_contain(const object& obj, const char* name){
+    lua_State* L = obj.interpreter();
+    obj.push(L);
+    //detail::object_rep* obj = detail::get_instance(L, -1);
+
+    detail::object_rep* p = detail::get_instance(L,-1);
+    if(p){
+        return strstr(p->crep()->name(),name) != 0;
     }else{
         return false;
     }
@@ -154,6 +173,13 @@ IS_CLASS(QAction)
 IS_CLASS(QPoint)
 IS_CLASS(QRect)
 IS_CLASS(QSize)
+IS_CLASS(QMargins)
 
-template<>bool is_class<QString>(const object& ){ return true;}
-template<>bool is_class<QWidget*>(const object& ){ return true;}
+template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}
+template<>bool is_class<QWidget*>(const object& obj){ return type(obj) == LUA_TUSERDATA; }
+template<>bool is_class<QLayout*>(const object& obj){
+    return obj_name_contain(obj, "Layout");
+}
+template<>bool is_class<QLayout>(const object& obj){
+    return obj_name_contain(obj, "Layout");
+}

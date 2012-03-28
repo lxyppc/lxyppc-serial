@@ -246,6 +246,18 @@ void register_classes(lua_State* L, char const* name = 0)
         lqvboxlayout(),
         lqhboxlayout(),
 
+        lqlabel(),
+        lqtextedit(),
+        lqlineedit(),
+
+        lqabstractbutton(),
+        lqcheckbox(),
+        lqpushbutton(),
+        lqradionbutton(),
+        lqtoolbutton(),
+        lqbuttongroup(),
+        lqkeysequence(),
+
         def("connect", (bool(*)(QObject*, const char*, QObject* , const char* ))&sigslot_connect),
         def("connect", (bool(*)(QObject*, const char*, object))&sigfunc_connect),
         def("emit_signal", (void (*)(QObject*,object))&emit_signal),

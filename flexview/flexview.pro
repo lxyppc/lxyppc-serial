@@ -13,7 +13,9 @@ SOURCES += ./src/main.cpp \
     src/luadialog.cpp \
     src/qtwrapper/lua_qaction.cpp \
     src/qtwrapper/lua_qmainwindow.cpp \
-    src/qtwrapper/lua_qrect.cpp
+    src/qtwrapper/lua_qrect.cpp \
+    src/qtwrapper/lua_qtextedit.cpp \
+    src/qtwrapper/lua_qbutton.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \

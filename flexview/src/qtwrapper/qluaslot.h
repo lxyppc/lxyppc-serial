@@ -26,12 +26,14 @@ signals:
     void general_signal(char);
     void general_signal(short);
     void general_signal(int);
+    void general_signal(bool);
     void general_signal(QString);
 public slots:
     void general_slot();
     void general_slot(char);
     void general_slot(short);
     void general_slot(int);
+    void general_slot(bool);
     void general_slot(QString);
 private:
     object m_obj;

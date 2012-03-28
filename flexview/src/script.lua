@@ -5,7 +5,8 @@ function edit_script()
     editor:show();
 end
 
-function do_something()
+function do_something(f)
+    print("do_something", f)
     edit_script()
 end
 
@@ -21,6 +22,7 @@ function init_mainwindow(mainwindow)
     me = QMenu("Hello")
     me1 = QMenu("Hello")
     me2 = QMenu("Hello")
+
     tb = QToolBar("123") {
         scriptEditAct,
         QAction("xxx") { QIcon("xx.png") },
@@ -32,6 +34,39 @@ function init_mainwindow(mainwindow)
         QAction("xxx") { QIcon("xx.png") },
         QAction("yyy") { QIcon("xx.png") },
     }
+
+    frame = QFrame();
+    hlayout = QVBoxLayout{
+        QHBoxLayout{
+            QVBoxLayout{
+                QLabel("IP Address"),
+                QLineEdit{ inputMask = "000.000.000.000;_" },
+            },
+            QVBoxLayout{
+                QLabel("Mac Address"),
+                QLineEdit{ inputMask = "HH:HH:HH:HH:HH:HH;_" },
+            },
+            QCheckBox{
+                text = "123",
+                toggled = do_something
+            },
+            QCheckBox{
+                text = "456",
+                toggled = do_something
+            },
+            QLabel(),
+            "0,0,0,0,1"
+        },
+        QTextEdit(),
+
+    }
+
+    --hlayout:addWidget(LuaEditor());
+    --hlayout:addWidget(LuaEditor());
+    frame {
+        layout = hlayout
+    }
+
     t = {
 
     --[[
@@ -58,7 +93,9 @@ function init_mainwindow(mainwindow)
         QMenu("456"){
             QAction(){ text = "xxx", triggered = do_something}
         },
-        LuaEditor(),
+        QDockWidget{
+        frame,
+        },
         QAction("789"){ triggered = do_something },
         --[[QDockWidget("cccc"){
             titlebar = LuaEditor(),

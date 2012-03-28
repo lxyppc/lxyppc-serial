@@ -3,28 +3,7 @@
 static setter_map<QPoint> lqpoint_set_map;
 static setter_map<QRect> lqrect_set_map;
 static setter_map<QSize> lqsize_set_map;
-
-template<typename T>
-T* lq_general_init(T* widget, const object& obj, setter_map<T> set_map)
-{
-    if(type(obj) == LUA_TTABLE){
-        for(iterator i(obj), e; i != e; ++i){
-            if(type(i.key()) == LUA_TSTRING){
-                QString key = object_cast<QString>(i.key());
-                if(set_map.find(key) != set_map.end()){
-                    set_map[key](widget,*i);
-                }
-            }
-        }
-    }
-    return widget;
-}
-
-template<typename T>
-void table_init_general(const luabind::argument & arg, const object& obj)
-{
-    lq_general_init(construct<T>(arg), obj, lqpoint_set_map);
-}
+static setter_map<QMargins> lqmargins_set_map;
 
 template<>
 void table_init_general<QPoint>(const luabind::argument & arg, const object& obj)
@@ -44,13 +23,36 @@ void table_init_general<QSize>(const luabind::argument & arg, const object& obj)
     lq_general_init(construct<QSize>(arg), obj, lqsize_set_map);
 }
 
+template<>
+void table_init_general<QMargins>(const luabind::argument & arg, const object& obj)
+{
+    lq_general_init(construct<QMargins>(arg), obj, lqmargins_set_map);
+}
+
+QPoint* lqpoint_init(QPoint* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqpoint_set_map);
+}
+QRect* lqrect_init(QRect* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqrect_set_map);
+}
+QSize* lqsize_init(QSize* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqsize_set_map);
+}
+QMargins* lqmargins_init(QMargins* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqmargins_set_map);
+}
+
 LQPoint lqpoint()
 {
     return
     myclass_<QPoint>("QPoint", lqpoint_set_map)
     .def(constructor<>())
     .def(constructor<int,int>())
-    .def("__call", &lq_general_init<QPoint>)
+    .def("__call", &lqpoint_init)
     .def("__init", &table_init_general<QPoint>)
 
     .property("x", &QPoint::x, &QPoint::setX)
@@ -65,7 +67,7 @@ LQRect  lqrect()
     .def(constructor<const QPoint &,const QPoint &>())
     .def(constructor<const QPoint &,const QSize &>())
     .def(constructor<int,int,int,int>())
-    .def("__call", &lq_general_init<QRect>)
+    .def("__call", &lqrect_init)
     .def("__init", &table_init_general<QRect>)
     .def("intersect", &QRect::intersect)
     .def("intersected", &QRect::intersected)
@@ -100,7 +102,7 @@ LQSize  lqsize()
     myclass_<QSize>("QSize", lqsize_set_map)
     .def(constructor<>())
     .def(constructor<int,int>())
-    .def("__call", &lq_general_init<QSize>)
+    .def("__call", &lqsize_init)
     .def("__init", &table_init_general<QSize>)
 
     .property("width", &QSize::width, &QSize::setWidth)
@@ -110,3 +112,18 @@ LQSize  lqsize()
     ;
 }
 
+LQMargins lqmargins()
+{
+    return
+    myclass_<QMargins>("QMargins", lqmargins_set_map)
+    .def(constructor<>())
+    .def(constructor<int,int,int,int>())
+    .def("__call", &lqmargins_init)
+    .def("__init", &table_init_general<QMargins>)
+
+    .property("left", &QMargins::left, &QMargins::setLeft)
+    .property("right", &QMargins::right, &QMargins::setRight)
+    .property("top", &QMargins::top, &QMargins::setTop)
+    .property("bottom", &QMargins::bottom, &QMargins::setBottom)
+    ;
+}

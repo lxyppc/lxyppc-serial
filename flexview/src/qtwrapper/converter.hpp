@@ -79,6 +79,9 @@ QT_EMUN_CONVERTER(Qt::ToolBarAreas)
 QT_EMUN_CONVERTER(Qt::Orientation)
 QT_EMUN_CONVERTER(Qt::DockWidgetAreas)
 QT_EMUN_CONVERTER(QDockWidget::DockWidgetFeatures)
+QT_EMUN_CONVERTER(Qt::Alignment)
+QT_EMUN_CONVERTER(QKeySequence::StandardKey)
+QT_EMUN_CONVERTER(Qt::CheckState)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

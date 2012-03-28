@@ -96,6 +96,25 @@ void QLuaSlot::general_slot(int param)
     }
 }
 
+void QLuaSlot::general_slot(bool param)
+{
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj, param);
+    }else if(type(m_obj) == LUA_TTABLE){
+        object c,f;
+        for(iterator i(m_obj),e;i!=e;++i){
+            if(type(*i) == LUA_TUSERDATA){
+                c = *i;
+            }else if(type(*i) == LUA_TFUNCTION){
+                f = *i;
+            }
+        }
+        call_function<void>(f,c, param);
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(), param);
+    }
+}
+
 void QLuaSlot::general_slot(QString param)
 {
     if(type(m_obj) == LUA_TFUNCTION){
