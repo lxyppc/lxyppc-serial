@@ -65,6 +65,7 @@ typedef class_<QDockWidget,QWidget>         LQDockWidget;
 typedef class_<QPoint>                      LQPoint;
 typedef class_<QRect>                       LQRect;
 typedef class_<QSize>                       LQSize;
+typedef class_<QColor>                      LQColor;
 typedef class_<QMargins>                    LQMargins;
 
 typedef class_<QLabel, QFrame>                      LQLabel;
@@ -105,6 +106,7 @@ LQIcon  lqicon();
 LQPoint lqpoint();
 LQRect  lqrect();
 LQSize  lqsize();
+LQColor lqcolor();
 LQMargins lqmargins();
 
 LQLabel lqlabel();

@@ -4,6 +4,7 @@ static setter_map<QPoint> lqpoint_set_map;
 static setter_map<QRect> lqrect_set_map;
 static setter_map<QSize> lqsize_set_map;
 static setter_map<QMargins> lqmargins_set_map;
+static setter_map<QColor> lqcolor_set_map;
 
 template<>
 void table_init_general<QPoint>(const luabind::argument & arg, const object& obj)
@@ -29,6 +30,12 @@ void table_init_general<QMargins>(const luabind::argument & arg, const object& o
     lq_general_init(construct<QMargins>(arg), obj, lqmargins_set_map);
 }
 
+template<>
+void table_init_general<QColor>(const luabind::argument & arg, const object& obj)
+{
+    lq_general_init(construct<QColor>(arg), obj, lqcolor_set_map);
+}
+
 QPoint* lqpoint_init(QPoint* widget, const object& obj)
 {
     return lq_general_init(widget, obj, lqpoint_set_map);
@@ -44,6 +51,10 @@ QSize* lqsize_init(QSize* widget, const object& obj)
 QMargins* lqmargins_init(QMargins* widget, const object& obj)
 {
     return lq_general_init(widget, obj, lqmargins_set_map);
+}
+QColor* lqcolor_init(QColor* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqcolor_set_map);
 }
 
 LQPoint lqpoint()
@@ -125,5 +136,27 @@ LQMargins lqmargins()
     .property("right", &QMargins::right, &QMargins::setRight)
     .property("top", &QMargins::top, &QMargins::setTop)
     .property("bottom", &QMargins::bottom, &QMargins::setBottom)
+    ;
+}
+
+LQColor lqcolor()
+{
+    return
+    myclass_<QColor>("QColor", lqcolor_set_map)
+    .def(constructor<>())
+    .def(constructor<int,int,int>())
+    .def(constructor<int,int,int,int>())
+    .def(constructor<const QString&>())
+    .def(constructor<const QColor&>())
+    .def("__call", &lqcolor_init)
+    .def("__init", &table_init_general<QColor>)
+
+    .property("red", &QColor::red, &QColor::setRed)
+    .property("green", &QColor::green, &QColor::setGreen)
+    .property("blue", &QColor::blue, &QColor::setBlue)
+    .property("r", &QColor::red, &QColor::setRed)
+    .property("g", &QColor::green, &QColor::setGreen)
+    .property("b", &QColor::blue, &QColor::setBlue)
+    .property("name", &QColor::name, &QColor::setNamedColor)
     ;
 }

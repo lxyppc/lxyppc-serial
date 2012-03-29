@@ -5,8 +5,12 @@ function edit_script()
     editor:show();
     --res, ok = QCommonDlg.getDouble(editor, "get", "double", 34, 2, 324, 3)
     --res, ok = QCommonDlg.getText(editor, "get", "Text", 1)
-    res, ok = QCommonDlg.getItem(editor, "get", "Text", {"123", "456"})
-    print(res, ok)
+    c = QColor(255,255,255)
+    b = QColor(0,0,0,12)
+    b = QColor("blue")
+    --res, ok = QCommonDlg.getItem( editor, "get", "Text", {c.name, b.name})
+    res = QCommonDlg.getColor(b)
+    print(res.name, ok)
 end
 
 function do_something(f)
@@ -14,6 +18,25 @@ function do_something(f)
     edit_script()
 
 end
+
+
+function do_something2()
+    xname = "1"
+    --dlg = QCommonDlg.fileNames()
+    res = QCommonDlg.getOpenFileNames()
+    for name in res.names do
+      --print(name)
+      xname = xname .. "," .. name
+    end
+    --res = QCommonDlg.getColor()
+    --bbbtn.styleSheet = "QPushButton { background-color:" .. res.name .. "}"
+
+    bbbtn.text = xname
+end
+
+bbbtn = QPushButton{
+    clicked = do_something2
+}
 
 function init_mainwindow(mainwindow)
     local scriptMenu = mainwindow:menuBar():insertMenu(0, "??");
@@ -79,7 +102,7 @@ function init_mainwindow(mainwindow)
                 text = "456",
                 toggled = do_something,
             },
-            btn,
+            bbbtn,
             QLabel(),
             "0,0,0,0,0,1"
         },
