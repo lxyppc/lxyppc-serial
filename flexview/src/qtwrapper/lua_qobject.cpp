@@ -87,6 +87,17 @@ LQWidget lqwidget()
             .def(constructor<>())
             .def("show",&QWidget::show)
             .def("showMaximized",&QWidget::showMaximized)
+            .def("showFullScreen",&QWidget::showFullScreen)
+            .def("showMinimized",&QWidget::showMinimized)
+            .def("showNormal",&QWidget::showNormal)
+            .def("update",(void(QWidget::*)())&QWidget::update)
+            .def("close",&QWidget::close)
+            .def("hide",&QWidget::hide)
+            .def("lower",&QWidget::lower)
+            .def("raise",&QWidget::raise)
+            .def("repaint",(void(QWidget::*)())&QWidget::repaint)
+
+
             .def("setGeometry", (void (QWidget::*)(int, int, int, int))&QWidget::setGeometry)
             .def("addAction", &QWidget::addAction)
             .def("__call", &lqwidget_init)
@@ -99,6 +110,8 @@ LQWidget lqwidget()
             .property("enabled", &QWidget::isEnabled, &QWidget::setEnabled)
             .property("windowModified", &QWidget::isWindowModified, &QWidget::setWindowModified)
             .property("modified", &QWidget::isWindowModified, &QWidget::setWindowModified)
+            .property("visible", &QWidget::isVisible, &QWidget::setVisible)
+            .property("hidden", &QWidget::isHidden, &QWidget::setHidden)
 
             .property("x", &QWidget::x, lqwidget_set_x)
             .property("y", &QWidget::y, lqwidget_set_y)
@@ -131,30 +144,58 @@ LQWidget lqwidget()
             ;
 }
 
-bool obj_name_is(const object& obj, const char* name){
-    lua_State* L = obj.interpreter();
-    obj.push(L);
-    //detail::object_rep* obj = detail::get_instance(L, -1);
+std::string obj_name(const object& o)
+{
+    lua_State* L = o.interpreter();
+    std::string name;
 
-    detail::object_rep* p = detail::get_instance(L,-1);
-    if(p){
-        return strcmp(p->crep()->name(),name) == 0;
-    }else{
-        return false;
+    o.push(L);
+    detail::object_rep* obj = detail::get_instance(L, -1);
+    if (!obj)
+    {
+        name = lua_typename(L, lua_type(L, -1));
+        lua_pop(L, 1);
+        return name;
     }
+
+    lua_pop(L, 1);
+    name = obj->crep()->name();
+    return name;
 }
 
-bool obj_name_contain(const object& obj, const char* name){
-    lua_State* L = obj.interpreter();
-    obj.push(L);
-    //detail::object_rep* obj = detail::get_instance(L, -1);
 
-    detail::object_rep* p = detail::get_instance(L,-1);
-    if(p){
-        return strstr(p->crep()->name(),name) != 0;
-    }else{
-        return false;
-    }
+bool obj_name_is(const object& o, const char* name){
+    object obj = o;
+    return strcmp(obj_name(obj).c_str(), name) == 0;
+//    lua_State* L = obj.interpreter();
+////    std::string str = get_class_info(argument(from_stack(L,0))).name;
+////    return strcmp(str.c_str(),name) == 0;
+//
+//    obj.push(L);
+//    detail::object_rep* p = detail::get_instance(L,-1);
+//    //lua_pop(L, 1);
+//    if(p){
+//        return strcmp(p->crep()->name(),name) == 0;
+//    }else{
+//        return false;
+//    }
+}
+
+bool obj_name_contain(const object& o, const char* name){
+    object obj = o;
+    return strstr(obj_name(obj).c_str(), name) != 0;
+//    lua_State* L = obj.interpreter();
+////    std::string str = get_class_info(argument(from_stack(L,0))).name;
+////    return strstr(str.c_str(),name) != 0;
+//
+//    obj.push(L);
+//    detail::object_rep* p = detail::get_instance(L,-1);
+//    //lua_pop(L, 1);
+//    if(p){
+//        return strstr(p->crep()->name(),name) != 0;
+//    }else{
+//        return false;
+//    }
 }
 
 #define IS_CLASS(name)  \
@@ -174,6 +215,7 @@ IS_CLASS(QPoint)
 IS_CLASS(QRect)
 IS_CLASS(QSize)
 IS_CLASS(QMargins)
+IS_CLASS(QKeySequence)
 
 template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}
 template<>bool is_class<QWidget*>(const object& obj){ return type(obj) == LUA_TUSERDATA; }

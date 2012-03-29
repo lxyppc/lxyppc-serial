@@ -62,6 +62,7 @@ SIGNAL_PROPERYT(lqab, toggled, QAbstractButton, "(bool)")
 QAbstractButton* lqab_init(QAbstractButton* widget, const object& table)
 {
     //lq_general_init(widget, obj, lqab_set_map);
+    lqwidget_init(widget, table);
     if(type(table) == LUA_TTABLE){
         for (iterator i(table), e; i != e; ++i){
             if(type(i.key()) == LUA_TSTRING){
@@ -81,6 +82,8 @@ QAbstractButton* lqab_init(QAbstractButton* widget, const object& table)
 
             if(type(*i) == LUA_TUSERDATA){
                 if(q_cast(*i, (void(QAbstractButton::*)( const QIcon &))&QAbstractButton::setIcon, widget)){
+                }else if(q_cast(*i, &QAbstractButton::setShortcut, widget)){
+                    //widget->setShortcut(QKeySequence(QObject::tr("Alt+T")));
                 }
             }/*else if(type(*i)== LUA_TSTRING){
                 if(q_cast(*i, (QAction*(QToolBar::*)(const QString&))&QToolBar::addAction, widget)){
@@ -190,6 +193,7 @@ LQAbstractButton lqabstractbutton()
     .property("pressed",&lqab_get_pressed, &lqab_set_pressed)
     .property("released",&lqab_get_released, &lqab_set_released)
     .property("toggled",&lqab_get_toggled, &lqab_set_toggled)
+    .property("shortcut",&QAbstractButton::shortcut, &QAbstractButton::setShortcut)
     ;
 }
 
@@ -223,6 +227,7 @@ LQPushButton lqpushbutton()
     .def("__call", lqpb_init)
     .def("__init", table_init_general<QPushButton>)
     .def("showMenu", &QPushButton::showMenu)
+    .def("getMenu", &QPushButton::menu)
 
     .property("default", &QPushButton::isDefault, &QPushButton::setDefault)
     .property("flat", &QPushButton::isFlat, &QPushButton::setFlat)

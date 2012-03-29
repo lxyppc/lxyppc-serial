@@ -4,6 +4,7 @@
 #include "../luadialog.h"
 #include "lite_ptr.h"
 #include "lua_qt_wrapper.hpp"
+#include <luabind/out_value_policy.hpp>
 using namespace luabind;
 typedef lite_ptr<QLuaSlot> auto_slot;
 Q_DECLARE_METATYPE(auto_slot)
@@ -258,6 +259,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqbuttongroup(),
         lqkeysequence(),
 
+        lqcommondlg(),
+
         def("connect", (bool(*)(QObject*, const char*, QObject* , const char* ))&sigslot_connect),
         def("connect", (bool(*)(QObject*, const char*, object))&sigfunc_connect),
         def("emit_signal", (void (*)(QObject*,object))&emit_signal),
@@ -270,11 +273,15 @@ void register_classes(lua_State* L, char const* name = 0)
 static int pcall_handler(lua_State* L)
 {
     (void)L;
+    qDebug()<<"-------------------------------------";
+    qDebug()<<lua_tostring(L, -1);
+    qDebug()<<"-------------------------------------";
     return 1;
 }
 
 void run_script_init(QMainWindow* mainwindow)
 {
+    set_pcall_callback(pcall_handler);
     QFile file("../src/script.lua");
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";

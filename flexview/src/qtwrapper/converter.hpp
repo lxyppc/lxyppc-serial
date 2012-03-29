@@ -82,6 +82,7 @@ QT_EMUN_CONVERTER(QDockWidget::DockWidgetFeatures)
 QT_EMUN_CONVERTER(Qt::Alignment)
 QT_EMUN_CONVERTER(QKeySequence::StandardKey)
 QT_EMUN_CONVERTER(Qt::CheckState)
+QT_EMUN_CONVERTER(Qt::WindowFlags)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

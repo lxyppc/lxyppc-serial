@@ -42,6 +42,8 @@ QAction* lqaction_init(QAction* widget, const object& table)
 
             if(type(*i) == LUA_TUSERDATA){
                 if(q_cast(*i, (void(QAction::*)( const QIcon &))&QAction::setIcon, widget)){
+                }else if(q_cast(*i, &QAction::setShortcut, widget)){
+                }else if(q_cast(*i, &QAction::setMenu, widget)){
                 }
             }/*else if(type(*i)== LUA_TSTRING){
                 if(q_cast(*i, (QAction*(QToolBar::*)(const QString&))&QToolBar::addAction, widget)){
@@ -88,6 +90,8 @@ LQAction lqaction()
         .property("visible",&QAction::isVisible, &QAction::setVisible)
         .class_<QAction,QObject>::property("icon",&QAction::icon, &QAction::setIcon)
         .property("triggered",&lqaction_get_triggered, &lqaction_set_triggered)
+        .property("shortcut",&QAction::shortcut, &QAction::setShortcut)
+        .property("menu", &QAction::menu, &QAction::setMenu)
         ;
 }
 

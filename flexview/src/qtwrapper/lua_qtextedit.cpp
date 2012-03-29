@@ -6,16 +6,19 @@ static setter_map<QLineEdit> lqlineedit_set_map;
 
 QLabel* lqlabel_init(QLabel* widget, const object& obj)
 {
+    lqwidget_init(widget,obj);
     return lq_general_init(widget, obj, lqlabel_set_map);
 }
 
 QTextEdit* lqtextedit_init(QTextEdit* widget, const object& obj)
 {
+    lqwidget_init(widget,obj);
     return lq_general_init(widget, obj, lqtextedit_set_map);
 }
 
 QLineEdit* lqlineedit_init(QLineEdit* widget, const object& obj)
 {
+    lqwidget_init(widget,obj);
     return lq_general_init(widget, obj, lqlineedit_set_map);
 }
 

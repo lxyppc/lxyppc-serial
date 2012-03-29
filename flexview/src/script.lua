@@ -3,17 +3,22 @@ function edit_script()
     editor.windowTitle = "Lua Script Editor";
     editor:loadScript("../src/script.lua");
     editor:show();
+    --res, ok = QCommonDlg.getDouble(editor, "get", "double", 34, 2, 324, 3)
+    --res, ok = QCommonDlg.getText(editor, "get", "Text", 1)
+    res, ok = QCommonDlg.getItem(editor, "get", "Text", {"123", "456"})
+    print(res, ok)
 end
 
 function do_something(f)
-    print("do_something", f)
+    print("do_something",f)
     edit_script()
+
 end
 
 function init_mainwindow(mainwindow)
-    local scriptMenu = mainwindow:menuBar():insertMenu(0, "脚本");
-    local scriptEditAct = scriptMenu:addAction(QIcon("xx.png"),"编辑...");
-    scriptEditAct.triggered = {mainwindow, mainwindow.showMaximized} -- edit_script;
+    local scriptMenu = mainwindow:menuBar():insertMenu(0, "??");
+    local scriptEditAct = scriptMenu:addAction(QIcon("xx.png"),"??...");
+    scriptEditAct.triggered = {mainwindow, "showMaximized"} -- edit_script;
     --vl = QVBoxLayout(mainwindow)
     --editor = LuaEditor()
     --vl:addWidget(editor);
@@ -35,6 +40,25 @@ function init_mainwindow(mainwindow)
         QAction("yyy") { QIcon("xx.png") },
     }
 
+    btn = QPushButton("xxxx")
+    {
+        --text = "uuuu",
+        QKeySequence("Alt+T"),
+        QIcon("xx.png"),
+        clicked = do_something,
+        QMenu{ QAction("xxx") },
+        --minh = 180,
+        styleSheet = " QPushButton {background-color: #ff0000}",
+    }
+
+    btn { --QKeySequence("Alt+O"),
+    --styleSheet = " QPushButton {background-color: #ff0000}"
+    }
+    --print (btn)
+    --s = btn.shortcut -- = QKeySequence("Alt+T")
+    --sm = btn:getMenu()
+    --print (btn)
+
     frame = QFrame();
     hlayout = QVBoxLayout{
         QHBoxLayout{
@@ -46,16 +70,18 @@ function init_mainwindow(mainwindow)
                 QLabel("Mac Address"),
                 QLineEdit{ inputMask = "HH:HH:HH:HH:HH:HH;_" },
             },
-            QCheckBox{
+            QPushButton{
                 text = "123",
-                toggled = do_something
+                clicked = do_something,
+
             },
             QCheckBox{
                 text = "456",
-                toggled = do_something
+                toggled = do_something,
             },
+            btn,
             QLabel(),
-            "0,0,0,0,1"
+            "0,0,0,0,0,1"
         },
         QTextEdit(),
 
@@ -67,6 +93,8 @@ function init_mainwindow(mainwindow)
         layout = hlayout
     }
 
+    --QCommonDlg.getInt(editor,2)
+
     t = {
 
     --[[
@@ -76,7 +104,7 @@ function init_mainwindow(mainwindow)
         minh = 200,
         minw = 300,
         --]]
-        geometry = QRect{ x = 300, y = 200,  w = 600, h = 400,},
+        geometry = QRect{ x = 300, y = 200,  w = 600, h = 200,},
         --123,
         --456,
         --789,
@@ -96,7 +124,7 @@ function init_mainwindow(mainwindow)
         QDockWidget{
         frame,
         },
-        QAction("789"){ triggered = do_something },
+        QAction("789"){ triggered = do_something, QMenu{ QAction("111"), QAction("222")}, QKeySequence("Alt+F") },
         --[[QDockWidget("cccc"){
             titlebar = LuaEditor(),
             LuaEditor()
@@ -104,7 +132,10 @@ function init_mainwindow(mainwindow)
     }
     me.title = "sfdsgsfdhds"
     tb.allowedAreas = 8
+    rect = QRect { x= 400, y = 300, w = 400, h = 300 }
+    --print (rect)
     mainwindow (t)
+    --mainwindow.geometry = rect
     tp = QTestType();
     print (tp.showText);
     --table.foreach(t, function(i, v) print (i, v) end)

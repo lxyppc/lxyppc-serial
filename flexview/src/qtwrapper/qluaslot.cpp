@@ -61,9 +61,17 @@ void QLuaSlot::general_slot()
                 c = *i;
             }else if(type(*i) == LUA_TFUNCTION){
                 f = *i;
+            }else if(type(*i) == LUA_TSTRING){
+                f = *i;
             }
         }
-        call_function<void>(f,c);
+        if(f && c){
+            if(type(f) == LUA_TFUNCTION){
+                call_function<void>(f,c);
+            }else if(type(f) == LUA_TSTRING){
+                call_member<void>(c,object_cast<const char*>(f));
+            }
+        }
     }else{
         call_member<void>(m_obj,m_method.toStdString().c_str());
     }
@@ -109,7 +117,7 @@ void QLuaSlot::general_slot(bool param)
                 f = *i;
             }
         }
-        call_function<void>(f,c, param);
+        if(f && c)call_function<void>(f,c, param);
     }else{
         call_member<void>(m_obj,m_method.toStdString().c_str(), param);
     }

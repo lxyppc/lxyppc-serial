@@ -78,6 +78,8 @@ typedef class_<QRadioButton, QAbstractButton>       LQRadioButton;
 typedef class_<QToolButton, QAbstractButton>        LQToolButton;
 typedef class_<QButtonGroup, QObject>               LQButtonGroup;
 typedef class_<QKeySequence>                        LQKeySequence;
+struct QCommonDlg{};
+typedef namespace_                                    LQCommonDlg;
 
 LQObject lqobject();
 LQWidget lqwidget();
@@ -116,6 +118,8 @@ LQRadioButton lqradionbutton();
 LQToolButton lqtoolbutton();
 LQButtonGroup lqbuttongroup();
 LQKeySequence lqkeysequence();
+
+LQCommonDlg lqcommondlg();
 
 QWidget* lqwidget_init(QWidget* widget, const object& init_table);
 
