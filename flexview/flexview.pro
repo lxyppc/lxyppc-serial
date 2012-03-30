@@ -16,12 +16,16 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qrect.cpp \
     src/qtwrapper/lua_qtextedit.cpp \
     src/qtwrapper/lua_qbutton.cpp \
-    src/qtwrapper/lua_commondlg.cpp
+    src/qtwrapper/lua_commondlg.cpp \
+    src/qtwrapper/lua_qeditor.cpp \
+    src/qluaedit.cpp \
+    src/qtwrapper/lua_qlist.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
     src/luahighlighter.h \
-    src/luadialog.h
+    src/luadialog.h \
+    src/qluaedit.h
 HEADERS += ../qextserialport/qextserialenumerator.h \
     ../qextserialport/qextserialport.h
 

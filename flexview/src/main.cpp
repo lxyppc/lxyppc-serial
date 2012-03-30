@@ -2,7 +2,7 @@
 #include "mainwindow.h"
 #include "lua.hpp"
 
-
+void run_script_init(MainWindow* mainwindow);
 void register_classes(lua_State* L, char const* name = 0);
 int main(int argc, char *argv[])
 {
@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+    //run_script_init(0);
     ret = a.exec();
     //lua_close(L);
     return ret;

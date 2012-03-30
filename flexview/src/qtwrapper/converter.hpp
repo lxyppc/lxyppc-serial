@@ -31,6 +31,47 @@ struct default_converter<QString const&>
 {};
 
 
+
+
+
+template <>
+struct default_converter<QByteArray>
+  : native_converter_base<QByteArray>
+{
+    static int compute_score(lua_State* L, int index)
+    {
+        return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
+    }
+
+    QByteArray from(lua_State* L, int index)
+    {
+        object obj(luabind::from_stack(L,index));
+        QByteArray arr;
+        for(iterator i(obj),e; i!=e; ++i){
+            int v = 0;
+            if(type(*i) == LUA_TNUMBER){
+                v = object_cast<int>(*i);
+            }
+            arr.append((char)v);
+        }
+        return arr;
+    }
+
+    void to(lua_State* L, QByteArray const& arr)
+    {
+        object obj = luabind::newtable(L);
+        for(int i=0;i<arr.length();i++){
+            obj[i+1] = (int)arr.at(i);
+        }
+        obj.push(L);
+    }
+};
+
+template <>
+struct default_converter<QByteArray const&>
+  : default_converter<QByteArray>
+{};
+
 //template <>
 //struct default_converter<Qt::ToolBarAreas>
 //  : native_converter_base<Qt::ToolBarAreas>
@@ -83,6 +124,8 @@ QT_EMUN_CONVERTER(Qt::Alignment)
 QT_EMUN_CONVERTER(QKeySequence::StandardKey)
 QT_EMUN_CONVERTER(Qt::CheckState)
 QT_EMUN_CONVERTER(Qt::WindowFlags)
+QT_EMUN_CONVERTER(QMessageBox::StandardButtons)
+QT_EMUN_CONVERTER(QFileDialog::Options)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

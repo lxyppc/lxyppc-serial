@@ -1,6 +1,5 @@
 #include "lua_qt_wrapper.hpp"
 #include <luabind/out_value_policy.hpp>
-#include <luabind/iterator_policy.hpp>
 
 int get_int(const QString & title, const QString & label, bool *ok)
 {
@@ -268,43 +267,431 @@ QColor getColor(const QColor &initial, QWidget *parent, const QString &title,
     return QColorDialog::getColor(initial,parent,title,options);
 }
 
-std::vector<std::string> getOpenFileNames()
+extern lua_State* __pL;
+
+
+object getOpenFileNames2(object& selectedFilter, QWidget *parent = 0,
+                        const QString &caption = QString(),
+                        const QString &dir = QString(),
+                        const QString &filter = QString(),
+                        QFileDialog::Options options = 0)
 {
-    std::vector<std::string> xxx;
-    //xxx.clear();
-    QStringList r = QFileDialog::getOpenFileNames();
-    foreach(const QString& s , r){
-        xxx.push_back(s.toStdString());
+    QString fit;
+    object obj = luabind::newtable(__pL);
+    QStringList r = QFileDialog::getOpenFileNames(parent,caption,dir,filter,&fit,options);
+    for(int i=0;i<r.count(); i++){
+        obj[i+1] = r.at(i).toStdString();
     }
-    return xxx;
+    obj["filter"] = fit.toStdString();
+    selectedFilter = obj["filter"];
+    obj["filter"] = nil;
+    return obj;
 }
 
 
-struct GetFileNames
+object getOpenFileNames(object& filter)
 {
-    GetFileNames(){
-        names = QFileDialog::getOpenFileNames();
-        foreach(const QString& s , names){
-            //char* p = new char[strlen(s.toStdString().c_str()) + 1];
-            //strcpy(p, s.toStdString().c_str());
-            names2.push_back(s.toStdString());
-        }
+    return getOpenFileNames2(filter);
+}
+
+object getOpenFileNames(object& filter,const QString &caption)
+{
+    return getOpenFileNames2(filter, 0, caption);
+}
+
+object getOpenFileNames(object& filter,const QString &caption, const QString &dir)
+{
+    return getOpenFileNames2(filter, 0, caption, dir);
+}
+
+object getOpenFileNames(object& filter,const QString &caption, const QString &dir,const QString &fit)
+{
+    return getOpenFileNames2(filter, 0, caption, dir, fit);
+}
+
+object getOpenFileNames(object& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+{
+    return getOpenFileNames2(filter, 0, caption, dir, fit, options);
+}
+
+object getOpenFileNames(object& filter, QWidget* w)
+{
+    return getOpenFileNames2(filter, w);
+}
+
+object getOpenFileNames(object& filter, QWidget* w,const QString &caption)
+{
+    return getOpenFileNames2(filter, w, caption);
+}
+
+object getOpenFileNames(object& filter, QWidget* w,const QString &caption, const QString &dir)
+{
+    return getOpenFileNames2(filter, w, caption, dir);
+}
+
+object getOpenFileNames(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
+{
+    return getOpenFileNames2(filter, w, caption, dir, fit);
+}
+
+object getOpenFileNames(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+{
+    return getOpenFileNames2(filter, w, caption, dir, fit, options);
+}
+
+QString getOpenFileName2(object& selectedFilter,
+                         QWidget *parent = 0,
+                         const QString &caption = QString(),
+                         const QString &dir = QString(),
+                         const QString &filter = QString(),
+                         QFileDialog::Options options = 0)
+{
+    QString fit;
+    QString res;
+    res = QFileDialog::getOpenFileName(parent,caption,dir,filter,&fit,options);
+    lua_pushstring(__pL, fit.toStdString().c_str());
+    detail::stack_pop pop(__pL,1);
+    selectedFilter = object(luabind::from_stack(__pL, -1));
+    return res;
+}
+
+QString getOpenFileName(object& filter)
+{
+    return getOpenFileName2(filter);
+}
+
+QString getOpenFileName(object& filter,const QString &caption)
+{
+    return getOpenFileName2(filter, 0, caption);
+}
+
+QString getOpenFileName(object& filter,const QString &caption, const QString &dir)
+{
+    return getOpenFileName2(filter, 0, caption, dir);
+}
+
+QString getOpenFileName(object& filter,const QString &caption, const QString &dir,const QString &fit)
+{
+    return getOpenFileName2(filter, 0, caption, dir, fit);
+}
+
+QString getOpenFileName(object& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+{
+    return getOpenFileName2(filter, 0, caption, dir, fit, options);
+}
+
+QString getOpenFileName(object& filter, QWidget* w)
+{
+    return getOpenFileName2(filter, w);
+}
+
+QString getOpenFileName(object& filter, QWidget* w,const QString &caption)
+{
+    return getOpenFileName2(filter, w, caption);
+}
+
+QString getOpenFileName(object& filter, QWidget* w,const QString &caption, const QString &dir)
+{
+    return getOpenFileName2(filter, w, caption, dir);
+}
+
+QString getOpenFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
+{
+    return getOpenFileName2(filter, w, caption, dir, fit);
+}
+
+QString getOpenFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+{
+    return getOpenFileName2(filter, w, caption, dir, fit, options);
+}
+
+
+QString getSaveFileName2(object& selectedFilter,
+                         QWidget *parent = 0,
+                         const QString &caption = QString(),
+                         const QString &dir = QString(),
+                         const QString &filter = QString(),
+                         QFileDialog::Options options = 0)
+{
+    QString fit;
+    QString res;
+    res = QFileDialog::getSaveFileName(parent,caption,dir,filter,&fit,options);
+    lua_pushstring(__pL, fit.toStdString().c_str());
+    detail::stack_pop pop(__pL,1);
+    selectedFilter = object(luabind::from_stack(__pL, -1));
+    return res;
+}
+
+QString getSaveFileName(object& filter)
+{
+    return getSaveFileName2(filter);
+}
+
+QString getSaveFileName(object& filter,const QString &caption)
+{
+    return getSaveFileName2(filter, 0, caption);
+}
+
+QString getSaveFileName(object& filter,const QString &caption, const QString &dir)
+{
+    return getSaveFileName2(filter, 0, caption, dir);
+}
+
+QString getSaveFileName(object& filter,const QString &caption, const QString &dir,const QString &fit)
+{
+    return getSaveFileName2(filter, 0, caption, dir, fit);
+}
+
+QString getSaveFileName(object& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+{
+    return getSaveFileName2(filter, 0, caption, dir, fit, options);
+}
+
+QString getSaveFileName(object& filter, QWidget* w)
+{
+    return getSaveFileName2(filter, w);
+}
+
+QString getSaveFileName(object& filter, QWidget* w,const QString &caption)
+{
+    return getSaveFileName2(filter, w, caption);
+}
+
+QString getSaveFileName(object& filter, QWidget* w,const QString &caption, const QString &dir)
+{
+    return getSaveFileName2(filter, w, caption, dir);
+}
+
+QString getSaveFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
+{
+    return getSaveFileName2(filter, w, caption, dir, fit);
+}
+
+QString getSaveFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+{
+    return getSaveFileName2(filter, w, caption, dir, fit, options);
+}
+
+QString getDir()
+{
+    return QFileDialog::getExistingDirectory();
+}
+
+QString getDir(const QString &caption)
+{
+    return QFileDialog::getExistingDirectory(0,caption);
+}
+
+QString getDir(const QString &caption,
+               const QString &dir)
+{
+    return QFileDialog::getExistingDirectory(0,caption,dir);
+}
+
+QString getDir(const QString &caption,
+               const QString &dir,
+               QFileDialog::Options options)
+{
+    return QFileDialog::getExistingDirectory(0,caption,dir,options);
+}
+
+QString getDir(QWidget *parent)
+{
+    return QFileDialog::getExistingDirectory(parent);
+}
+
+QString getDir(QWidget *parent,
+               const QString &caption)
+{
+    return QFileDialog::getExistingDirectory(parent,caption);
+}
+
+QString getDir(QWidget *parent,
+               const QString &caption,
+               const QString &dir)
+{
+    return QFileDialog::getExistingDirectory(parent,caption,dir);
+}
+
+QString getDir(QWidget *parent,
+               const QString &caption,
+               const QString &dir,
+               QFileDialog::Options options)
+{
+    return QFileDialog::getExistingDirectory(parent,caption,dir,options);
+}
+
+
+void about(QWidget* w, const QString& title,const QString& text)
+{
+    QMessageBox::about(w,title,text);
+}
+
+void about(const QString& title,const QString& text)
+{
+    QMessageBox::about(0,title,text);
+}
+
+QMessageBox::StandardButton critical(QWidget* w, const QString& title,const QString& text)
+{
+    return QMessageBox::critical(w,title,text);
+}
+
+QMessageBox::StandardButton critical(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::critical(w,title,text,btn);
+}
+
+QMessageBox::StandardButton critical(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::critical(w,title,text,btn,dbtn);
+}
+
+QMessageBox::StandardButton critical(const QString& title,const QString& text)
+{
+    return QMessageBox::critical(0,title,text);
+}
+
+QMessageBox::StandardButton critical(const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::critical(0,title,text,btn);
+}
+
+QMessageBox::StandardButton critical(const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::critical(0,title,text,btn,dbtn);
+}
+
+QMessageBox::StandardButton information(QWidget* w, const QString& title,const QString& text)
+{
+    return QMessageBox::information(w,title,text);
+}
+
+QMessageBox::StandardButton information(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::information(w,title,text,btn);
+}
+
+QMessageBox::StandardButton information(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::information(w,title,text,btn,dbtn);
+}
+
+QMessageBox::StandardButton information(const QString& title,const QString& text)
+{
+    return QMessageBox::information(0,title,text);
+}
+
+QMessageBox::StandardButton information(const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::information(0,title,text,btn);
+}
+
+QMessageBox::StandardButton information(const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::information(0,title,text,btn,dbtn);
+}
+
+
+QMessageBox::StandardButton question(QWidget* w, const QString& title,const QString& text)
+{
+    return QMessageBox::question(w,title,text);
+}
+
+QMessageBox::StandardButton question(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::question(w,title,text,btn);
+}
+
+QMessageBox::StandardButton question(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::question(w,title,text,btn,dbtn);
+}
+
+QMessageBox::StandardButton question(const QString& title,const QString& text)
+{
+    return QMessageBox::question(0,title,text);
+}
+
+QMessageBox::StandardButton question(const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::question(0,title,text,btn);
+}
+
+QMessageBox::StandardButton question(const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::question(0,title,text,btn,dbtn);
+}
+
+
+QMessageBox::StandardButton warning(QWidget* w, const QString& title,const QString& text)
+{
+    return QMessageBox::warning(w,title,text);
+}
+
+QMessageBox::StandardButton warning(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::warning(w,title,text,btn);
+}
+
+QMessageBox::StandardButton warning(QWidget* w, const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::warning(w,title,text,btn,dbtn);
+}
+
+QMessageBox::StandardButton warning(const QString& title,const QString& text)
+{
+    return QMessageBox::warning(0,title,text);
+}
+
+QMessageBox::StandardButton warning(const QString& title,const QString& text, QMessageBox::StandardButtons btn)
+{
+    return QMessageBox::warning(0,title,text,btn);
+}
+
+QMessageBox::StandardButton warning(const QString& title,const QString& text, QMessageBox::StandardButtons btn, QMessageBox::StandardButton dbtn)
+{
+    return QMessageBox::warning(0,title,text,btn,dbtn);
+}
+
+
+#define BTN_NAME(name)   case QMessageBox::name:  return  QString::fromLocal8Bit( #name);
+QString buttonName(QMessageBox::StandardButton btn)
+{
+    switch(btn){
+        BTN_NAME(Ok)
+        BTN_NAME(Open)
+        BTN_NAME(Save)
+        BTN_NAME(Cancel)
+        BTN_NAME(Close)
+        BTN_NAME(Discard)
+        BTN_NAME(Apply)
+        BTN_NAME(Reset)
+        BTN_NAME(RestoreDefaults)
+        BTN_NAME(Help)
+        BTN_NAME(SaveAll)
+        BTN_NAME(Yes)
+        BTN_NAME(YesToAll)
+        BTN_NAME(No)
+        BTN_NAME(NoToAll)
+        BTN_NAME(Abort)
+        BTN_NAME(Retry)
+        BTN_NAME(Ignore)
+        BTN_NAME(NoButton)
+    default:
+        break;
     }
-    QStringList names;
-    std::vector<std::string> names2;
-};
+    return QString::fromLocal8Bit("unknown");
+}
 
 LQCommonDlg  lqcommondlg()
 {
     return
-    namespace_("QCommonDlg")
-//    class_<QCommonDlg>("QCommonDlg")
+//    namespace_("QCommonDlg")
+    class_<QCommonDlg>("QCommonDlg")
 //    .def(constructor<>())
-//    .scope
+    .scope
     [
-        class_<GetFileNames>("getOpenFileNames")
-            .def(constructor<>())
-            .def_readonly("names", &GetFileNames::names2, return_stl_iterator),
         def("getInt",(int(*)(QWidget*,const QString &, const QString &,bool*))get_int, pure_out_value(_4)),
         def("getInt",(int(*)(QWidget*,const QString &, const QString &,bool*,int))get_int,pure_out_value(_4)),
         def("getInt",(int(*)(QWidget*,const QString &, const QString &,bool*,int,int))get_int,pure_out_value(_4)),
@@ -354,9 +741,109 @@ LQCommonDlg  lqcommondlg()
         def("getColor", (QColor (*)(const QColor &))getColor ),
         def("getColor", (QColor (*)(const QColor &,QWidget *))getColor ),
         def("getColor", (QColor (*)(const QColor &,QWidget *,const QString &))getColor ),
-        def("getColor", (QColor (*)(const QColor &,QWidget *,const QString &, QColorDialog::ColorDialogOptions))getColor )
+        def("getColor", (QColor (*)(const QColor &,QWidget *,const QString &, QColorDialog::ColorDialogOptions))getColor ),
 
-        //def("getOpenFileNames",getOpenFileNames, return_stl_iterator)
+        def("getOpenFileNames",(object (*)(object&))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,const QString &, const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,const QString &, const QString &,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,QWidget*))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &, const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &, const QString &,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileNames, pure_out_value(_1)),
+
+        def("getOpenFileName",(QString (*)(object&))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,const QString &, const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,const QString &, const QString &,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,QWidget*))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &, const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileName, pure_out_value(_1)),
+
+
+        def("getSaveFileName",(QString (*)(object&))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,const QString &, const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,const QString &, const QString &,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,const QString &, const QString &,const QString &,QFileDialog::Options))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,QWidget*))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &, const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getSaveFileName, pure_out_value(_1)),
+
+
+        def("getDir", (QString(*)()) getDir ),
+        def("getDir", (QString(*)(const QString &)) getDir ),
+        def("getDir", (QString(*)(const QString &,const QString &)) getDir ),
+        def("getDir", (QString(*)(const QString &,const QString &,QFileDialog::Options)) getDir ),
+        def("getDir", (QString(*)(QWidget *)) getDir ),
+        def("getDir", (QString(*)(QWidget *, const QString &)) getDir ),
+        def("getDir", (QString(*)(QWidget *, const QString &,const QString &)) getDir ),
+        def("getDir", (QString(*)(QWidget *, const QString &,const QString &,QFileDialog::Options)) getDir ),
+
+        def("critical", (QMessageBox::StandardButton (*)(const QString& ,const QString& ))critical),
+        def("critical", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons ))critical),
+        def("critical", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))critical),
+        def("critical", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& ))critical),
+        def("critical", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons ))critical),
+        def("critical", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))critical),
+
+        def("information", (QMessageBox::StandardButton (*)(const QString& ,const QString& ))information),
+        def("information", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons ))information),
+        def("information", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))information),
+        def("information", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& ))information),
+        def("information", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons ))information),
+        def("information", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))information),
+
+
+        def("question", (QMessageBox::StandardButton (*)(const QString& ,const QString& ))question),
+        def("question", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons ))question),
+        def("question", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))question),
+        def("question", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& ))question),
+        def("question", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons ))question),
+        def("question", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))question),
+
+
+        def("warning", (QMessageBox::StandardButton (*)(const QString& ,const QString& ))warning),
+        def("warning", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons ))warning),
+        def("warning", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))warning),
+        def("warning", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& ))warning),
+        def("warning", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons ))warning),
+        def("warning", (QMessageBox::StandardButton (*)(QWidget*, const QString& ,const QString& , QMessageBox::StandardButtons , QMessageBox::StandardButton ))warning),
+
+        def("about", (void (*)(QWidget*, const QString&,const QString&))about),
+        def("about", (void (*)(const QString&,const QString&))about),
+
+        def("buttonName", buttonName)
+
+    ]
+    .enum_("Buttons")
+    [
+            value("Ok",QMessageBox::Ok),
+            value("Open",QMessageBox::Open),
+            value("Save",QMessageBox::Save),
+            value("Cancel",QMessageBox::Cancel),
+            value("Close",QMessageBox::Close),
+            value("Discard",QMessageBox::Discard),
+            value("Apply",QMessageBox::Apply),
+            value("Reset",QMessageBox::Reset),
+            value("RestoreDefaults",QMessageBox::RestoreDefaults),
+            value("Help",QMessageBox::Help),
+            value("SaveAll",QMessageBox::SaveAll),
+            value("Yes",QMessageBox::Yes),
+            value("YesToAll",QMessageBox::YesToAll),
+            value("No",QMessageBox::No),
+            value("NoToAll",QMessageBox::NoToAll),
+            value("Abort",QMessageBox::Abort),
+            value("Retry",QMessageBox::Retry),
+            value("Ignore",QMessageBox::Ignore),
+            value("NoButton",QMessageBox::NoButton)
     ]
 ;
 }

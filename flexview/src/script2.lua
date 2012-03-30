@@ -1,4 +1,3 @@
-
 class "XMainWindow" (QMainWindow)
 
 function XMainWindow:__init()

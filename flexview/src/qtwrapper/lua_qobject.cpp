@@ -8,7 +8,9 @@ LQObject lqobject()
     return
     class_<QObject>("QObject")
             .def(constructor<>())
-            .def(constructor<QObject*>());
+            .def(constructor<QObject*>())
+            .property("objectName", &QObject::objectName, &QObject::setObjectName)
+   ;
 }
 
 int lqwidget_actionCount(QWidget* widget)
@@ -59,7 +61,7 @@ void lqwidget_set_y(QWidget* w, int y)
 void lqwidget_set_width(QWidget* w, int width)
 {
     QRect rect = w->geometry();
-    qDebug()<<"set W:"<<width;
+    //qDebug()<<"set W:"<<width;
     rect.setWidth(width);
     w->setGeometry(rect);
 }
@@ -67,7 +69,7 @@ void lqwidget_set_width(QWidget* w, int width)
 void lqwidget_set_height(QWidget* w, int height)
 {
     QRect rect = w->geometry();
-    qDebug()<<"set H:"<<height;
+    //qDebug()<<"set H:"<<height;
     rect.setHeight(height);
     w->setGeometry(rect);
 }
@@ -103,6 +105,8 @@ LQWidget lqwidget()
             .def("__call", &lqwidget_init)
             .def("actionCount", lqwidget_actionCount)
             .def("action",lqwidget_action)
+            .def("saveGeometry", &QWidget::saveGeometry)
+            .def("restoreGeometry", &QWidget::restoreGeometry)
 
             .property("windowTitle", &QWidget::windowTitle, &QWidget::setWindowTitle)
             .property("title", &QWidget::windowTitle, &QWidget::setWindowTitle)
@@ -206,6 +210,7 @@ bool obj_name_contain(const object& o, const char* name){
 
 IS_CLASS(QMenuBar)
 IS_CLASS(QToolBar)
+IS_CLASS(QStatusBar)
 IS_CLASS(QDockWidget)
 IS_CLASS(QMenu)
 //IS_CLASS(QString)
@@ -215,6 +220,7 @@ IS_CLASS(QPoint)
 IS_CLASS(QRect)
 IS_CLASS(QSize)
 IS_CLASS(QMargins)
+IS_CLASS(QColor)
 IS_CLASS(QKeySequence)
 
 template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}

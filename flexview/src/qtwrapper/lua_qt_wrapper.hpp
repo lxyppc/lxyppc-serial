@@ -6,6 +6,8 @@
 #include "boost/function.hpp"
 #include "luabind/detail/constructor.hpp"
 #include "converter.hpp"
+#include "hexeditor/qhexedit.h"
+#include "../qluaedit.h"
 
 using namespace luabind;
 struct QLayoutWarp : public QLayout, public luabind::wrap_base
@@ -61,6 +63,7 @@ typedef class_<QToolBar, QWidget>           LQToolBar;
 
 typedef class_<QMainWindow,QWidget>         LQMainWindow;
 typedef class_<QDockWidget,QWidget>         LQDockWidget;
+typedef class_<QStatusBar,QWidget>          LQStatusBar;
 
 typedef class_<QPoint>                      LQPoint;
 typedef class_<QRect>                       LQRect;
@@ -80,7 +83,9 @@ typedef class_<QToolButton, QAbstractButton>        LQToolButton;
 typedef class_<QButtonGroup, QObject>               LQButtonGroup;
 typedef class_<QKeySequence>                        LQKeySequence;
 struct QCommonDlg{};
-typedef namespace_                                    LQCommonDlg;
+typedef class_<QCommonDlg>                          LQCommonDlg;
+typedef class_<QHexEdit,QWidget>                    LQHexEdit;
+typedef class_<QLuaEdit,QTextEdit>                  LQLuaEdit;
 
 LQObject lqobject();
 LQWidget lqwidget();
@@ -100,6 +105,7 @@ LQToolBar lqtoolbar();
 
 LQMainWindow lqmainwindow();
 LQDockWidget lqdockwidget();
+LQStatusBar lqstatusbar();
 
 LQIcon  lqicon();
 
@@ -120,6 +126,9 @@ LQRadioButton lqradionbutton();
 LQToolButton lqtoolbutton();
 LQButtonGroup lqbuttongroup();
 LQKeySequence lqkeysequence();
+
+LQHexEdit  lqhexedit();
+LQLuaEdit lqluaedit();
 
 LQCommonDlg lqcommondlg();
 
@@ -277,6 +286,9 @@ struct ValueSetter
     void assign_pfn(boost::function<void(T*,const QMargins&)> pfn){
         fn_margins = pfn;
     }
+    void assign_pfn(boost::function<void(T*,const QColor&)> pfn){
+        fn_color = pfn;
+    }
 
     void operator()(T* This, const object& obj){
         switch(arg_n){
@@ -306,6 +318,8 @@ struct ValueSetter
                     fn_margins(This, object_cast<QMargins>(obj));
                 }else if(is_class<QLayout*>(obj)){
                     fn_layout(This, object_cast<QLayout*>(obj));
+                }else if(is_class<QColor>(obj)){
+                    fn_color(This, object_cast<QColor>(obj));
                 }
             }
             break;
@@ -323,6 +337,7 @@ struct ValueSetter
     boost::function<void(T*, const QRect&)>   fn_rect;
     boost::function<void(T*, QLayout*)>  fn_layout;
     boost::function<void(T*, const QMargins&)>  fn_margins;
+    boost::function<void(T*, const QColor&)>  fn_color;
 };
 
 struct my_les{

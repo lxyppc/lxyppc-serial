@@ -5,6 +5,7 @@
 #include "lite_ptr.h"
 #include "lua_qt_wrapper.hpp"
 #include <luabind/out_value_policy.hpp>
+#include "../mainwindow.h"
 using namespace luabind;
 typedef lite_ptr<QLuaSlot> auto_slot;
 Q_DECLARE_METATYPE(auto_slot)
@@ -201,6 +202,26 @@ void emit_signal(QObject* sender, object obj)
     }
 }
 
+static const char* toString(const QByteArray& arr)
+{
+    return arr.data();
+}
+
+static QByteArray toBase64(const QByteArray& arr)
+{
+    return arr.toBase64();
+}
+
+static QByteArray fromBase64(const QByteArray& arr)
+{
+    return QByteArray::fromBase64(arr);
+}
+
+static QByteArray fromString(const QString& str)
+{
+    return str.toAscii();
+}
+class_<QComboBox, QWidget> lqcombobox();
 void register_classes(lua_State* L, char const* name = 0)
 {
     __pL = L;
@@ -211,6 +232,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqwidget(),
         lqmainwindow(),
         lqdockwidget(),
+        lqstatusbar(),
         lqtesttype(),
 
         class_<QDialog, QWidget>("QDialog")
@@ -263,26 +285,47 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqcommondlg(),
 
+        lqhexedit(),
+        lqluaedit(),
+
+        lqcombobox(),
+
+        class_<MainWindow,QMainWindow>("MainWindow")
+            .def(constructor<>())
+            .property("logEdit", &MainWindow::getLogEdit),
+
         def("connect", (bool(*)(QObject*, const char*, QObject* , const char* ))&sigslot_connect),
         def("connect", (bool(*)(QObject*, const char*, object))&sigfunc_connect),
         def("emit_signal", (void (*)(QObject*,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object,object))&emit_signal),
-        def("emit_signal", (void (*)(QObject*,object,object,object,object))&emit_signal)
+        def("emit_signal", (void (*)(QObject*,object,object,object,object))&emit_signal),
+
+        def("toString", toString),
+        def("toBase64", toBase64),
+        def("fromBase64", fromBase64),
+        def("fromString", fromString)
     ];
 }
 
+static MainWindow* mwindow = 0;
 static int pcall_handler(lua_State* L)
 {
     (void)L;
+    const char* str = lua_tostring(L, -1);
     qDebug()<<"-------------------------------------";
-    qDebug()<<lua_tostring(L, -1);
+    qDebug()<<str;
     qDebug()<<"-------------------------------------";
+
+    if(mwindow){
+        mwindow->addLog( QString::fromLocal8Bit(str));
+    }
     return 1;
 }
 
-void run_script_init(QMainWindow* mainwindow)
+void run_script_init(MainWindow* mainwindow)
 {
+    mwindow = mainwindow;
     set_pcall_callback(pcall_handler);
     QFile file("../src/script.lua");
     if(!file.open(QFile::ReadOnly|QFile::Text)){

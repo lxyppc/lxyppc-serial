@@ -51,9 +51,9 @@ QMainWindow* lqmainwindow_init(QMainWindow* widget, const object& init_table)
                 }else if(q_cast(*i, (void (QMainWindow::*)(QToolBar *))&QMainWindow::addToolBar, widget)){
                 }else if(q_cast(*i, (QAction*(QMenuBar::*)(QMenu*))&QMenuBar::addMenu, widget->menuBar())){
                 }else if(q_cast(*i, (void(QMenuBar::*)(QAction*))&QMenuBar::addAction, widget->menuBar())){
-                }/*else if(q_cast(*i, (void (QMainWindow::*)(Qt::DockWidgetArea, QDockWidget *))&QMainWindow::addDockWidget , widget, Qt::TopDockWidgetArea, _2)){
+                }else if(q_cast(*i, (void (QMainWindow::*)(QStatusBar *))&QMainWindow::setStatusBar,widget)){
                     widget->addDockWidget(Qt::TopDockWidgetArea, new QDockWidget("123"));
-                }*/else{
+                }else{
                     q_cast(*i, &QMainWindow::setCentralWidget, widget);
                 }
             }
@@ -66,6 +66,16 @@ QMainWindow* lqmainwindow_init(QMainWindow* widget, const object& init_table)
 void table_init_qmainwindow(const luabind::argument & arg, const object& obj)
 {
     lqmainwindow_init(construct<QMainWindow>(arg), obj);
+}
+
+QByteArray get_state(QMainWindow* w)
+{
+    return w->saveState();
+}
+
+void set_state(QMainWindow* w, const QByteArray& arr)
+{
+    w->restoreState(arr);
 }
 
 LQMainWindow lqmainwindow()
@@ -81,6 +91,8 @@ LQMainWindow lqmainwindow()
         .def("__init", &table_init_qmainwindow)
         .property("menuBar", &QMainWindow::menuBar, &QMainWindow::setMenuBar)
         .property("centralWidget", &QMainWindow::centralWidget, &QMainWindow::setCentralWidget)
+        .property("state", get_state, set_state)
+        .property("statusBar", &QMainWindow::statusBar, &QMainWindow::setStatusBar)
         ;
 }
 
@@ -133,6 +145,16 @@ LQDockWidget lqdockwidget()
         ;
 }
 
+LQStatusBar lqstatusbar()
+{
+    return
+    class_<QStatusBar, QWidget>("QStatusBar")
+         .def(constructor<>())
+         .def(constructor<QWidget*>())
+         .def("addWidget", &QStatusBar::addWidget)
+         ;
+}
+
 class QTestType
 {
 public:
@@ -158,6 +180,7 @@ public:
 
 QTestType* init_test_type(QTestType* x, const object& init_table)
 {
+    (void)init_table;
     return x;
 }
 

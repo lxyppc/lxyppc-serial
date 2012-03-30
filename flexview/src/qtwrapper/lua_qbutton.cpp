@@ -7,50 +7,6 @@ static setter_map<QPushButton> lqpb_set_map;
 static setter_map<QRadioButton> lqrb_set_map;
 static setter_map<QToolButton> lqtb_set_map;
 static setter_map<QButtonGroup> lqbg_set_map;
-bool sigfunc_connect(QObject* sender, const char* signal, object func);
-QLuaSlot* get_slot(const QObject* obj, const char* member);
-
-/*
-void lqab_set_cliecked(QAbstractButton* btn, object obj)
-{
-    QLuaSlot* slot = get_slot(btn,"clicked()");
-    qDebug()<<type(obj);
-    if(slot){
-        slot->set_object(obj);
-    }else{
-        sigfunc_connect(btn,"clicked()",obj);
-    }
-}
-
-object lqab_get_clicked(const QAbstractButton* btn)
-{
-    QLuaSlot* slot = get_slot(btn,"clicked()");
-    if(slot){
-        return slot->get_object();
-    }
-    return object();
-}*/
-
-#define SIGNAL_PROPERYT(prefix,name, type, sig)\
-void prefix##_set_##name(type* btn, object obj)\
-{\
-    QLuaSlot* slot = get_slot(btn,#name sig);\
-    /*qDebug()<<type(obj);*/\
-    if(slot){\
-        slot->set_object(obj);\
-    }else{\
-        sigfunc_connect(btn,#name sig,obj);\
-    }\
-}\
-\
-object prefix##_get_##name(const type* btn)\
-{\
-    QLuaSlot* slot = get_slot(btn,#name sig);\
-    if(slot){\
-        return slot->get_object();\
-    }\
-    return object();\
-}
 
 SIGNAL_PROPERYT(lqab, clicked, QAbstractButton, "()")
 SIGNAL_PROPERYT(lqab, pressed, QAbstractButton, "()")
