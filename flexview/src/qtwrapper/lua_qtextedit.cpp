@@ -1,5 +1,4 @@
-#include "lua_qt_wrapper.hpp"
-#include "qluaslot.h"
+#include "lua_qtextedit.h"
 
 static setter_map<QLabel> lqlabel_set_map;
 static setter_map<QTextEdit> lqtextedit_set_map;

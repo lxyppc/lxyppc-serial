@@ -3,7 +3,7 @@
 #include <luabind/luabind.hpp>
 #include "../luadialog.h"
 #include "lite_ptr.h"
-#include "lua_qt_wrapper.hpp"
+#include "lua_qtypes.h"
 #include <luabind/out_value_policy.hpp>
 #include "../mainwindow.h"
 using namespace luabind;
@@ -235,12 +235,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqstatusbar(),
         lqtesttype(),
 
-        class_<QDialog, QWidget>("QDialog")
-            .def(constructor<>()),
-
-
-        class_<QFrame,QWidget>("QFrame")
-            .def(constructor<>()),
+        lqdialog(),
+        lqframe(),
 
         class_<QAbstractScrollArea,QFrame>("QAbstractScrollArea")
             .def(constructor<>()),
@@ -263,6 +259,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqrect(),
         lqsize(),
         lqcolor(),
+        lqbrush(),
+        lqfont(),
         lqmargins(),
 
         lqlayout(),
@@ -289,6 +287,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqluaedit(),
 
         lqcombobox(),
+        lqlistwidgetitem(),
+        lqlistwidget(),
+        lqtreewidget(),
 
         class_<MainWindow,QMainWindow>("MainWindow")
             .def(constructor<>())
@@ -330,6 +331,7 @@ void run_script_init(MainWindow* mainwindow)
     QFile file("../src/script.lua");
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";
+        mainwindow->addLog(QString::fromLocal8Bit("Script file missing"));
         return;
     }
     try{
@@ -343,6 +345,8 @@ void run_script_init(MainWindow* mainwindow)
             std::string err(lua_tostring(__pL, -1));
             lua_pop(__pL, 2);
             qDebug()<<"Script load fail:"<<err.c_str();
+            mainwindow->addLog(QString::fromLocal8Bit("Script load fail:"));
+            mainwindow->addLog(QString::fromLocal8Bit(err.c_str()));
         }else{
             if (lua_pcall(__pL, 0, 0, -2))
             {

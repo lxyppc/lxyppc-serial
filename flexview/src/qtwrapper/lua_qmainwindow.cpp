@@ -1,6 +1,4 @@
-#include "lua_qt_wrapper.hpp"
-#include "luabind/class_info.hpp"
-#include "luabind/detail/object_rep.hpp"
+#include "lua_qmainwindow.h"
 using namespace luabind;
 
 QString toString(const object& obj)

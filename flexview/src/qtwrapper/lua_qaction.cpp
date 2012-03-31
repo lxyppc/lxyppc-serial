@@ -1,29 +1,27 @@
-#include "lua_qt_wrapper.hpp"
-#include <luabind/operator.hpp>
-#include "qluaslot.h"
-using namespace luabind;
+#include "lua_qaction.h"
 bool sigfunc_connect(QObject* sender, const char* signal, object func);
 QLuaSlot* get_slot(const QObject* obj, const char* member);
 
-void lqaction_set_triggered(QAction* act, object obj)
-{
-    QLuaSlot* slot = get_slot(act,"triggered()");
-    qDebug()<<type(obj);
-    if(slot){
-        slot->set_object(obj);
-    }else{
-        sigfunc_connect(act,"triggered()",obj);
-    }
-}
-
-object lqaction_get_triggered(const QAction* act)
-{
-    QLuaSlot* slot = get_slot(act,"triggered()");
-    if(slot){
-        return slot->get_object();
-    }
-    return object();
-}
+SIGNAL_PROPERYT(lqaction, triggered, QAction, "()")
+//void lqaction_set_triggered(QAction* act, object obj)
+//{
+//    QLuaSlot* slot = get_slot(act,"triggered()");
+//    qDebug()<<type(obj);
+//    if(slot){
+//        slot->set_object(obj);
+//    }else{
+//        sigfunc_connect(act,"triggered()",obj);
+//    }
+//}
+//
+//object lqaction_get_triggered(const QAction* act)
+//{
+//    QLuaSlot* slot = get_slot(act,"triggered()");
+//    if(slot){
+//        return slot->get_object();
+//    }
+//    return object();
+//}
 
 static setter_map<QAction> lqaction_set_map;
 
@@ -35,9 +33,9 @@ QAction* lqaction_init(QAction* widget, const object& table)
                 QString key = object_cast<QString>(i.key());
                 if(lqaction_set_map.find(key) != lqaction_set_map.end()){
                     lqaction_set_map[key](widget,*i);
-                }else if(key.compare("triggered", Qt::CaseInsensitive) == 0){
+                }/*else if(key.compare("triggered", Qt::CaseInsensitive) == 0){
                     lqaction_set_triggered(widget, *i);
-                }
+                }*/
             }
 
             if(type(*i) == LUA_TUSERDATA){
@@ -89,8 +87,8 @@ LQAction lqaction()
         .property("enabled",&QAction::isEnabled, &QAction::setEnabled)
         .property("visible",&QAction::isVisible, &QAction::setVisible)
         .property("statusTip",&QAction::statusTip, &QAction::setStatusTip)
-        .class_<QAction,QObject>::property("icon",&QAction::icon, &QAction::setIcon)
         .property("triggered",&lqaction_get_triggered, &lqaction_set_triggered)
+        .class_<QAction,QObject>::property("icon",&QAction::icon, &QAction::setIcon)
         .property("shortcut",&QAction::shortcut, &QAction::setShortcut)
         .property("menu", &QAction::menu, &QAction::setMenu)
         ;
@@ -253,32 +251,5 @@ LQIcon lqicon()
         .def(constructor<const QIcon&>())
         .def(constructor<const QString&>())
         ;
-}
-
-struct MyFunctor
-{
-    MyFunctor(){}
-    MyFunctor(const MyFunctor& ){}
-    MyFunctor(const object&){}
-    MyFunctor& operator+(const MyFunctor&){ return *this;}
-    MyFunctor& operator+(const object&){return *this;}
-    MyFunctor& operator-(const MyFunctor&){return *this;}
-    MyFunctor& operator-(const object&){return *this;}
-    void operator()(){
-    }
-};
-
-typedef class_<MyFunctor> LQFunctor;
-
-LQFunctor lqfunctor()
-{
-    return
-    class_<MyFunctor>("Slots")
-        .def(constructor<>())
-        .def(constructor<const object&>())
-        .def(constructor<const MyFunctor&>())
-        .def(self + object())
-        .def(self - object())
-    ;
 }
 

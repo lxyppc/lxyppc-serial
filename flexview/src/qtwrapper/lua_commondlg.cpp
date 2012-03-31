@@ -1,5 +1,4 @@
-#include "lua_qt_wrapper.hpp"
-#include <luabind/out_value_policy.hpp>
+#include "lua_commondlg.h"
 
 int get_int(const QString & title, const QString & label, bool *ok)
 {

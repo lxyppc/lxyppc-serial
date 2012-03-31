@@ -151,5 +151,5 @@ void QLuaSlot::general_slot(bool param)
 
 void QLuaSlot::general_slot(const QString& param)
 {
-    ::gen_slot(m_obj,m_method,param);
+    ::gen_slot(m_obj,m_method,param.toStdString().c_str());
 }

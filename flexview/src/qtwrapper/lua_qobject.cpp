@@ -1,7 +1,4 @@
-#include "lua_qt_wrapper.hpp"
-#include "boost/function.hpp"
-#include "luabind/class_info.hpp"
-using namespace luabind;
+#include "lua_qobject.h"
 
 LQObject lqobject()
 {
@@ -221,6 +218,8 @@ IS_CLASS(QRect)
 IS_CLASS(QSize)
 IS_CLASS(QMargins)
 IS_CLASS(QColor)
+IS_CLASS(QBrush)
+IS_CLASS(QFont)
 IS_CLASS(QKeySequence)
 
 template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}

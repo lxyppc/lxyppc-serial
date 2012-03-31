@@ -47,7 +47,7 @@ bool sigfunc_connect(QObject* sender, const char* signal, object func);
 QLuaSlot* get_slot(const QObject* obj, const char* member);
 
 #define SIGNAL_PROPERYT(prefix,name, type, sig)\
-void prefix##_set_##name(type* btn, object obj)\
+void prefix##_set_##name(type* btn, const object& obj)\
 {\
     QLuaSlot* slot = get_slot(btn,#name sig);\
     /*qDebug()<<type(obj);*/\

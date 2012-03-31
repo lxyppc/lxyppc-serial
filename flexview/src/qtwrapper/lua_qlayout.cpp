@@ -1,4 +1,4 @@
-#include "lua_qt_wrapper.hpp"
+#include "lua_qlayout.h"
 using namespace luabind;
 
 /*

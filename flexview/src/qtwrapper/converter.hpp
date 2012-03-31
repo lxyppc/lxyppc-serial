@@ -1,6 +1,7 @@
 #ifndef CONVERTER_H
 #define CONVERTER_H
 
+Q_DECLARE_METATYPE(luabind::object)
 namespace luabind {
 
 template <>
@@ -70,6 +71,41 @@ struct default_converter<QByteArray>
 template <>
 struct default_converter<QByteArray const&>
   : default_converter<QByteArray>
+{};
+
+
+
+template <>
+struct default_converter<QVariant>
+  : native_converter_base<QVariant>
+{
+    static int compute_score(lua_State* L, int index)
+    {
+        lua_type(L, index);
+        return 0;
+    }
+
+    QVariant from(lua_State* L, int index)
+    {
+        QVariant v;
+        object obj(luabind::from_stack(L,index));
+        v.setValue(obj);
+        return v;
+    }
+
+    void to(lua_State* L, QVariant const& v)
+    {
+        if(v.canConvert<object>()){
+            object o = v.value<object>();
+            return o.push(L);;
+        }
+        lua_pushnil(L);
+    }
+};
+
+template <>
+struct default_converter<QVariant const&>
+  : default_converter<QVariant>
 {};
 
 //template <>

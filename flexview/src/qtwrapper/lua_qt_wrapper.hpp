@@ -4,143 +4,42 @@
 #include "lua.hpp"
 #include <luabind/luabind.hpp>
 #include "boost/function.hpp"
+#include "boost/type_traits/is_enum.hpp"
 #include "luabind/detail/constructor.hpp"
 #include "converter.hpp"
-#include "hexeditor/qhexedit.h"
-#include "../qluaedit.h"
-
 using namespace luabind;
-struct QLayoutWarp : public QLayout, public luabind::wrap_base
-{
-    QLayoutWarp(QWidget* w):QLayout(w){}
-    QLayoutWarp(){}
-    virtual void addItem ( QLayoutItem * item ) {
-            call_member<void>(this, "addItem", item);
-    }
-    virtual int	count () const {return call_member<int>(this, "count");}
-    virtual int	indexOf ( QWidget * widget ) const{return call_member<int>(this, "indexOf", widget);}
-    virtual QLayoutItem * itemAt ( int index ) const { return call_member<QLayoutItem*>(this, "itemAt", index);}
-    virtual QLayoutItem *	takeAt ( int index ) {return call_member<QLayoutItem*>(this, "takeAt", index);}
-    virtual QSize sizeHint() const {return call_member<QSize>(this, "sizeHint");}
-    virtual QSize minimumSize() const {return call_member<QSize>(this, "minimumSize");}
-    virtual QSize maximumSize() const {return call_member<QSize>(this, "maximumSize");}
-    virtual Qt::Orientations expandingDirections() {return call_member<Qt::Orientations>(this, "expandingDirections");}
-    //virtual void setGeometry(const QRect& rect) { call_member<void>(this, "setGeometry", rect); }
-    //virtual QRect geometry() const { return call_member<QRect>(this, "geometry"); }
-    virtual bool isEmpty() const {return call_member<bool>(this, "isEmpty");}
-    virtual bool hasHeightForWidth() const{ return call_member<bool>(this, "hasHeightForWidth");}
-    virtual int heightForWidth(int h) const{ return call_member<int>(this, "heightForWidth", h);}
-    virtual int minimumHeightForWidth(int h) const{ return call_member<int>(this, "minimumHeightForWidth", h);}
-    virtual void invalidate(){ call_member<void>(this, "invalidate"); }
-
-    virtual QWidget *widget(){ return call_member<QWidget*>(this, "widget"); }
-    virtual QLayout *layout(){ return call_member<QLayout*>(this, "layout");}
-    virtual QSpacerItem *spacerItem(){ return call_member<QSpacerItem*>(this, "spacerItem");}
-};
-
-struct QAbstractButtonWrap : public QAbstractButton, public luabind::wrap_base
-{
-    QAbstractButtonWrap(QWidget* w):QAbstractButton(w){}
-    QAbstractButtonWrap(){}
-    virtual void paintEvent(QPaintEvent *e) {  call_member<void>(this, "paintEvent", e); }
-};
-
-typedef class_<QObject>                     LQObject;
-typedef class_<QWidget, QObject>            LQWidget;
-typedef class_<QLayout, QLayoutWarp>        LQLayout;
-typedef class_<QStackedLayout, QLayout>     LQStackedLayout;
-typedef class_<QGridLayout, QLayout>        LQGridLayout;
-typedef class_<QFormLayout, QLayout>        LQFormLayout;
-typedef class_<QBoxLayout, QLayout>         LQBoxLayout;
-typedef class_<QVBoxLayout, QBoxLayout>     LQVBoxLayout;
-typedef class_<QHBoxLayout, QBoxLayout>     LQHBoxLayout;
-
-typedef class_<QIcon>                       LQIcon;
-typedef class_<QAction,QObject>             LQAction;
-typedef class_<QMenuBar,QWidget>            LQMenuBar;
-typedef class_<QMenu,QWidget>               LQMenu;
-typedef class_<QToolBar, QWidget>           LQToolBar;
-
-typedef class_<QMainWindow,QWidget>         LQMainWindow;
-typedef class_<QDockWidget,QWidget>         LQDockWidget;
-typedef class_<QStatusBar,QWidget>          LQStatusBar;
-
-typedef class_<QPoint>                      LQPoint;
-typedef class_<QRect>                       LQRect;
-typedef class_<QSize>                       LQSize;
-typedef class_<QColor>                      LQColor;
-typedef class_<QMargins>                    LQMargins;
-
-typedef class_<QLabel, QFrame>                      LQLabel;
-typedef class_<QTextEdit, QAbstractScrollArea>      LQTextEdit;
-typedef class_<QLineEdit, QWidget>                  LQLineEdit;
-
-typedef class_<QAbstractButton, QAbstractButtonWrap, QWidget> LQAbstractButton;
-typedef class_<QCheckBox, QAbstractButton>          LQCheckBox;
-typedef class_<QPushButton, QAbstractButton>        LQPushButton;
-typedef class_<QRadioButton, QAbstractButton>       LQRadioButton;
-typedef class_<QToolButton, QAbstractButton>        LQToolButton;
-typedef class_<QButtonGroup, QObject>               LQButtonGroup;
-typedef class_<QKeySequence>                        LQKeySequence;
-struct QCommonDlg{};
-typedef class_<QCommonDlg>                          LQCommonDlg;
-typedef class_<QHexEdit,QWidget>                    LQHexEdit;
-typedef class_<QLuaEdit,QTextEdit>                  LQLuaEdit;
-
-LQObject lqobject();
-LQWidget lqwidget();
-
-LQLayout lqlayout();
-LQStackedLayout lqstatckedlayout();
-LQGridLayout lqgridlayout();
-LQFormLayout lqformlayout();
-LQBoxLayout  lqboxlayout();
-LQVBoxLayout lqvboxlayout();
-LQHBoxLayout lqhboxlayout();
-
-LQAction lqaction();
-LQMenuBar lqmenubar();
-LQMenu  lqmenu();
-LQToolBar lqtoolbar();
-
-LQMainWindow lqmainwindow();
-LQDockWidget lqdockwidget();
-LQStatusBar lqstatusbar();
-
-LQIcon  lqicon();
-
-LQPoint lqpoint();
-LQRect  lqrect();
-LQSize  lqsize();
-LQColor lqcolor();
-LQMargins lqmargins();
-
-LQLabel lqlabel();
-LQTextEdit lqtextedit();
-LQLineEdit lqlineedit();
-
-LQAbstractButton lqabstractbutton();
-LQCheckBox lqcheckbox();
-LQPushButton lqpushbutton();
-LQRadioButton lqradionbutton();
-LQToolButton lqtoolbutton();
-LQButtonGroup lqbuttongroup();
-LQKeySequence lqkeysequence();
-
-LQHexEdit  lqhexedit();
-LQLuaEdit lqluaedit();
-
-LQCommonDlg lqcommondlg();
-
 QWidget* lqwidget_init(QWidget* widget, const object& init_table);
-
-class QTestType;
-typedef class_<QTestType>         LQTestType;
-LQTestType lqtesttype();
 
 
 bool obj_name_is(const object& obj, const char* name);
-template<typename T>bool is_class(const object& obj);//{ return false;}
+template<typename T>bool is_class(const object& obj);
+//  leave the function body empty,this will cause a compile error when type no defined in lua_qobject.cpp
+//{ return false;}
+
+template<class T>
+QList<T> list_cast(const object& obj)
+{
+    QList<T> list;
+    if(type(obj) == LUA_TTABLE){
+        for(iterator i(obj),e; i!=e; ++i){
+            if(is_class<T>(*i)){
+                list.append(object_cast<T>(*i));
+            }
+        }
+    }
+    return list;
+}
+
+template<class T>
+object list_table(lua_State* L, const QList<T>& list)
+{
+    object obj(luabind::newtable(L));
+    for(int i=0;i<list.count();i++){
+        obj[i+1] = list.at(i);
+    }
+    return obj;
+}
+
 /*
    cast a object to the member function param 1 type, if fail, return false
   */
@@ -216,8 +115,10 @@ T* construct(const argument& arg, T1 t1, T2 t2){
 
 template<typename Type> struct LuaType{enum{v = 0};};
 template<> struct LuaType<int>{enum{v = LUA_TNUMBER};};
+template<> struct LuaType<double>{enum{v = 21};};
 template<> struct LuaType<const QString&>{enum{v = LUA_TSTRING};};
 template<> struct LuaType<bool>{enum{v = LUA_TBOOLEAN};};
+template<> struct LuaType<const object&>{enum{v = 777};};
 
 template<typename T>
 struct ValueSetter
@@ -257,9 +158,9 @@ struct ValueSetter
     template<typename R, typename T1>
     ValueSetter(R pfn(T*,T1) ):arg_n(2){
         memset(param,0,sizeof(param));
-        boost::function<R(T*,T1)> p = pfn;
-        param[0] = LuaType<T1>::v;
-        assign_pfn(p);
+            boost::function<R(T*,T1)> p = pfn;
+            param[0] = LuaType<T1>::v;
+            assign_pfn(p);
     }
 
     void assign_pfn(boost::function<void(T*,int)> pfn){
@@ -289,14 +190,33 @@ struct ValueSetter
     void assign_pfn(boost::function<void(T*,const QColor&)> pfn){
         fn_color = pfn;
     }
+    void assign_pfn(boost::function<void(T*,const QBrush&)> pfn){
+        fn_brush = pfn;
+    }
+    void assign_pfn(boost::function<void(T*,const QFont&)> pfn){
+        fn_font = pfn;
+    }
+    void assign_pfn(boost::function<void(T*,const object&)> pfn){
+        fn_object = pfn;
+    }
+    void assign_pfn(boost::function<void(T*, double)> pfn){
+        fn_double = pfn;
+    }
 
     void operator()(T* This, const object& obj){
         switch(arg_n){
         case 2:
+            if(param[0] == 777){
+                fn_object(This, obj);
+                break;
+            }
             if(type(obj) == param[0]){
                 switch(param[0]){
                 case LUA_TNUMBER:
                     fn_int(This, object_cast<int>(obj));
+                    break;
+                case 21:
+                    fn_double(This, object_cast<double>(obj));
                     break;
                 case LUA_TSTRING:
                     fn_string(This, object_cast<QString>(obj));
@@ -320,6 +240,10 @@ struct ValueSetter
                     fn_layout(This, object_cast<QLayout*>(obj));
                 }else if(is_class<QColor>(obj)){
                     fn_color(This, object_cast<QColor>(obj));
+                }else if(is_class<QBrush>(obj)){
+                    fn_brush(This, object_cast<QBrush>(obj));
+                }else if(is_class<QFont>(obj)){
+                    fn_font(This, object_cast<QFont>(obj));
                 }
             }
             break;
@@ -338,6 +262,10 @@ struct ValueSetter
     boost::function<void(T*, QLayout*)>  fn_layout;
     boost::function<void(T*, const QMargins&)>  fn_margins;
     boost::function<void(T*, const QColor&)>  fn_color;
+    boost::function<void(T*, const QBrush&)>  fn_brush;
+    boost::function<void(T*, const QFont&)>  fn_font;
+    boost::function<void(T*, const object&)>  fn_object;
+    boost::function<void(T*, double)>  fn_double;
 };
 
 struct my_les{

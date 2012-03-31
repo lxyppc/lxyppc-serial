@@ -1,10 +1,11 @@
-#include "lua_qt_wrapper.hpp"
-
+#include "lua_qrect.h"
 static setter_map<QPoint> lqpoint_set_map;
 static setter_map<QRect> lqrect_set_map;
 static setter_map<QSize> lqsize_set_map;
 static setter_map<QMargins> lqmargins_set_map;
 static setter_map<QColor> lqcolor_set_map;
+static setter_map<QBrush> lqbrush_set_map;
+static setter_map<QFont> lqfont_set_map;
 
 template<>
 void table_init_general<QPoint>(const luabind::argument & arg, const object& obj)
@@ -36,6 +37,18 @@ void table_init_general<QColor>(const luabind::argument & arg, const object& obj
     lq_general_init(construct<QColor>(arg), obj, lqcolor_set_map);
 }
 
+template<>
+void table_init_general<QBrush>(const luabind::argument & arg, const object& obj)
+{
+    lq_general_init(construct<QBrush>(arg), obj, lqbrush_set_map);
+}
+
+template<>
+void table_init_general<QFont>(const luabind::argument & arg, const object& obj)
+{
+    lq_general_init(construct<QFont>(arg), obj, lqfont_set_map);
+}
+
 QPoint* lqpoint_init(QPoint* widget, const object& obj)
 {
     return lq_general_init(widget, obj, lqpoint_set_map);
@@ -55,6 +68,16 @@ QMargins* lqmargins_init(QMargins* widget, const object& obj)
 QColor* lqcolor_init(QColor* widget, const object& obj)
 {
     return lq_general_init(widget, obj, lqcolor_set_map);
+}
+
+QBrush* lqbrush_init(QBrush* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqbrush_set_map);
+}
+
+QFont* lqfont_init(QFont* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqfont_set_map);
 }
 
 LQPoint lqpoint()
@@ -144,6 +167,7 @@ LQColor lqcolor()
     return
     myclass_<QColor>("QColor", lqcolor_set_map)
     .def(constructor<>())
+    .def(constructor<Qt::GlobalColor>())
     .def(constructor<int,int,int>())
     .def(constructor<int,int,int,int>())
     .def(constructor<const QString&>())
@@ -158,5 +182,85 @@ LQColor lqcolor()
     .property("g", &QColor::green, &QColor::setGreen)
     .property("b", &QColor::blue, &QColor::setBlue)
     .property("name", &QColor::name, &QColor::setNamedColor)
+    ;
+}
+
+
+void lqbursh_set_style(QBrush* f, int s)
+{
+    f->setStyle(Qt::BrushStyle(s));
+}
+
+int lqbursh_get_style(QBrush* f)
+{
+    return f->style();
+}
+LQBrush  lqbrush()
+{
+    return
+    myclass_<QBrush>("QBrush", lqbrush_set_map)
+    .def(constructor<>())
+    .def(constructor<Qt::BrushStyle>())
+    .def(constructor<const QColor &, Qt::BrushStyle>())
+    .def(constructor<Qt::GlobalColor>())
+    .def(constructor<Qt::GlobalColor, Qt::BrushStyle>())
+    .def("__call", &lqbrush_init)
+    .def("__init", &table_init_general<QBrush>)
+    .def("setColor", (void(QBrush::*)(Qt::GlobalColor))&QBrush::setColor)
+
+    .property("color", &QBrush::color, (void(QBrush::*)(const QColor&))&QBrush::setColor)
+    .property("style", lqbursh_get_style, lqbursh_set_style)
+    ;
+}
+
+
+void lqfont_set_cap(QFont* f, int cap)
+{
+    f->setCapitalization(QFont::Capitalization( cap));
+}
+
+int lqfont_get_cap(QFont* f)
+{
+    return f->capitalization();
+}
+
+void lqfont_set_style(QFont* f, int s)
+{
+    f->setStyle(QFont::Style(s));
+}
+
+int lqfont_get_style(QFont* f)
+{
+    return f->style();
+}
+
+LQFont lqfont()
+{
+    return
+    myclass_<QFont>("QFont", lqfont_set_map)
+    .def(constructor<>())
+    .def(constructor<const QFont &>())
+    .def(constructor<const QString &>())
+    .def(constructor<const QString &,int>())
+    .def(constructor<const QString &,int,int>())
+    .def(constructor<const QString &,int,int,bool>())
+    .def("__call", &lqfont_init)
+    .def("__init", &table_init_general<QFont>)
+
+    .property("family", &QFont::family, &QFont::setFamily)
+    .property("bold", &QFont::bold, &QFont::setBold)
+    .property("capitalization", lqfont_get_cap, lqfont_set_cap)
+    .property("fixedPitch", &QFont::fixedPitch, &QFont::setFixedPitch)
+    .property("italic", &QFont::italic, &QFont::setItalic)
+    .property("kerning", &QFont::kerning, &QFont::setKerning)
+    .property("overline", &QFont::overline, &QFont::setOverline)
+    .property("pixelSize", &QFont::pixelSize, &QFont::setPixelSize)
+    .property("pointSize", &QFont::pointSize, &QFont::setPointSize)
+    .property("stretch", &QFont::stretch, &QFont::setStretch)
+    .property("strikeOut", &QFont::strikeOut, &QFont::setStrikeOut)
+    .property("style", lqfont_get_style, lqfont_set_style)
+    .property("underline", &QFont::underline, &QFont::setUnderline)
+    .property("weight", &QFont::weight, &QFont::setWeight)
+    .property("wordSpacing", &QFont::wordSpacing, &QFont::setWordSpacing)
     ;
 }

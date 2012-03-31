@@ -1,4 +1,4 @@
-#include "lua_qt_wrapper.hpp"
+#include "lua_qeditor.h"
 static setter_map<QHexEdit> lqhexeidt_set_map;
 
 namespace luabind{

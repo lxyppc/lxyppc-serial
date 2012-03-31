@@ -1,5 +1,4 @@
-#include "lua_qt_wrapper.hpp"
-#include "qluaslot.h"
+#include "lua_qbutton.h"
 
 static setter_map<QAbstractButton> lqab_set_map;
 static setter_map<QCheckBox> lqcb_set_map;
