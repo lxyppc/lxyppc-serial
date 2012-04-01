@@ -163,7 +163,7 @@ LQVBoxLayout lqvboxlayout()
     class_<QVBoxLayout, QBoxLayout>("QVBoxLayout")
         .def(constructor<>())
         .def(constructor<QWidget*>())
-        //.def("__call", lqvboxlayout_init)
+        .def("__call", lqvboxlayout_init)
         .def("__init", table_init_general<QVBoxLayout>)
     ;
 }
@@ -173,7 +173,7 @@ LQHBoxLayout lqhboxlayout()
     class_<QHBoxLayout, QBoxLayout>("QHBoxLayout")
         .def(constructor<>())
         .def(constructor<QWidget*>())
-        //.def("__call", lqhboxlayout_init)
+        .def("__call", lqhboxlayout_init)
         .def("__init", table_init_general<QHBoxLayout>)
     ;
 }

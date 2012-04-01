@@ -1,47 +1,98 @@
 #ifndef LUA_QLIST_H
 #define LUA_QLIST_H
 #include "lua_qt_wrapper.hpp"
+#include "lite_ptr.h"
 
-struct QListWidgetItem_wrap : QListWidgetItem, wrap_base
+struct QListWidgetItem_wrap : public QListWidgetItem, wrap_base
 {
     QListWidgetItem_wrap(QListWidget *view = 0, int type = Type):QListWidgetItem(view,type){}
-    QListWidgetItem_wrap(const QString &text, QListWidget *view = 0, int type = Type):QListWidgetItem(text,view,type){}
+    QListWidgetItem_wrap(const QString &text, QListWidget *view = 0, int type = Type):QListWidgetItem(text,view,type){
+//        qDebug()<< "wrap::("<<text<<")"<<lua_type( detail::wrap_access::ref(*this).state(), -1);
+//        qDebug()<<"QListWidgetItem_wrap::(QString)";
+//        qDebug()<<text<<"  "<<view<<"  "<<type;
+        mt = text;
+    }
     QListWidgetItem_wrap(const QIcon &icon, const QString &text,
                              QListWidget *view = 0, int type = Type):QListWidgetItem(icon,text,view,type){}
-    QListWidgetItem_wrap(const QListWidgetItem &other):QListWidgetItem(other){}
+    QListWidgetItem_wrap(const QListWidgetItem &other):QListWidgetItem(other){
+//        qDebug()<< "wrap::(other)"<<lua_type( detail::wrap_access::ref(*this).state(), -1);
+    }
+    //QListWidgetItem_wrap(const QListWidgetItem_wrap &other):QListWidgetItem(other){}
 
 
-    virtual QVariant data(int role) const
+    QVariant data(int role) const
     {
-        return call_member<QVariant>(this, "data", role);
+//        qDebug()<< "wrap::data("<<role<<")"<<lua_type( detail::wrap_access::ref(*this).state(), -1)<<mt;
+        QVariant v = call_member<QVariant>(this, "data", role);
+//        qDebug()<<"QListWidgetItem_wrap::data("<<role<<")"<<(role == 0? v.value<QString>():"");
+        return v;
     }
 
     static QVariant def_data(QListWidgetItem* p, int role){
-        return p->QListWidgetItem::data(role);
+        //qDebug()<< "wrap::def_data("<<role<<")"<<lua_type( detail::wrap_access::ref(*this).state(), -1);
+        QVariant v = p->QListWidgetItem::data(role);
+//        qDebug()<<"QListWidgetItem_wrap::def_data("<<role<<")"<<(role == 0? v.value<QString>():"");
+        return v;
     }
 
-    virtual void setData(int role, const QVariant& data)
+    void setData(int role, const QVariant& data)
     {
+//        qDebug()<< "wrap::setData("<<role<<")"<<lua_type( detail::wrap_access::ref(*this).state(), -1)<<mt;
+//        qDebug()<<"QListWidgetItem_wrap::setData("<<role<<")"<<(role == 0? data.value<QString>():"");
         call_member<void>(this, "setData" , role, data);
     }
 
     static void def_setData(QListWidgetItem*p, int role, const QVariant& data){
+        //qDebug()<< "wrap::def_setData("<<role<<")"<<lua_type( detail::wrap_access::ref(*this).state(), -1);
+//        qDebug()<<"QListWidgetItem_wrap::def_setData("<<role<<")"<<(role == 0? data.value<QString>():"");
         p->QListWidgetItem::setData(role,data);
     }
 
     bool operator<(const QListWidgetItem &other) const
     {
+//        qDebug()<< "wrap::<(other)"<<lua_type( detail::wrap_access::ref(*this).state(), -1)<<mt;
+//        qDebug()<<"QListWidgetItem_wrap::operator<";
         return call_member<bool>(this, "__lt", other);
     }
 
     static bool def_lt(const QListWidgetItem &This, const QListWidgetItem &other){
+//        qDebug()<<"QListWidgetItem_wrap::def_lt";
         return This.QListWidgetItem::operator <(other);
     }
 
+    QListWidgetItem *clone() const
+    {
+        return QListWidgetItem::clone();
+    }
+    QString mt;
 };
+
+struct QListItem : QListWidgetItem
+{
+    QListItem(QListWidget *view = 0, int type = Type):QListWidgetItem(view,type){}
+    QListItem(const QString &text, QListWidget *view = 0, int type = Type):QListWidgetItem(text,view,type){
+    }
+    QListItem(const QIcon &icon, const QString &text,
+                             QListWidget *view = 0, int type = Type):QListWidgetItem(icon,text,view,type){}
+    QListItem(const QListWidgetItem &other):QListWidgetItem(other){
+    }
+
+    virtual QVariant data(int role) const
+    {
+        return QVariant();
+    }
+    virtual void setData(int role, const QVariant& data)
+    {
+    }
+    bool operator<(const QListWidgetItem &other) const
+    {
+        return true;
+    }
+};
+
 typedef class_<QComboBox, QWidget> LQComboBox;
 typedef class_<QListWidget, QFrame> LQListWidget;
-typedef class_<QListWidgetItem,QListWidgetItem_wrap> LQListWidgetItem;
+typedef class_<QListWidgetItem> LQListWidgetItem;
 typedef class_<QTreeWidget, QFrame> LQTreeWidget;
 
 LQComboBox lqcombobox();

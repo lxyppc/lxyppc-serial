@@ -174,11 +174,57 @@ void table_init_general<QListWidget>(const luabind::argument & arg, const object
     lqlistwidget_init(construct<QListWidget>(arg), obj);
 }
 
+
+struct TestItem
+{
+    TestItem(){
+        qDebug()<<"TestItem()";
+    }
+    TestItem(const QString& t){
+        m_text.setValue(t);
+        qDebug()<<"TestItem(QString)";
+    }
+    virtual QVariant data(){
+        qDebug()<<"TestItem::data  "<<m_text;
+        return m_text;
+    }
+    QString text(){
+        QVariant v = data();
+        QString t = v.value<QString>();
+        qDebug()<<"TestItem::text  "<<t;
+        return t;
+    }
+    QVariant m_text;
+};
+
+struct TestItem_wrap : TestItem, wrap_base
+{
+    TestItem_wrap(){
+        qDebug()<<"TestItem_wrap()";
+    }
+    TestItem_wrap(const QString& t):TestItem(t){
+        qDebug()<<"TestItem_wrap(QString)";
+    }
+    virtual QVariant data(){
+        QVariant v = call_member<QVariant>(this, "data");
+        //object o = v.value<object>();
+        //v = object_cast<QVariant>(o);
+        //qDebug()<<"TestItem_wrap::data  "<<type(o);
+        return v;
+    }
+
+    static QVariant def_data(TestItem& t){
+        QVariant v = t.TestItem::data();
+        qDebug()<<"TestItem_wrap::def_data   "<<v.value<QString>()<<"  "<<v;
+        return v;
+    }
+};
+
 LQListWidgetItem lqlistwidgetitem()
 {
     (void)self;
     return
-    class_<QListWidgetItem,QListWidgetItem_wrap>("QListItem")
+    class_<QListWidgetItem >("QListItem")
     .def(constructor<>())
     .def(constructor<const QListWidgetItem&>())
     .def(constructor<QListWidget*>())
@@ -189,11 +235,25 @@ LQListWidgetItem lqlistwidgetitem()
     .def(constructor<const QIcon&,const QString&>())
     .def(constructor<const QIcon&,const QString&, QListWidget*>())
     .def(constructor<const QIcon&,const QString&, QListWidget*, int>())
+
     .def("__call", lqlistwidgetitem_init)
     .def("__init", table_init_general<QListWidgetItem>)
-    .def("data", &QListWidgetItem::data, &QListWidgetItem_wrap::def_data)
-    .def("setData", &QListWidgetItem::setData, &QListWidgetItem_wrap::def_setData)
-    .def("__lt", &QListWidgetItem::operator <,  &QListWidgetItem_wrap::def_lt)
+    .def("data", &QListWidgetItem::data)
+    .def("setData", &QListWidgetItem::setData)
+    .def("__lt", &QListWidgetItem::operator <)
+//    .def("data", &QListWidgetItem::data, &QListWidgetItem_wrap::def_data)
+//    .def("setData", &QListWidgetItem::setData, &QListWidgetItem_wrap::def_setData)
+//    .def("__lt", &QListWidgetItem::operator <,  &QListWidgetItem_wrap::def_lt)
+    .property("text", &QListWidgetItem::text, &QListWidgetItem::setText)
+
+//    .scope
+//    [
+//            class_<TestItem,TestItem_wrap>("TestItem")
+//              .def(constructor<>())
+//              .def(constructor<const QString&>())
+//              .def("data", &TestItem::data, &TestItem_wrap::def_data)
+//              .def("text", &TestItem::text)
+//    ]
     ;
 }
 
@@ -204,7 +264,6 @@ void lqlistwidget_sortItems(QListWidget* w)
 
 void lqlistwidget_sortItems2(QListWidget* w, int order)
 {
-    w->addItem(new QListWidgetItem(QString("123123")));
     w->sortItems(Qt::SortOrder(order));
 }
 

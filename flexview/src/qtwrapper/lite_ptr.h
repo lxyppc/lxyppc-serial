@@ -48,21 +48,13 @@ public:
         //qDebug()<<"lite_ptr ~ "<<m_ptr<<"  ref:"<<(m_ref?*m_ref:-10);
     }
     T* get() const{
+        //qDebug()<<"lite_ptr get "<<m_ptr<<"  ref:"<<(m_ref?*m_ref:-10);
         return m_ptr;
     }
 private:
     int* m_ref;
     T*   m_ptr;
 };
-
-
-
-
-
-
-
-
-
 
 
 #endif

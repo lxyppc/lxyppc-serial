@@ -19,15 +19,16 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_commondlg.cpp \
     src/qtwrapper/lua_qeditor.cpp \
     src/qluaedit.cpp \
-    src/qtwrapper/lua_qlist.cpp
+    src/qtwrapper/lua_qlist.cpp \
+    src/qtwrapper/lua_qdialog.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
     src/luahighlighter.h \
     src/luadialog.h \
     src/qluaedit.h
-HEADERS += ../qextserialport/qextserialenumerator.h \
-    ../qextserialport/qextserialport.h
+HEADERS += ./qextserialport/qextserialenumerator.h \
+    ./qextserialport/qextserialport.h
 
 # -------------------------------------------------
 # sources for hexeditor

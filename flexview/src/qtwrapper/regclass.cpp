@@ -221,6 +221,13 @@ static QByteArray fromString(const QString& str)
 {
     return str.toAscii();
 }
+
+QFont createFont()
+{
+    return QFont();
+}
+
+
 class_<QComboBox, QWidget> lqcombobox();
 void register_classes(lua_State* L, char const* name = 0)
 {
@@ -291,6 +298,10 @@ void register_classes(lua_State* L, char const* name = 0)
         lqlistwidget(),
         lqtreewidget(),
 
+        lqvariant(),
+
+        //class_<QVariant_wrapper>("QVariant_wrapper"),
+
         class_<MainWindow,QMainWindow>("MainWindow")
             .def(constructor<>())
             .property("logEdit", &MainWindow::getLogEdit),
@@ -301,6 +312,8 @@ void register_classes(lua_State* L, char const* name = 0)
         def("emit_signal", (void (*)(QObject*,object,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object,object))&emit_signal),
         def("emit_signal", (void (*)(QObject*,object,object,object,object))&emit_signal),
+
+        def("createFont", createFont),
 
         def("toString", toString),
         def("toBase64", toBase64),

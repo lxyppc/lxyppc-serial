@@ -12,9 +12,6 @@ QWidget* lqwidget_init(QWidget* widget, const object& init_table);
 
 
 bool obj_name_is(const object& obj, const char* name);
-template<typename T>bool is_class(const object& obj);
-//  leave the function body empty,this will cause a compile error when type no defined in lua_qobject.cpp
-//{ return false;}
 
 template<class T>
 QList<T> list_cast(const object& obj)

@@ -7,8 +7,10 @@ using namespace luabind;
 
 typedef class_<QObject>                     LQObject;
 typedef class_<QWidget, QObject>            LQWidget;
+typedef class_<QVariant>                    LQVariant;
 
 LQObject lqobject();
 LQWidget lqwidget();
+LQVariant lqvariant();
 
 #endif
