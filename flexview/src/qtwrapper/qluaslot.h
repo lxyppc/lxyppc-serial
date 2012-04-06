@@ -1,7 +1,7 @@
 #ifndef QLUASLOT_H
 #define QLUASLOT_H
 
-#include <QObject>
+#include <QtGui>
 #include "lua.hpp"
 #include <luabind/luabind.hpp>
 #include <boost/smart_ptr.hpp>
@@ -35,6 +35,8 @@ public slots:
     void general_slot(int);
     void general_slot(bool);
     void general_slot(const QString&);
+    void general_slot(QListWidgetItem* item);
+    void general_slot(QListWidgetItem* item1,QListWidgetItem* item2);
 private:
     object m_obj;
     QString m_method;

@@ -67,9 +67,21 @@ SIGNAL_PROPERYT(lqcombox, highlighted, QComboBox, "(int)")
 SIGNAL_PROPERYT(lqcombox_str, highlighted, QComboBox, "(const QString&)")
 SIGNAL_PROPERYT(lqcombox, editTextChanged, QComboBox, "(const QString&)")
 
+SIGNAL_PROPERYT(lqlistwidget, currentItemChanged, QListWidget,  "( QListWidgetItem*,QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, currentRowChanged, QListWidget,  "(int)")
+SIGNAL_PROPERYT(lqlistwidget, currentTextChanged, QListWidget,  "(const QString &)")
+SIGNAL_PROPERYT(lqlistwidget, itemActivated, QListWidget,  "(QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, itemChanged, QListWidget,  "(QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, itemClicked, QListWidget,  "(QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, itemDoubleClicked, QListWidget,  "(QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, itemEntered, QListWidget,  "(QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, itemPressed, QListWidget,  "(QListWidgetItem*)")
+SIGNAL_PROPERYT(lqlistwidget, itemSelectionChanged, QListWidget,  "()")
+
 static setter_map<QComboBox> lqcombobox_set_map;
 static setter_map<QListWidgetItem> lqlistwidgetitem_set_map;
 static setter_map<QListWidget> lqlistwidget_set_map;
+static setter_map<QTreeWidgetItem> lqtreewidgetitem_set_map;
 static setter_map<QTreeWidget> lqtreewidget_set_map;
 QComboBox* lqcombobox_init(QComboBox* widget, const object& obj)
 {
@@ -159,12 +171,12 @@ void table_init_general<QListWidgetItem>(const luabind::argument & arg, const ob
 QListWidget* lqlistwidget_init(QListWidget* widget, const object& obj)
 {
     lqwidget_init(widget, obj);
-//    for(iterator i(obj),e; i!=e; ++i){
-//        if(type(*i) == LUA_TTABLE){
-//            addItems(widget, (void(QComboBox::*)(const QString&,const QVariant&))&QComboBox::addItem, *i);
-//            //widget->addItems(list_cast<QString>(*i));
-//        }
-//    }
+    for(iterator i(obj),e; i!=e; ++i){
+        if(type(*i) == LUA_TTABLE){
+            //addItems(widget, (void(QComboBox::*)(const QString&,const QVariant&))&QComboBox::addItem, *i);
+            widget->addItems(list_cast<QString>(*i));
+        }
+    }
     return lq_general_init(widget, obj, lqlistwidget_set_map);
 }
 
@@ -174,57 +186,27 @@ void table_init_general<QListWidget>(const luabind::argument & arg, const object
     lqlistwidget_init(construct<QListWidget>(arg), obj);
 }
 
-
-struct TestItem
+void lqlistwidgetitem_set_check_state(QListWidgetItem* w, int state)
 {
-    TestItem(){
-        qDebug()<<"TestItem()";
-    }
-    TestItem(const QString& t){
-        m_text.setValue(t);
-        qDebug()<<"TestItem(QString)";
-    }
-    virtual QVariant data(){
-        qDebug()<<"TestItem::data  "<<m_text;
-        return m_text;
-    }
-    QString text(){
-        QVariant v = data();
-        QString t = v.value<QString>();
-        qDebug()<<"TestItem::text  "<<t;
-        return t;
-    }
-    QVariant m_text;
-};
+    w->setCheckState(Qt::CheckState(state));
+}
 
-struct TestItem_wrap : TestItem, wrap_base
+void lqlistwidgetitem_set_flags(QListWidgetItem* w, int flag)
 {
-    TestItem_wrap(){
-        qDebug()<<"TestItem_wrap()";
-    }
-    TestItem_wrap(const QString& t):TestItem(t){
-        qDebug()<<"TestItem_wrap(QString)";
-    }
-    virtual QVariant data(){
-        QVariant v = call_member<QVariant>(this, "data");
-        //object o = v.value<object>();
-        //v = object_cast<QVariant>(o);
-        //qDebug()<<"TestItem_wrap::data  "<<type(o);
-        return v;
-    }
+    w->setFlags(Qt::ItemFlags(flag));
+}
 
-    static QVariant def_data(TestItem& t){
-        QVariant v = t.TestItem::data();
-        qDebug()<<"TestItem_wrap::def_data   "<<v.value<QString>()<<"  "<<v;
-        return v;
-    }
-};
+int lqlistwidgetitem_row(QListWidgetItem* i)
+{
+    QListWidget* l = i->listWidget();
+    return l ? l->row(i) : -1;
+}
 
 LQListWidgetItem lqlistwidgetitem()
 {
     (void)self;
     return
-    class_<QListWidgetItem >("QListItem")
+     myclass_<QListWidgetItem>("QListItem",lqlistwidgetitem_set_map)
     .def(constructor<>())
     .def(constructor<const QListWidgetItem&>())
     .def(constructor<QListWidget*>())
@@ -238,21 +220,39 @@ LQListWidgetItem lqlistwidgetitem()
 
     .def("__call", lqlistwidgetitem_init)
     .def("__init", table_init_general<QListWidgetItem>)
-    .def("data", &QListWidgetItem::data)
-    .def("setData", &QListWidgetItem::setData)
+    .def("data", &QListWidgetItem::data, &QListWidgetItem::data)
+    .def("setData", &QListWidgetItem::setData, &QListWidgetItem::setData)
     .def("__lt", &QListWidgetItem::operator <)
 //    .def("data", &QListWidgetItem::data, &QListWidgetItem_wrap::def_data)
 //    .def("setData", &QListWidgetItem::setData, &QListWidgetItem_wrap::def_setData)
 //    .def("__lt", &QListWidgetItem::operator <,  &QListWidgetItem_wrap::def_lt)
+
+    .property("listWidget", &QListWidgetItem::listWidget)
+    .property("background", &QListWidgetItem::background, &QListWidgetItem::setBackground)
+    .property("checkState", &QListWidgetItem::checkState, lqlistwidgetitem_set_check_state)
+    .property("flags", &QListWidgetItem::flags, lqlistwidgetitem_set_flags)
+    .property("font", &QListWidgetItem::font, &QListWidgetItem::setFont)
+    .property("foreground", &QListWidgetItem::foreground, &QListWidgetItem::setForeground)
+    .property("hidden", &QListWidgetItem::isHidden, &QListWidgetItem::setHidden)
+    .property("icon", &QListWidgetItem::icon, &QListWidgetItem::setIcon)
+    .property("selected", &QListWidgetItem::isSelected, &QListWidgetItem::setSelected)
+    .property("statusTip", &QListWidgetItem::statusTip, &QListWidgetItem::setStatusTip)
     .property("text", &QListWidgetItem::text, &QListWidgetItem::setText)
+    .property("textAlignment", &QListWidgetItem::textAlignment, &QListWidgetItem::setTextAlignment)
+    .property("textColor", &QListWidgetItem::textColor, &QListWidgetItem::setTextColor)
+    .property("toolTip", &QListWidgetItem::toolTip, &QListWidgetItem::setToolTip)
+    .property("whatsThis", &QListWidgetItem::whatsThis, &QListWidgetItem::setWhatsThis)
+    .property("type", &QListWidgetItem::type)
+    .property("row", lqlistwidgetitem_row)
+
 
 //    .scope
 //    [
-//            class_<TestItem,TestItem_wrap>("TestItem")
+//            class_<QListItem>("QListItem2")
 //              .def(constructor<>())
 //              .def(constructor<const QString&>())
-//              .def("data", &TestItem::data, &TestItem_wrap::def_data)
-//              .def("text", &TestItem::text)
+//              .def("data", &QListItem::_data, &QListItem::_data)
+//              .def("setData", &QListItem::_setData)
 //    ]
     ;
 }
@@ -267,20 +267,171 @@ void lqlistwidget_sortItems2(QListWidget* w, int order)
     w->sortItems(Qt::SortOrder(order));
 }
 
+void lqlistwidget_addItems(QListWidget* w, const object& obj)
+{
+    w->addItems(list_cast<QString>(obj));
+}
+void lqlistwidget_insertItems(QListWidget* w, int row, const object& obj)
+{
+    w->insertItems(row,list_cast<QString>(obj));
+}
+
+void lqlistwidget_set_cur_row(QListWidget* w, int row)
+{
+    w->setCurrentRow(row);
+}
+
+void lqlistwidget_scrollToItem(QListWidget* w, QListWidgetItem* i, int hint)
+{
+    w->scrollToItem(i,QAbstractItemView::ScrollHint(hint));
+}
+
+void lqlistwidget_scrollToItem2(QListWidget* w, QListWidgetItem* i)
+{
+    w->scrollToItem(i);
+}
+
+object lqlistwidget_finditems(QListWidget* w, const QString& text, int f)
+{
+    object obj(luabind::newtable(__pL));
+    QList<QListWidgetItem*> list = w->findItems(text, Qt::MatchFlags(f));
+    for(int i=0;i<list.count();i++){
+        obj[i+1] = list.at(i);
+    }
+    return obj;
+}
+
+object lqlistwidget_selecteditems(QListWidget* w)
+{
+    object obj(luabind::newtable(__pL));
+    QList<QListWidgetItem*> list = w->selectedItems();
+    for(int i=0;i<list.count();i++){
+        obj[i+1] = list.at(i);
+    }
+    return obj;
+}
+
 LQListWidget lqlistwidget()
 {
     return
-    class_<QListWidget, QFrame>("QListWidget")
+    myclass_<QListWidget, QFrame>("QListWidget",lqlistwidget_set_map)
     .def(constructor<>())
     .def(constructor<QWidget*>())
     .def("__call", lqlistwidget_init)
     .def("__init", table_init_general<QListWidget>)
     .def("addItem", (void(QListWidget::*)(const QString&))&QListWidget::addItem)
     .def("addItem", (void(QListWidget::*)(QListWidgetItem*))&QListWidget::addItem)
+    .def("addItems", lqlistwidget_addItems)
+    .def("insertItem", (void(QListWidget::*)(int,const QString&))&QListWidget::insertItem)
+    .def("insertItem", (void(QListWidget::*)(int,QListWidgetItem*))&QListWidget::insertItem)
+    .def("insertItems", lqlistwidget_insertItems)
+
     .def("sortItems", lqlistwidget_sortItems)
     .def("sortItems", lqlistwidget_sortItems2)
+    .def("row", &QListWidget::row)
+    .def("item", &QListWidget::item)
+    .def("itemAt", (QListWidgetItem*(QListWidget::*)(int,int)const)&QListWidget::itemAt)
+    .def("itemAt", (QListWidgetItem*(QListWidget::*)(const QPoint&)const)&QListWidget::itemAt)
+    .def("itemWidget", &QListWidget::itemWidget)
+    .def("setItemWidget", &QListWidget::setItemWidget)
+    .def("takeItem", &QListWidget::takeItem)
+    .def("findItems", lqlistwidget_finditems)
+    .def("selectedItems", lqlistwidget_selecteditems)
+    .def("clear", &QListWidget::clear)
+    .def("scrollToItem", lqlistwidget_scrollToItem)
+    .def("scrollToItem", lqlistwidget_scrollToItem2)
+
+    .property("count", &QListWidget::count)
+    .property("sortingEnabled", &QListWidget::isSortingEnabled, &QListWidget::setSortingEnabled)
+    .property("currentRow", &QListWidget::currentRow, lqlistwidget_set_cur_row)
+
+    .sig_prop(lqlistwidget, currentItemChanged)
+    .sig_prop(lqlistwidget, currentRowChanged)
+    .sig_prop(lqlistwidget, currentTextChanged)
+    .sig_prop(lqlistwidget, itemActivated)
+    .sig_prop(lqlistwidget, itemChanged)
+    .sig_prop(lqlistwidget, itemClicked)
+    .sig_prop(lqlistwidget, itemDoubleClicked)
+    .sig_prop(lqlistwidget, itemEntered)
+    .sig_prop(lqlistwidget, itemPressed)
+    .sig_prop(lqlistwidget, itemSelectionChanged)
     ;
 }
+
+
+
+
+
+
+
+QTreeWidgetItem* lqtreewidgetitem_init(QTreeWidgetItem* widget, const object& obj)
+{
+//    for(iterator i(obj),e; i!=e; ++i){
+//        if(type(*i) == LUA_TTABLE){
+//            addItems(widget, (void(QTreeWidget::*)(const QString&,const QVariant&))&QComboBox::addItem, *i);
+//            //widget->addItems(list_cast<QString>(*i));
+//        }
+//    }
+    return lq_general_init(widget, obj, lqtreewidgetitem_set_map);
+}
+
+template<>
+void table_init_general<QTreeWidgetItem>(const luabind::argument & arg, const object& obj)
+{
+    lqtreewidgetitem_init(construct<QTreeWidgetItem>(arg), obj);
+}
+
+LQTreeWidgetItem lqtreewidgetitem()
+{
+
+    return
+     myclass_<QTreeWidgetItem>("QTreeItem",lqtreewidgetitem_set_map)
+     #if 0
+    .def(constructor<>())
+    .def(constructor<int>())
+    .def(constructor<const QStringList&>())
+    .def(constructor<const QStringList&, int>())
+
+    .def(constructor<const QTreeWidgetItem&>())
+    .def(constructor<QTreeWidget*>())
+    .def(constructor<QTreeWidget*, int>())
+    .def(constructor<const QString&>())
+    .def(constructor<const QString&, QTreeWidget*>())
+    .def(constructor<const QString&, QTreeWidget*, int>())
+    .def(constructor<const QIcon&,const QString&>())
+    .def(constructor<const QIcon&,const QString&, QTreeWidget*>())
+    .def(constructor<const QIcon&,const QString&, QTreeWidget*, int>())
+
+    .def("__call", lqtreewidgetitem_init)
+    .def("__init", table_init_general<QTreeWidgetItem>)
+    .def("data", &QTreeWidgetItem::data, &QTreeWidgetItem::data)
+    .def("setData", &QTreeWidgetItem::setData, &QTreeWidgetItem::setData)
+    .def("__lt", &QTreeWidgetItem::operator <)
+//    .def("data", &QTreeWidgetItem::data, &QTreeWidgetItem_wrap::def_data)
+//    .def("setData", &QTreeWidgetItem::setData, &QTreeWidgetItem_wrap::def_setData)
+//    .def("__lt", &QTreeWidgetItem::operator <,  &QTreeWidgetItem_wrap::def_lt)
+
+    .property("treeWidget", &QTreeWidgetItem::treeWidget)
+    .property("background", &QTreeWidgetItem::background, &QTreeWidgetItem::setBackground)
+    .property("checkState", &QTreeWidgetItem::checkState, lqtreewidgetitem_set_check_state)
+    .property("flags", &QTreeWidgetItem::flags, lqtreewidgetitem_set_flags)
+    .property("font", &QTreeWidgetItem::font, &QTreeWidgetItem::setFont)
+    .property("foreground", &QTreeWidgetItem::foreground, &QTreeWidgetItem::setForeground)
+    .property("hidden", &QTreeWidgetItem::isHidden, &QTreeWidgetItem::setHidden)
+    .property("icon", &QTreeWidgetItem::icon, &QTreeWidgetItem::setIcon)
+    .property("selected", &QTreeWidgetItem::isSelected, &QTreeWidgetItem::setSelected)
+    .property("statusTip", &QTreeWidgetItem::statusTip, &QTreeWidgetItem::setStatusTip)
+    .property("text", &QTreeWidgetItem::text, &QTreeWidgetItem::setText)
+    .property("textAlignment", &QTreeWidgetItem::textAlignment, &QTreeWidgetItem::setTextAlignment)
+    .property("textColor", &QTreeWidgetItem::textColor, &QTreeWidgetItem::setTextColor)
+    .property("toolTip", &QTreeWidgetItem::toolTip, &QTreeWidgetItem::setToolTip)
+    .property("whatsThis", &QTreeWidgetItem::whatsThis, &QTreeWidgetItem::setWhatsThis)
+    .property("type", &QTreeWidgetItem::type)
+    .property("row", lqtreewidgetitem_row)
+#endif
+    ;
+}
+
 
 QTreeWidget* lqtreewidget_init(QTreeWidget* widget, const object& obj)
 {
@@ -299,6 +450,7 @@ void table_init_general<QTreeWidget>(const luabind::argument & arg, const object
 {
     lqtreewidget_init(construct<QTreeWidget>(arg), obj);
 }
+
 LQTreeWidget lqtreewidget()
 {
     return

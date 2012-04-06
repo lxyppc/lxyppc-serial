@@ -193,6 +193,9 @@ struct ValueSetter
     void assign_pfn(boost::function<void(T*,const QFont&)> pfn){
         fn_font = pfn;
     }
+    void assign_pfn(boost::function<void(T*,const QIcon&)> pfn){
+        fn_icon = pfn;
+    }
     void assign_pfn(boost::function<void(T*,const object&)> pfn){
         fn_object = pfn;
     }
@@ -241,6 +244,8 @@ struct ValueSetter
                     fn_brush(This, object_cast<QBrush>(obj));
                 }else if(is_class<QFont>(obj)){
                     fn_font(This, object_cast<QFont>(obj));
+                }else if(is_class<QIcon>(obj)){
+                    fn_icon(This, object_cast<QIcon>(obj));
                 }
             }
             break;
@@ -261,6 +266,7 @@ struct ValueSetter
     boost::function<void(T*, const QColor&)>  fn_color;
     boost::function<void(T*, const QBrush&)>  fn_brush;
     boost::function<void(T*, const QFont&)>  fn_font;
+    boost::function<void(T*, const QIcon&)>  fn_icon;
     boost::function<void(T*, const object&)>  fn_object;
     boost::function<void(T*, double)>  fn_double;
 };
@@ -349,4 +355,5 @@ struct myclass_ : public class_<T,X1,X2,X3>
     setter_map<T>* set_map;
 };
 
+#define sig_prop(b, name)  property(#name, b##_get_##name, b##_set_##name)
 #endif

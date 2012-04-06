@@ -113,6 +113,7 @@ LQWidget lqwidget()
             .property("modified", &QWidget::isWindowModified, &QWidget::setWindowModified)
             .property("visible", &QWidget::isVisible, &QWidget::setVisible)
             .property("hidden", &QWidget::isHidden, &QWidget::setHidden)
+            .property("mouseTracking", &QWidget::hasMouseTracking, &QWidget::setMouseTracking)
 
             .property("x", &QWidget::x, lqwidget_set_x)
             .property("y", &QWidget::y, lqwidget_set_y)
@@ -283,39 +284,30 @@ QVariant var_from(lua_State* L, int index)
     QVariant v;
     object obj(luabind::from_stack(L,index));
     switch(type(obj)){
-//    case LUA_TSTRING:
-//        {
-//            v.setValue(object_cast<QString>(obj));
-//            return v;
-//        }
-//    case LUA_TNUMBER:
-//        {
-//            v.setValue(object_cast<int>(obj));
-//            return v;
-//        }
-//    case LUA_TUSERDATA:
-//        {
-//            std::string name = obj_name(obj);
-//            if(name == "QVariant_wrapper"){
-//                QVariant_wrapper* wp = object_cast<QVariant_wrapper*>(obj);
-//                return wp->variant();
-//            }
-//            SET_VAL(QSize)
-//            SET_VAL(QFont)
-//            SET_VAL(QBrush)
-//            SET_VAL(QColor)
-//            SET_VAL(QIcon)
-//            SET_VAL(QRect)
-//            SET_VAL(QPoint)
-    case LUA_TTABLE:
-        for(iterator i(obj),e; i!=e; ++i){
-            if(type(i.key()) == LUA_TSTRING){
-                QString key = object_cast<QString>(i.key());
-                if(key.compare("varwrapper") == 0){
-                    QVariant_wrapper* wp = object_cast<QVariant_wrapper*>(*i);
-                    return wp->variant();
-                }
+    case LUA_TSTRING:
+        {
+            v.setValue(object_cast<QString>(obj));
+            return v;
+        }
+    case LUA_TNUMBER:
+        {
+            v.setValue(object_cast<int>(obj));
+            return v;
+        }
+    case LUA_TUSERDATA:
+        {
+            std::string name = obj_name(obj);
+            if(name == "QVariant_wrapper"){
+                QVariant_wrapper* wp = object_cast<QVariant_wrapper*>(obj);
+                return wp->variant();
             }
+            SET_VAL(QSize)
+            SET_VAL(QFont)
+            SET_VAL(QBrush)
+            SET_VAL(QColor)
+            SET_VAL(QIcon)
+            SET_VAL(QRect)
+            SET_VAL(QPoint)
         }
     }
     v.setValue(obj);
@@ -383,27 +375,27 @@ object lqvariant_to_object(QVariant* var)
 
 void var_to(lua_State* L, QVariant const& v)
 {
-//    if(v.canConvert<QString>()){
-//        QString s = v.value<QString>();
-//        lua_pushstring(L,s.toStdString().c_str());
-//        return;
-//    }else if(v.canConvert<int>()){
-//        int i = v.value<int>();
-//        lua_pushnumber(L,i);
-//        return;
-//    }else if(v.canConvert<double>()){
-//        double i = v.value<double>();
-//        lua_pushnumber(L,i);
-//        return;
-//    }
-//    TO_VAL(QSize)
-//    TO_VAL(QFont)
-//    TO_VAL(QBrush)
-//    TO_VAL(QColor)
-//    TO_VAL(QIcon)
-//    TO_VAL(QRect)
-//    TO_VAL(QPoint)
-//    else
+    if(v.canConvert<QString>()){
+        QString s = v.value<QString>();
+        lua_pushstring(L,s.toStdString().c_str());
+        return;
+    }else if(v.canConvert<int>()){
+        int i = v.value<int>();
+        lua_pushnumber(L,i);
+        return;
+    }else if(v.canConvert<double>()){
+        double i = v.value<double>();
+        lua_pushnumber(L,i);
+        return;
+    }
+    TO_VAL(QSize)
+    TO_VAL(QFont)
+    TO_VAL(QBrush)
+    TO_VAL(QColor)
+    TO_VAL(QIcon)
+    TO_VAL(QRect)
+    TO_VAL(QPoint)
+    else
         if(v.canConvert<object>()){
         object o = v.value<object>();
         o.push(L);
@@ -412,11 +404,11 @@ void var_to(lua_State* L, QVariant const& v)
         QVariant_wrapper wrapper;
         wrapper.setVariant(v);
         //make_return(L,wrapper);
-        //luabind::detail::make_pointee_instance(L, wrapper, boost::mpl::true_());
-        object o = luabind::newtable(L);
-        o["varwrapper"] = wrapper;
+        luabind::detail::make_pointee_instance(L, wrapper, boost::mpl::true_());
+        //object o = luabind::newtable(L);
+        //o["varwrapper"] = wrapper;
         //object w = o["varwrapper"];
-        o.push(L);
+        //o.push(L);
         return;
     }
     lua_pushnil(L);

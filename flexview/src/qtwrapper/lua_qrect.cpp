@@ -174,6 +174,7 @@ LQColor lqcolor()
     .def(constructor<const QColor&>())
     .def("__call", &lqcolor_init)
     .def("__init", &table_init_general<QColor>)
+    .def("__tostring", &QColor::name)
 
     .property("red", &QColor::red, &QColor::setRed)
     .property("green", &QColor::green, &QColor::setGreen)

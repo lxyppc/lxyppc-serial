@@ -298,9 +298,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqlistwidget(),
         lqtreewidget(),
 
-        lqvariant(),
+        //lqvariant(),
 
-        //class_<QVariant_wrapper>("QVariant_wrapper"),
+        class_<QVariant_wrapper>("QVariant_wrapper"),
 
         class_<MainWindow,QMainWindow>("MainWindow")
             .def(constructor<>())

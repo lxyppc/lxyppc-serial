@@ -3,19 +3,31 @@
 #include "lua_qt_wrapper.hpp"
 #include "lite_ptr.h"
 
+extern lua_State* __pL;
+std::string obj_name(const object& o);
 struct QListWidgetItem_wrap : public QListWidgetItem, wrap_base
 {
-    QListWidgetItem_wrap(QListWidget *view = 0, int type = Type):QListWidgetItem(view,type){}
+    QListWidgetItem_wrap(QListWidget *view = 0, int type = Type):QListWidgetItem(view,type){
+        This = object(luabind::from_stack(__pL,1));
+        qDebug()<<obj_name(This).c_str();
+    }
     QListWidgetItem_wrap(const QString &text, QListWidget *view = 0, int type = Type):QListWidgetItem(text,view,type){
 //        qDebug()<< "wrap::("<<text<<")"<<lua_type( detail::wrap_access::ref(*this).state(), -1);
 //        qDebug()<<"QListWidgetItem_wrap::(QString)";
 //        qDebug()<<text<<"  "<<view<<"  "<<type;
         mt = text;
+        This = object(luabind::from_stack(__pL,1));
+        qDebug()<<obj_name(This).c_str();
     }
     QListWidgetItem_wrap(const QIcon &icon, const QString &text,
-                             QListWidget *view = 0, int type = Type):QListWidgetItem(icon,text,view,type){}
+                             QListWidget *view = 0, int type = Type):QListWidgetItem(icon,text,view,type){
+        This = object(luabind::from_stack(__pL,1));
+        qDebug()<<obj_name(This).c_str();
+    }
     QListWidgetItem_wrap(const QListWidgetItem &other):QListWidgetItem(other){
 //        qDebug()<< "wrap::(other)"<<lua_type( detail::wrap_access::ref(*this).state(), -1);
+        This = object(luabind::from_stack(__pL,1));
+        qDebug()<<obj_name(This).c_str();
     }
     //QListWidgetItem_wrap(const QListWidgetItem_wrap &other):QListWidgetItem(other){}
 
@@ -60,44 +72,79 @@ struct QListWidgetItem_wrap : public QListWidgetItem, wrap_base
         return This.QListWidgetItem::operator <(other);
     }
 
-    QListWidgetItem *clone() const
-    {
-        return QListWidgetItem::clone();
-    }
     QString mt;
+    object This;
 };
 
 struct QListItem : QListWidgetItem
 {
-    QListItem(QListWidget *view = 0, int type = Type):QListWidgetItem(view,type){}
-    QListItem(const QString &text, QListWidget *view = 0, int type = Type):QListWidgetItem(text,view,type){
+    QListItem(QListWidget *view = 0, int type = Type):QListWidgetItem(view,type),This(luabind::from_stack(__pL,1)){
+        init();
+    }
+    QListItem(const QString &text, QListWidget *view = 0, int type = Type):QListWidgetItem(text,view,type),This(luabind::from_stack(__pL,1)){
+        init();
     }
     QListItem(const QIcon &icon, const QString &text,
-                             QListWidget *view = 0, int type = Type):QListWidgetItem(icon,text,view,type){}
-    QListItem(const QListWidgetItem &other):QListWidgetItem(other){
+                             QListWidget *view = 0, int type = Type):QListWidgetItem(icon,text,view,type),This(luabind::from_stack(__pL,1)){
+        init();
+    }
+    QListItem(const QListWidgetItem &other):QListWidgetItem(other),This(luabind::from_stack(__pL,1)){
+        init();
     }
 
+    void init(){
+        //This = object(luabind::from_stack(__pL,1));
+        object f = This["data"];
+        std::string n = obj_name(This);
+        qDebug()<<n.c_str();
+        if(strcmp(n.c_str(),"QListItem2") != 0){
+            if(f && luabind::type(f) == LUA_TFUNCTION){
+                fun = f;
+            }
+        }
+    }
+
+    QVariant _data(int role) const{
+        return QListWidgetItem::data(role);
+    }
+    void _setData(int role, const QVariant& data)
+    {
+        QListWidgetItem::setData(role,data);
+    }
     virtual QVariant data(int role) const
     {
-        return QVariant();
+        if(fun && luabind::type(fun) == LUA_TFUNCTION){
+            try{
+                //return call_function<QVariant>(fun,This,role);
+                return call_member<QVariant>(This,"data",role);
+            }catch(...){
+                qDebug()<<"error";
+            }
+        }
+        return _data(role);
     }
     virtual void setData(int role, const QVariant& data)
     {
+        _setData(role,data);
     }
     bool operator<(const QListWidgetItem &other) const
     {
-        return true;
+        return QListWidgetItem::operator <(other);
     }
+    object fun;
+    object This;
 };
 
 typedef class_<QComboBox, QWidget> LQComboBox;
 typedef class_<QListWidget, QFrame> LQListWidget;
 typedef class_<QListWidgetItem> LQListWidgetItem;
 typedef class_<QTreeWidget, QFrame> LQTreeWidget;
+typedef class_<QTreeWidgetItem> LQTreeWidgetItem;
 
 LQComboBox lqcombobox();
 LQListWidgetItem lqlistwidgetitem();
 LQListWidget lqlistwidget();
 LQTreeWidget lqtreewidget();
+LQTreeWidgetItem lqtreewidgetitem();
 
 #endif

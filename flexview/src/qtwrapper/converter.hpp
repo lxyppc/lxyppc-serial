@@ -89,31 +89,31 @@ struct default_converter<QByteArray const&>
 
 
 
-//template <>
-//struct default_converter<QVariant>
-//  : native_converter_base<QVariant>
-//{
-//    static int compute_score(lua_State* L, int index)
-//    {
-//        lua_type(L, index);
-//        return 0;
-//    }
-//
-//    QVariant from(lua_State* L, int index)
-//    {
-//        return var_from(L,index);
-//    }
-//
-//    void to(lua_State* L, QVariant const& v)
-//    {
-//        var_to(L,v);
-//    }
-//};
-//
-//template <>
-//struct default_converter<QVariant const&>
-//  : default_converter<QVariant>
-//{};
+template <>
+struct default_converter<QVariant>
+  : native_converter_base<QVariant>
+{
+    static int compute_score(lua_State* L, int index)
+    {
+        lua_type(L, index);
+        return 0;
+    }
+
+    QVariant from(lua_State* L, int index)
+    {
+        return var_from(L,index);
+    }
+
+    void to(lua_State* L, QVariant const& v)
+    {
+        var_to(L,v);
+    }
+};
+
+template <>
+struct default_converter<QVariant const&>
+  : default_converter<QVariant>
+{};
 
 //template <>
 //struct default_converter<Qt::ToolBarAreas>
