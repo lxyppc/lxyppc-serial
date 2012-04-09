@@ -241,6 +241,12 @@ bool obj_name_contain(const object& o, const char* name){
     template<>bool is_class<const name&>(const object& obj){ return obj_name_is(obj,#name);}\
     template<>bool is_class<const name*>(const object& obj){ return obj_name_is(obj,#name);}
 
+#define IS_CLASS2(cls,name)  \
+    template<>bool is_class<cls>(const object& obj){ return obj_name_is(obj,#name);}\
+    template<>bool is_class<cls*>(const object& obj){ return obj_name_is(obj,#name);}\
+    template<>bool is_class<const cls&>(const object& obj){ return obj_name_is(obj,#name);}\
+    template<>bool is_class<const cls*>(const object& obj){ return obj_name_is(obj,#name);}
+
 IS_CLASS(QMenuBar)
 IS_CLASS(QToolBar)
 IS_CLASS(QStatusBar)
@@ -258,6 +264,10 @@ IS_CLASS(QBrush)
 IS_CLASS(QFont)
 IS_CLASS(QKeySequence)
 IS_CLASS(QVariant_wrapper)
+IS_CLASS2(QListWidgetItem,QListItem)
+IS_CLASS2(QTreeWidgetItem,QTreeItem)
+IS_CLASS2(QTableWidgetItem,QTableItem)
+IS_CLASS(QTableWidgetSelectionRange)
 
 template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}
 template<>bool is_class<QWidget*>(const object& obj){ return type(obj) == LUA_TUSERDATA; }

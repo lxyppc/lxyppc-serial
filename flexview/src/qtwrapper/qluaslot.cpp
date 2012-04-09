@@ -133,6 +133,63 @@ void general_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2)
     }
 }
 
+template<class T1, class T2, class T3>
+void general_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2, T3 t3)
+{
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj,t1,t2,t3);
+    }else if(type(m_obj) == LUA_TTABLE){
+        object c,f;
+        for(iterator i(m_obj),e;i!=e;++i){
+            if(type(*i) == LUA_TUSERDATA){
+                c = *i;
+            }else if(type(*i) == LUA_TFUNCTION){
+                f = *i;
+            }else if(type(*i) == LUA_TSTRING){
+                f = *i;
+            }
+        }
+        if(f && c){
+            if(type(f) == LUA_TFUNCTION){
+                call_function<void>(f,c,t1,t2,t3);
+            }else if(type(f) == LUA_TSTRING){
+                call_member<void>(c,object_cast<const char*>(f),t1,t2,t3);
+            }
+        }
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(),t1,t2,t3);
+    }
+}
+
+template<class T1, class T2, class T3, class T4>
+void general_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2, T3 t3, T4 t4)
+{
+    if(type(m_obj) == LUA_TFUNCTION){
+        call_function<void>(m_obj,t1,t2,t3,t4);
+    }else if(type(m_obj) == LUA_TTABLE){
+        object c,f;
+        for(iterator i(m_obj),e;i!=e;++i){
+            if(type(*i) == LUA_TUSERDATA){
+                c = *i;
+            }else if(type(*i) == LUA_TFUNCTION){
+                f = *i;
+            }else if(type(*i) == LUA_TSTRING){
+                f = *i;
+            }
+        }
+        if(f && c){
+            if(type(f) == LUA_TFUNCTION){
+                call_function<void>(f,c,t1,t2,t3,t4);
+            }else if(type(f) == LUA_TSTRING){
+                call_member<void>(c,object_cast<const char*>(f),t1,t2,t3,t4);
+            }
+        }
+    }else{
+        call_member<void>(m_obj,m_method.toStdString().c_str(),t1,t2,t3,t4);
+    }
+}
+
+
 inline void gen_slot(const object& m_obj, const QString& m_method)
 {
     try{
@@ -157,6 +214,24 @@ inline void gen_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2)
 {
     try{
         general_slot(m_obj,m_method,t1,t2);
+    }
+    catch (...)
+    {}
+}
+template<typename T1, typename T2, typename T3>
+inline void gen_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2, T3 t3)
+{
+    try{
+        general_slot(m_obj,m_method,t1,t2,t3);
+    }
+    catch (...)
+    {}
+}
+template<typename T1, typename T2, typename T3, typename T4>
+inline void gen_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2, T3 t3, T4 t4)
+{
+    try{
+        general_slot(m_obj,m_method,t1,t2,t3,t4);
     }
     catch (...)
     {}
@@ -191,11 +266,48 @@ void QLuaSlot::general_slot(const QString& param)
 {
     ::gen_slot(m_obj,m_method,param.toStdString().c_str());
 }
+
 void QLuaSlot::general_slot(QListWidgetItem* param)
 {
     ::gen_slot(m_obj,m_method,param);
 }
+
 void QLuaSlot::general_slot(QListWidgetItem* param1,QListWidgetItem* param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(QTreeWidgetItem* param)
+{
+    ::gen_slot(m_obj,m_method,param);
+}
+
+void QLuaSlot::general_slot(QTreeWidgetItem* param1,QTreeWidgetItem* param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(QTreeWidgetItem* param1,int param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(int param1, int param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(int param1, int param2, int param3, int param4)
+{
+    ::gen_slot(m_obj,m_method,param1,param2,param3,param4);
+}
+
+void QLuaSlot::general_slot(QTableWidgetItem* param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QTableWidgetItem* param1, QTableWidgetItem* param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
 }

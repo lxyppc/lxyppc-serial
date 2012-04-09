@@ -140,11 +140,18 @@ typedef class_<QListWidget, QFrame> LQListWidget;
 typedef class_<QListWidgetItem> LQListWidgetItem;
 typedef class_<QTreeWidget, QFrame> LQTreeWidget;
 typedef class_<QTreeWidgetItem> LQTreeWidgetItem;
+typedef class_<QTableWidget, QFrame> LQTableWidget;
+typedef class_<QTableWidgetItem> LQTableWidgetItem;
+typedef class_<QTableWidgetSelectionRange> LQTableWidgetSelectionRange;
+
 
 LQComboBox lqcombobox();
 LQListWidgetItem lqlistwidgetitem();
 LQListWidget lqlistwidget();
 LQTreeWidget lqtreewidget();
 LQTreeWidgetItem lqtreewidgetitem();
+LQTableWidget lqtablewidget();
+LQTableWidgetItem lqtablewidgetitem();
+LQTableWidgetSelectionRange lqtablewidgetselectionrange();
 
 #endif

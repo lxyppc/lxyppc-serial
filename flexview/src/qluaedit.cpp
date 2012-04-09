@@ -1,5 +1,5 @@
 #include "qluaedit.h"
-
+#include <QtGui>
 
 QLuaEdit::QLuaEdit(QWidget *parent) :
     QTextEdit(parent)
@@ -16,4 +16,13 @@ QLuaEdit::QLuaEdit(QWidget *parent) :
 void QLuaEdit::addKeyWord(const QString& key)
 {
     highlighter->addUserKeyword(key);
+}
+
+void QLuaEdit::keyPressEvent(QKeyEvent * event)
+{
+    if (event->key() == Qt::Key_Tab){
+        this->insertPlainText("    ");
+    }else{
+        QTextEdit::keyPressEvent(event);
+    }
 }

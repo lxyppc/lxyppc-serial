@@ -45,5 +45,5 @@ void MainWindow::addLog(const QString& log)
 
 void MainWindow::my_about()
 {
-    QMessageBox::about(this, "Design is zero", QString::fromLocal8Bit("<p><b>Design is zero</b></p>大音希声，大象无形。"));
+    QMessageBox::about(this, "Flex Data Viewer", QString::fromLocal8Bit("<p><b>Flex Data Viewer</b></p><p>by lxyppc</p>lxyppc@163.com"));
 }

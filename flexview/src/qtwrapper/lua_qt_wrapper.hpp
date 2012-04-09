@@ -328,16 +328,74 @@ struct myclass_ : public class_<T,X1,X2,X3>
         return *this;
     }
 
+    template<class B, class R>
+    myclass_& _property(const char* prop, R (B::*g)()){
+        class_<T,X1,X2,X3>::property(prop,g);
+        return *this;
+    }
+    template<class B, class R>
+    myclass_& _property(const char* prop, R (B::*g)()const){
+        class_<T,X1,X2,X3>::property(prop,g);
+        return *this;
+    }
+    template<class B, class R>
+    myclass_& _property(const char* prop, R g(B*)) {
+        class_<T,X1,X2,X3>::property(prop,g);
+        return *this;
+    }
+
+    template<class Getter>
+    myclass_& _property(const char* prop, Getter g){
+        class_<T,X1,X2,X3>::def(prop,g);
+        return *this;
+    }
+
+    template<class B, class R, class Setter>
+    myclass_& _property(const char* prop, R (B::*g)(), Setter s){
+        if(set_map)(*set_map)[QString::fromLocal8Bit(prop)] = s;
+        class_<T,X1,X2,X3>::property(prop,g,s);
+        return *this;
+    }
+
+    template<class B, class R, class Setter>
+    myclass_& _property(const char* prop, R (B::*g)()const, Setter s){
+        if(set_map)(*set_map)[QString::fromLocal8Bit(prop)] = s;
+        class_<T,X1,X2,X3>::property(prop,g,s);
+        return *this;
+    }
+
+    template<class B, class R, class Setter>
+    myclass_& _property(const char* prop, R g(B*), Setter s){
+        if(set_map)(*set_map)[QString::fromLocal8Bit(prop)] = s;
+        class_<T,X1,X2,X3>::property(prop,g,s);
+        return *this;
+    }
+
+    template<class Getter, class Setter>
+    myclass_& _property(const char* prop, Getter g, Setter s){
+        static std::map<std::string,int> smp;
+        class_<T,X1,X2,X3>::def(prop,g);
+        std::string sp("set");
+        sp += prop;
+        sp[3] = ::toupper(sp[3]);
+        smp[sp] = 1;
+        class_<T,X1,X2,X3>::def(smp.find(sp)->first.c_str(),s);
+        return *this;
+    }
+
+
     template<class Getter>
     myclass_& property(const char* prop, Getter g){
-        class_<T,X1,X2,X3>::property(prop,g);
+        //class_<T,X1,X2,X3>::property(prop,g);
+        _property(prop,g);
         return *this;
     }
 
     template<class Getter, class Setter>
     myclass_& property(const char* prop, Getter g, Setter s){
-        if(set_map)(*set_map)[QString::fromLocal8Bit(prop)] = s;
-        class_<T,X1,X2,X3>::property(prop,g,s);
+        //if(set_map)(*set_map)[QString::fromLocal8Bit(prop)] = s;
+        //class_<T,X1,X2,X3>::property(prop,g,s);
+        _property(prop,g,s);
         return *this;
     }
     template<class Getter, class Setter, class P1>

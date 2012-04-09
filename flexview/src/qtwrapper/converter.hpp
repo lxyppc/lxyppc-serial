@@ -45,7 +45,80 @@ struct default_converter<QString const&>
   : default_converter<QString>
 {};
 
+template <>
+struct default_converter<QStringList>
+  : native_converter_base<QStringList>
+{
+    static int compute_score(lua_State* L, int index)
+    {
+        return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
+    }
 
+    QStringList from(lua_State* L, int index)
+    {
+        object obj(luabind::from_stack(L,index));
+        QStringList arr;
+        for(iterator i(obj),e; i!=e; ++i){
+            QString v = 0;
+            if(type(*i) == LUA_TSTRING){
+                v = object_cast<QString>(*i);
+                arr.append(v);
+            }
+        }
+        return arr;
+    }
+
+    void to(lua_State* L, QStringList const& arr)
+    {
+        object obj = luabind::newtable(L);
+        for(int i=0;i<arr.length();i++){
+            obj[i+1] = arr.at(i);
+        }
+        obj.push(L);
+    }
+};
+
+template <>
+struct default_converter<QStringList const&>
+  : default_converter<QStringList>
+{};
+
+
+template <typename T>
+struct default_converter<QList<T> >
+  : native_converter_base<QList<T> >
+{
+    static int compute_score(lua_State* L, int index)
+    {
+        return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
+    }
+
+    QList<T> from(lua_State* L, int index)
+    {
+        object obj(luabind::from_stack(L,index));
+        QList<T> arr;
+        for(iterator i(obj),e; i!=e; ++i){
+            if(is_class<T>(*i)){
+                arr.append(object_cast<T>(*i));
+            }
+        }
+        return arr;
+    }
+
+    void to(lua_State* L, QList<T> const& arr)
+    {
+        object obj = luabind::newtable(L);
+        for(int i=0;i<arr.length();i++){
+            obj[i+1] = arr.at(i);
+        }
+        obj.push(L);
+    }
+};
+
+template <typename T>
+struct default_converter<QList<T> const&>
+  : default_converter<QList<T> >
+{};
 
 
 
@@ -169,6 +242,7 @@ QT_EMUN_CONVERTER(Qt::CheckState)
 QT_EMUN_CONVERTER(Qt::WindowFlags)
 QT_EMUN_CONVERTER(QMessageBox::StandardButtons)
 QT_EMUN_CONVERTER(QFileDialog::Options)
+QT_EMUN_CONVERTER(Qt::MatchFlags)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

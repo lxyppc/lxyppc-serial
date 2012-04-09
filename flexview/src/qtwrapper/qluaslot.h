@@ -37,6 +37,13 @@ public slots:
     void general_slot(const QString&);
     void general_slot(QListWidgetItem* item);
     void general_slot(QListWidgetItem* item1,QListWidgetItem* item2);
+    void general_slot(QTreeWidgetItem* item);
+    void general_slot(QTreeWidgetItem* item1,QTreeWidgetItem* item2);
+    void general_slot(QTreeWidgetItem* item1, int column);
+    void general_slot(int,int);
+    void general_slot(int,int,int,int);
+    void general_slot(QTableWidgetItem* item1);
+    void general_slot(QTableWidgetItem* item1, QTableWidgetItem* column);
 private:
     object m_obj;
     QString m_method;

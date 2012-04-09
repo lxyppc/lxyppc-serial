@@ -4,6 +4,7 @@
 #include "../luadialog.h"
 #include "lite_ptr.h"
 #include "lua_qtypes.h"
+#include "../protowrapper/lua_serial.h"
 #include <luabind/out_value_policy.hpp>
 #include "../mainwindow.h"
 using namespace luabind;
@@ -296,7 +297,17 @@ void register_classes(lua_State* L, char const* name = 0)
         lqcombobox(),
         lqlistwidgetitem(),
         lqlistwidget(),
+        lqtreewidgetitem(),
         lqtreewidget(),
+        lqtablewidgetitem(),
+        lqtablewidget(),
+        lqtablewidgetselectionrange(),
+
+        lqtabwidget(),
+        lqtoolbox(),
+
+        lqextserialport(),
+        lqextportinfo(),
 
         //lqvariant(),
 

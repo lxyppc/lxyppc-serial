@@ -521,6 +521,37 @@ QString getDir(QWidget *parent,
 }
 
 
+QFont getFont(bool* ok)
+{
+    return QFontDialog::getFont(ok);
+}
+
+QFont getFont(bool* ok, QWidget* w)
+{
+    return QFontDialog::getFont(ok,w);
+}
+
+QFont getFont(bool* ok, const QFont& init)
+{
+    return QFontDialog::getFont(ok,init);
+}
+
+QFont getFont(bool* ok, const QFont& init, QWidget* w)
+{
+    return QFontDialog::getFont(ok,init,w);
+}
+
+QFont getFont(bool* ok, const QFont& init, QWidget* w, const QString& title)
+{
+    return QFontDialog::getFont(ok,init,w,title);
+}
+
+QFont getFont(bool* ok, const QFont& init, QWidget* w, const QString& title, int f)
+{
+    return QFontDialog::getFont(ok,init,w,title,QFontDialog::FontDialogOptions(f));
+}
+
+
 void about(QWidget* w, const QString& title,const QString& text)
 {
     QMessageBox::about(w,title,text);
@@ -785,6 +816,14 @@ LQCommonDlg  lqcommondlg()
         def("getDir", (QString(*)(QWidget *, const QString &)) getDir ),
         def("getDir", (QString(*)(QWidget *, const QString &,const QString &)) getDir ),
         def("getDir", (QString(*)(QWidget *, const QString &,const QString &,QFileDialog::Options)) getDir ),
+
+        def("getFont", (QFont (*)(bool*))getFont,pure_out_value(_1)),
+        def("getFont", (QFont (*)(bool*,QWidget*))getFont,pure_out_value(_1)),
+        def("getFont", (QFont (*)(bool*,const QFont&))getFont,pure_out_value(_1)),
+        def("getFont", (QFont (*)(bool*,const QFont&,QWidget*))getFont,pure_out_value(_1)),
+        def("getFont", (QFont (*)(bool*,const QFont&,QWidget*,const QString&))getFont,pure_out_value(_1)),
+        def("getFont", (QFont (*)(bool*,const QFont&,QWidget*,const QString&,int))getFont,pure_out_value(_1)),
+
 
         def("critical", (QMessageBox::StandardButton (*)(const QString& ,const QString& ))critical),
         def("critical", (QMessageBox::StandardButton (*)(const QString& ,const QString& , QMessageBox::StandardButtons ))critical),
