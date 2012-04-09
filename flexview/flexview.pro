@@ -20,7 +20,9 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qeditor.cpp \
     src/qluaedit.cpp \
     src/qtwrapper/lua_qlist.cpp \
-    src/qtwrapper/lua_qdialog.cpp
+    src/qtwrapper/lua_qdialog.cpp \
+    src/protowrapper/lua_serial.cpp \
+    src/qtwrapper/lua_qtabwidget.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -115,9 +117,13 @@ win32 {
         ./qextserialport/qextserialenumerator_win.cpp
     DEFINES += WINVER=0x0501 # needed for mingw to pull in appropriate dbt business...probably a better way to do this
     LIBS += -lsetupapi
+    RC_FILE = ./res/app.rc
 }
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers
 FORMS += src/luadialog.ui
 OTHER_FILES += src/script.lua
+
+RESOURCES += \
+    res.qrc

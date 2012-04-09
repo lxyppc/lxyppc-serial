@@ -4,8 +4,8 @@ void run_script_init(MainWindow* mainwindow);
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    this->setWindowIcon(QIcon(":res/123.png"));
     this->setCentralWidget(new QMdiArea(this));
-
     QDockWidget* dock = new QDockWidget(tr("Script log"),this);
     dock->setObjectName(tr("ScriptLogDock"));
     logText = new QTextEdit(dock);
