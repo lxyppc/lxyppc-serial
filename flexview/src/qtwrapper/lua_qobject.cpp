@@ -1,12 +1,73 @@
 #include "lua_qobject.h"
 
+
+QObject* lqobject_get_filter(QObject* obj)
+{
+    return obj;
+}
+
+struct myFilter : public QObject
+{
+    myFilter(const object& obj):m_obj(obj){}
+    virtual bool eventFilter(QObject * obj, QEvent * evt)
+    {
+        bool res = false;
+        if(type(m_obj) == LUA_TFUNCTION){
+            res = call_function<bool>(m_obj,obj,evt);
+        }else if(type(m_obj) == LUA_TTABLE){
+            object c,f;
+            for(iterator i(m_obj),e;i!=e;++i){
+                if(type(*i) == LUA_TUSERDATA){
+                    c = *i;
+                }else if(type(*i) == LUA_TFUNCTION){
+                    f = *i;
+                }else if(type(*i) == LUA_TSTRING){
+                    f = *i;
+                }
+            }
+            if(f && c){
+                if(type(f) == LUA_TFUNCTION){
+                    res = call_function<bool>(f,c,obj,evt);
+                }else if(type(f) == LUA_TSTRING){
+                    res = call_member<bool>(c,object_cast<const char*>(f),obj,evt);
+                }
+            }
+        }
+        if(res) return res;
+        return QObject::eventFilter(obj,evt);
+    }
+private:
+    object m_obj;
+};
+std::string obj_name(const object& o);
+void lqobject_set_filter(QObject* parent, const object& obj)
+{
+    if(type(obj) == LUA_TUSERDATA){
+        try{
+            std::string name = obj_name(obj);
+            QObject* o = object_cast<QObject*>(obj);
+            parent->installEventFilter(o);
+            return;
+        }catch(...){
+        }
+    }
+    parent->installEventFilter(new myFilter(obj));
+}
+
 LQObject lqobject()
 {
     return
     class_<QObject>("QObject")
             .def(constructor<>())
             .def(constructor<QObject*>())
+            .def("installEventFilter", &QObject::installEventFilter)
+            .def("removeEventFilter", &QObject::removeEventFilter)
+            .def("killTimer", &QObject::killTimer)
+            .def("startTimer", &QObject::startTimer)
+            .def("property", &QObject::property)
+            .def("setProperty", &QObject::setProperty)
             .property("objectName", &QObject::objectName, &QObject::setObjectName)
+            .property("eventFilter", lqobject_get_filter, lqobject_set_filter)
    ;
 }
 
@@ -139,6 +200,7 @@ LQWidget lqwidget()
             .property("geometry", &QWidget::geometry, (void(QWidget::*)(const QRect&))&QWidget::setGeometry)
 
             .property("layout", &QWidget::layout, &QWidget::setLayout)
+            .property("acceptDrops", &QWidget::acceptDrops, &QWidget::setAcceptDrops)
 
             .scope[
                def("setTabOrder", &QWidget::setTabOrder)

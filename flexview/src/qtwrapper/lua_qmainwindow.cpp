@@ -1,4 +1,6 @@
 #include "lua_qmainwindow.h"
+#include "luabind/tag_function.hpp"
+#include "qluaslot.h"
 using namespace luabind;
 
 QString toString(const object& obj)
@@ -151,6 +153,68 @@ LQStatusBar lqstatusbar()
          .def(constructor<QWidget*>())
          .def("addWidget", &QStatusBar::addWidget)
          ;
+}
+
+LQAbstractScrollArea lqabstractscrollarea()
+{
+    return
+    class_<QAbstractScrollArea,QFrame>("LQAbstractScrollArea")
+    .def(constructor<>())
+    ;
+}
+
+SIGNAL_PROPERYT(lqmdiarea, subWindowActivated, QMdiArea, "(QMdiSubWindow*)")
+LQMdiArea lqmdiarea()
+{
+    return
+    class_<QMdiArea,QAbstractScrollArea>("QMdiArea")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+    .def("addSubWindow", &QMdiArea::addSubWindow)
+    .def("addSubWindow", tag_function<QMdiSubWindow*(QMdiArea*, QWidget*)>(boost::bind(&QMdiArea::addSubWindow, _1, _2, Qt::WindowFlags(0))))
+
+    .def("removeSubWindow",&QMdiArea::removeSubWindow)
+    .def("setOption",&QMdiArea::setOption)
+    .def("setOption",tag_function<void(QMdiArea*, QMdiArea::AreaOption)>(boost::bind(&QMdiArea::setOption, _1, _2, true)))
+    .def("testOption",&QMdiArea::testOption)
+
+    .def("setActiveSubWindow",&QMdiArea::setActiveSubWindow)
+    .def("activateNextSubWindow",&QMdiArea::activateNextSubWindow)
+    .def("activatePreviousSubWindow",&QMdiArea::activatePreviousSubWindow)
+    .def("tileSubWindows",&QMdiArea::tileSubWindows)
+    .def("cascadeSubWindows",&QMdiArea::cascadeSubWindows)
+    .def("closeActiveSubWindow",&QMdiArea::closeActiveSubWindow)
+    .def("closeAllSubWindows",&QMdiArea::closeAllSubWindows)
+    .def("subWindowList",&QMdiArea::subWindowList)
+    .def("subWindowList",tag_function<void(QMdiArea*)>(boost::bind(&QMdiArea::subWindowList, _1, QMdiArea::CreationOrder)))
+
+    .property("background", &QMdiArea::background, &QMdiArea::setBackground)
+    .property("activationOrder", &QMdiArea::activationOrder, &QMdiArea::setActivationOrder)
+    .property("activeSubWindow", &QMdiArea::activeSubWindow, &QMdiArea::setActiveSubWindow)
+    .property("currentSubWindow", &QMdiArea::currentSubWindow)
+    .property("documentMode", &QMdiArea::documentMode, &QMdiArea::setDocumentMode)
+    .property("tabPosition", &QMdiArea::tabPosition, &QMdiArea::setTabPosition)
+    .property("tabShape", &QMdiArea::tabShape, &QMdiArea::setTabShape)
+    .property("viewMode", &QMdiArea::viewMode, &QMdiArea::setViewMode)
+    .sig_prop(lqmdiarea, subWindowActivated)
+    ;
+}
+
+LQMdiSubWindow lqmdisubwindow()
+{
+    return
+    class_<QMdiSubWindow,QWidget>("QMdiSubWindow")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+    .def("setOption",&QMdiSubWindow::setOption)
+    .def("setOption",tag_function<void(QMdiSubWindow*, QMdiSubWindow::SubWindowOption)>(boost::bind(&QMdiSubWindow::setOption, _1, _2, true)))
+    .def("testOption",&QMdiSubWindow::testOption)
+    .def("showShaded",&QMdiSubWindow::showShaded)
+    .def("showSystemMenu",&QMdiSubWindow::showSystemMenu)
+
+    .property("widget", &QMdiSubWindow::widget, &QMdiSubWindow::setWidget)
+    .property("mdiArea", &QMdiSubWindow::mdiArea)
+    ;
 }
 
 class QTestType

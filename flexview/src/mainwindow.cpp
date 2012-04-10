@@ -5,7 +5,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     this->setWindowIcon(QIcon(":res/123.png"));
-    this->setCentralWidget(new QMdiArea(this));
+    mdi = new QMdiArea(this);
+    this->setCentralWidget(mdi);
     QDockWidget* dock = new QDockWidget(tr("Script log"),this);
     dock->setObjectName(tr("ScriptLogDock"));
     logText = new QTextEdit(dock);

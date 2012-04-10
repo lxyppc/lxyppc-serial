@@ -238,6 +238,21 @@ void register_classes(lua_State* L, char const* name = 0)
     [
         lqobject(),
         lqwidget(),
+
+        lqevent(),
+        lqinputevent(),
+        lqcloseevent(),
+        lqcontextmenuevent(),
+        lqdropevent(),
+        lqkeyevent(),
+        lqmouseevent(),
+        lqpaintevent(),
+        lqtimerevent(),
+        lqwheelevent(),
+        lqresizeevent(),
+        lqshowevent(),
+        lqhideevent(),
+
         lqmainwindow(),
         lqdockwidget(),
         lqstatusbar(),
@@ -245,12 +260,11 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqdialog(),
         lqframe(),
+        lqgroupbox(),
 
-        class_<QAbstractScrollArea,QFrame>("QAbstractScrollArea")
-            .def(constructor<>()),
-
-        class_<QMdiArea,QAbstractScrollArea>("QMdiArea")
-            .def(constructor<>()),
+        lqabstractscrollarea(),
+        lqmdisubwindow(),
+        lqmdiarea(),
 
         class_<LuaDialog,QDialog>("LuaEditor")
             .def(constructor<>())
@@ -308,6 +322,7 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqextserialport(),
         lqextportinfo(),
+        lqportsetting(),
 
         //lqvariant(),
 
@@ -315,7 +330,8 @@ void register_classes(lua_State* L, char const* name = 0)
 
         class_<MainWindow,QMainWindow>("MainWindow")
             .def(constructor<>())
-            .property("logEdit", &MainWindow::getLogEdit),
+            .property("logEdit", &MainWindow::getLogEdit)
+            .property("mdiArea", &MainWindow::getMdiArea),
 
         def("connect", (bool(*)(QObject*, const char*, QObject* , const char* ))&sigslot_connect),
         def("connect", (bool(*)(QObject*, const char*, object))&sigfunc_connect),

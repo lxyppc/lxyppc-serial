@@ -72,7 +72,7 @@ struct default_converter<QStringList>
     {
         object obj = luabind::newtable(L);
         for(int i=0;i<arr.length();i++){
-            obj[i+1] = arr.at(i);
+            obj[i+1] = arr.at(i).toStdString().c_str();
         }
         obj.push(L);
     }

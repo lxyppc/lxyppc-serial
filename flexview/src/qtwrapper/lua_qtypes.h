@@ -12,5 +12,6 @@
 #include "lua_qtextedit.h"
 #include "lua_qdialog.h"
 #include "lua_qtabwidget.h"
+#include "lua_qevent.h"
 #endif
 

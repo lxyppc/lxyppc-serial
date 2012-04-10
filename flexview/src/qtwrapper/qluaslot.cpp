@@ -1,5 +1,6 @@
 #include "qluaslot.h"
 #include <QDebug>
+#include "../../qextserialport/qextserialenumerator.h"
 
 QLuaSlot::QLuaSlot(const QString& signature) :
     QObject(0),m_signature(signature)
@@ -310,4 +311,19 @@ void QLuaSlot::general_slot(QTableWidgetItem* param1)
 void QLuaSlot::general_slot(QTableWidgetItem* param1, QTableWidgetItem* param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(qint64 param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(const QextPortInfo& param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QMdiSubWindow* param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
 }

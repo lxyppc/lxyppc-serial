@@ -6,7 +6,7 @@
 #include <luabind/luabind.hpp>
 #include <boost/smart_ptr.hpp>
 using namespace luabind;
-
+struct QextPortInfo;
 class QLuaSlot : public QObject
 {
 Q_OBJECT
@@ -44,6 +44,10 @@ public slots:
     void general_slot(int,int,int,int);
     void general_slot(QTableWidgetItem* item1);
     void general_slot(QTableWidgetItem* item1, QTableWidgetItem* column);
+
+    void general_slot(qint64);
+    void general_slot(const QextPortInfo&);
+    void general_slot(QMdiSubWindow*);
 private:
     object m_obj;
     QString m_method;

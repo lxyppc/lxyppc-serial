@@ -13,7 +13,8 @@ public:
 
     void addLog(const QString& log);
 
-    QTextEdit* getLogEdit(){ return logText;}
+    QTextEdit* getLogEdit() const { return logText;}
+    QMdiArea* getMdiArea()const { return mdi; }
 
 public slots:
     void my_about();
