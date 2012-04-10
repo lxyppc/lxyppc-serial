@@ -57,8 +57,13 @@ function init_mainwindow(mainwindow)
     stopBitsList = QComboBox{ QSerialPort.ValidStopBits() }
     flowList = QComboBox{ QSerialPort.ValidFlow() }
     settingString = QLineEdit(serial.settingString){
-    readonly = true
+        readonly = true
     }
+    baudList.currentIndex = serial.baudRate
+    parityList.currentIndex = serial.parity
+    dataBitsList.currentIndex = serial.dataBits
+    stopBitsList.currentIndex = serial.stopBits
+    flowList.currentIndex = serial.flowControl
 
     baudList.currentIndexChanged = {serial,serial.setBaudRate}
     parityList.currentIndexChanged = {serial,serial.setParity}
@@ -94,8 +99,8 @@ function init_mainwindow(mainwindow)
         else
             i = portList.currentIndex
             portInfo = portList:itemData(i)
-            log:append("open: " .. portInfo.physName)
-            serial.portName = portInfo.physName
+            log:append("open: " .. portInfo.portName)
+            serial.portName = portInfo.portName
             res = serial:open()
             log:append(serial.errorString)
             if res then

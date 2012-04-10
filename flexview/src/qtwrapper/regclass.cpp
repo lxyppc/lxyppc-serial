@@ -368,7 +368,7 @@ void run_script_init(MainWindow* mainwindow)
 {
     mwindow = mainwindow;
     set_pcall_callback(pcall_handler);
-    QFile file("../src/script.lua");
+    QFile file("script.lua");
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";
         mainwindow->addLog(QString::fromLocal8Bit("Script file missing"));
