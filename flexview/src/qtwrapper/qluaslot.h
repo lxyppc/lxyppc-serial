@@ -33,6 +33,7 @@ public slots:
     void general_slot(char);
     void general_slot(short);
     void general_slot(int);
+    void general_slot(double);
     void general_slot(bool);
     void general_slot(const QString&);
     void general_slot(QListWidgetItem* item);
@@ -48,6 +49,10 @@ public slots:
     void general_slot(qint64);
     void general_slot(const QextPortInfo&);
     void general_slot(QMdiSubWindow*);
+    void general_slot(QSystemTrayIcon::ActivationReason);
+    void general_slot(const QDate&);
+    void general_slot(const QTime&);
+    void general_slot(const QDateTime&);
 private:
     object m_obj;
     QString m_method;

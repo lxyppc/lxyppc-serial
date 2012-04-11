@@ -1,10 +1,12 @@
 #include "lua_qrect.h"
 static setter_map<QPoint> lqpoint_set_map;
+static setter_map<QLine> lqline_set_map;
 static setter_map<QRect> lqrect_set_map;
 static setter_map<QSize> lqsize_set_map;
 static setter_map<QMargins> lqmargins_set_map;
 static setter_map<QColor> lqcolor_set_map;
 static setter_map<QBrush> lqbrush_set_map;
+static setter_map<QPen> lqpen_set_map;
 static setter_map<QFont> lqfont_set_map;
 
 template<>
@@ -12,7 +14,11 @@ void table_init_general<QPoint>(const luabind::argument & arg, const object& obj
 {
     lq_general_init(construct<QPoint>(arg), obj, lqpoint_set_map);
 }
-
+template<>
+void table_init_general<QLine>(const luabind::argument & arg, const object& obj)
+{
+    lq_general_init(construct<QLine>(arg), obj, lqline_set_map);
+}
 template<>
 void table_init_general<QRect>(const luabind::argument & arg, const object& obj)
 {
@@ -44,6 +50,12 @@ void table_init_general<QBrush>(const luabind::argument & arg, const object& obj
 }
 
 template<>
+void table_init_general<QPen>(const luabind::argument & arg, const object& obj)
+{
+    lq_general_init(construct<QPen>(arg), obj, lqpen_set_map);
+}
+
+template<>
 void table_init_general<QFont>(const luabind::argument & arg, const object& obj)
 {
     lq_general_init(construct<QFont>(arg), obj, lqfont_set_map);
@@ -52,6 +64,10 @@ void table_init_general<QFont>(const luabind::argument & arg, const object& obj)
 QPoint* lqpoint_init(QPoint* widget, const object& obj)
 {
     return lq_general_init(widget, obj, lqpoint_set_map);
+}
+QLine* lqline_init(QLine* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqline_set_map);
 }
 QRect* lqrect_init(QRect* widget, const object& obj)
 {
@@ -75,6 +91,11 @@ QBrush* lqbrush_init(QBrush* widget, const object& obj)
     return lq_general_init(widget, obj, lqbrush_set_map);
 }
 
+QPen* lqpen_init(QPen* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqpen_set_map);
+}
+
 QFont* lqfont_init(QFont* widget, const object& obj)
 {
     return lq_general_init(widget, obj, lqfont_set_map);
@@ -86,13 +107,81 @@ LQPoint lqpoint()
     myclass_<QPoint>("QPoint", lqpoint_set_map)
     .def(constructor<>())
     .def(constructor<int,int>())
-    .def("__call", &lqpoint_init)
-    .def("__init", &table_init_general<QPoint>)
+    .def("__call", lqpoint_init)
+    .def("__init", table_init_general<QPoint>)
 
     .property("x", &QPoint::x, &QPoint::setX)
     .property("y", &QPoint::y, &QPoint::setY)
     ;
 }
+
+LQLine lqline()
+{
+    return
+    myclass_<QLine>("QLine", lqline_set_map)
+    .def(constructor<>())
+    .def(constructor<const QPoint &,const QPoint &>())
+    .def(constructor<int,int,int,int>())
+    .def("__call", &lqline_init)
+    .def("__init", table_init_general<QLine>)
+    .def("setLine", &QLine::setLine)
+    .def("setPoints", &QLine::setPoints)
+    .def("translate", (void(QLine::*)(int,int))&QLine::translate)
+    .def("translate", (void(QLine::*)(const QPoint&))&QLine::translate)
+    .def("translated", (QLine(QLine::*)(int,int)const)&QLine::translated)
+    .def("translated", (QLine(QLine::*)(const QPoint&)const)&QLine::translated)
+
+    .property("isNull", &QLine::isNull)
+    .property("x1", &QLine::x1)
+    .property("x2", &QLine::x2)
+    .property("y1", &QLine::y1)
+    .property("y2", &QLine::y2)
+    .property("dx", &QLine::dx)
+    .property("dy", &QLine::dy)
+    .property("p1", &QLine::p1, &QLine::setP1)
+    .property("p2", &QLine::p2, &QLine::setP2)
+    ;
+}
+int lqpolygon_count(QPolygon* p)
+{
+    return p->count();
+}
+int lqpolygon_count2(QPolygon* p, const QPoint& pt)
+{
+    return p->count(pt);
+}
+LQPolygon lqpolygon()
+{
+    return
+    class_<QPolygon>("QPolygon")
+    .def(constructor<>())
+    .def(constructor<int>())
+    .def(constructor<const QVector<QPoint>&>())
+    .def(constructor<const QPolygon &>())
+    .def(constructor<const QRect &>())
+    .def(constructor<const QRect &,bool>())
+
+    .def("boundingRect", &QPolygon::boundingRect)
+    .def("containsPoint", &QPolygon::containsPoint)
+    .def("intersected", &QPolygon::intersected)
+    .def("subtracted", &QPolygon::subtracted)
+    .def("united", &QPolygon::united)
+    .def("point", (QPoint (QPolygon::*)(int) const)&QPolygon::point)
+    .def("point", (void (QPolygon::*)(int,const QPoint&))&QPolygon::setPoint)
+    .def("point", (void (QPolygon::*)(int,int,int))&QPolygon::setPoint)
+
+    .def("translate", (void(QPolygon::*)(int,int))&QPolygon::translate)
+    .def("translate", (void(QPolygon::*)(const QPoint&))&QPolygon::translate)
+    .def("translated", (QPolygon(QPolygon::*)(int,int)const)&QPolygon::translated)
+    .def("translated", (QPolygon(QPolygon::*)(const QPoint&)const)&QPolygon::translated)
+    .def("append", &QPolygon::append )
+    .def("push_back", &QPolygon::push_back )
+    .def("push_front", &QPolygon::push_front )
+    .def("count", lqpolygon_count)
+    .def("count", lqpolygon_count2)
+    ;
+}
+
 LQRect  lqrect()
 {
     return
@@ -215,6 +304,35 @@ LQBrush  lqbrush()
     ;
 }
 
+namespace luabind{
+QT_EMUN_CONVERTER(Qt::PenStyle)
+}
+
+ENUM_FILTER(QPen,capStyle,setCapStyle)
+ENUM_FILTER(QPen,style,setStyle)
+ENUM_FILTER(QPen,joinStyle,setJoinStyle)
+LQPen lqpen()
+{
+    return
+    myclass_<QPen>("QPen",lqpen_set_map)
+    .def(constructor<>())
+    .def(constructor<Qt::PenStyle>())
+    .def(constructor<const QColor&>())
+    .def(constructor<const QPen&>())
+    .def(constructor<const QBrush&, qreal>())
+    .def(constructor<const QBrush&, qreal, Qt::PenStyle>())
+    .def(constructor<const QBrush&, qreal, Qt::PenStyle, Qt::PenCapStyle>())
+    .def(constructor<const QBrush&, qreal, Qt::PenStyle, Qt::PenCapStyle, Qt::PenJoinStyle>())
+    .property("isSolid", &QPen::isSolid)
+    .property("color", &QPen::color, &QPen::setColor)
+    .property("width", &QPen::width, &QPen::setWidth)
+    .property("capStyle", QPen_capStyle, QPen_setCapStyle)
+    .property("style", QPen_style, QPen_setStyle)
+    .property("joinStyle", QPen_joinStyle, QPen_setJoinStyle)
+    .property("dashOffset", &QPen::dashOffset, &QPen::setDashOffset)
+    .class_<QPen>::property("dashPattern", &QPen::dashPattern, &QPen::setDashPattern)
+    ;
+}
 
 void lqfont_set_cap(QFont* f, int cap)
 {

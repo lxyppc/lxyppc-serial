@@ -5,35 +5,6 @@ function EditScript()
     dlg:show()
 end
 
-class "MQListItem"(QListItem)
-
-function MQListItem:__init()
-    QListItem.__init(self)
-end
-
-function MQListItem:__init(v)
-    QListItem.__init(self,v)
-end
-
-function MQListItem:data(role)
----[[
-    if role == 8 then
-        return QBrush(QColor("red"));
-    elseif role == 9 then
-        return QBrush(QColor("blue"));
-    end
---]]
-    return QListItem.data(self,role)
-end
-
-function MQListItem:setData(role, v)
-    return QListItem.setData(self,role,v)
-end
-
-function MQListItem:__lt(v)
-    return QListItem.__lt(self,v) == false
-end
-
 function filter(mw, obj,evt)
     if evt.type == 19 then
         evt:ignore()
@@ -46,6 +17,17 @@ end
 function init_mainwindow(mainwindow)
     mdi = mainwindow.mdiArea
     log = mainwindow.logEdit
+    mx = 0
+    my = 0
+
+    tray = QSystemTrayIcon(mainwindow.windowIcon,mainwindow)
+    tray:show()
+    tray.activated = function(r) log:append(string.format("reason:%d",r))  end
+    tray.messageClicked = function() log:append(string.format("Clicked"))  end
+
+    act = mainwindow:menuBar():addMenu("Test"):addAction("tray")
+    act.triggered = function() tray:showMessage("22312","xxxxxxxxxxxxxxx",3);mx=mx+1;my=my+1; end
+
     portList = QComboBox();
     ports = QSerialPort.enumPort()
     table.foreach(ports, function (k,v) portList:addItem(v.portName, v)  end)
@@ -109,17 +91,55 @@ function init_mainwindow(mainwindow)
         end
     end
 
+    timeui = QVBoxLayout{
+        QDateEdit(QDate.currentDate()) { calendarPopup = false },
+        QTimeEdit(QTime.currentTime()) { calendarPopup = true },
+        QDateTimeEdit(QDateTime.currentDateTime()) { calendarPopup = true },
+        QSpinBox(),
+        QDoubleSpinBox(),
+    }
+
     frm = QFrame{
         windowtitle = "Serial Port Viewer",
         layout = QHBoxLayout{
             settingGroup,
             QPushButton("Refresh"),
             btnOpen,
+            timeui,
         }
     }
 
 
+    frm2 = QFrame{
+        windowtitle = "Painter Test",
+        minh = 200,
+        minw = 400,
+    }
+
+    function MouseMove(evt)
+        --mx = evt.x
+        --my = evt.y
+        frm2:update()
+        log:append(string.format("x:%d,y:%d",evt.globalX,evt.globalX))
+        return true
+    end
+    function NeedPaint(evt)
+        pt = QPainter();
+        pt:begin(frm2);
+        pt.brush = QBrush(QColor("darkgray"))
+        pt:drawRect(frm2.geometry)
+        rect = pt:drawText(1,1,100,50,0,"Hello World")
+        pt:drawRect(rect)
+        rect = pt:drawText(1,1,100,50,0,string.format("x:%d,y:%d",mx,my))
+        pt:done();
+        return true
+    end
+    frm2.eventFilter = QPaintEvent.filter(NeedPaint)
+    frm2.eventFilter = QMouseEvent.filter(MouseMove)
+    frm2.mouseTracking = true
+
     mdi:addSubWindow(frm)
+    mdi:addSubWindow(frm2)
 
 x = [==[
     menubar = mainwindow:menuBar()

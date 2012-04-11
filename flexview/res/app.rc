@@ -73,13 +73,13 @@ BEGIN
         BLOCK "080404b0"
         BEGIN
             VALUE "CompanyName", "lxyppc"
-            VALUE "FileDescription", "Flex Viewer"
+            VALUE "FileDescription", "Tool Box"
             VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "app"
             VALUE "LegalCopyright", "Copyright (C) 2012 lxyppc"
             VALUE "LegalTrademarks", "lxyppc"
-            VALUE "OriginalFilename", "FlexViewer.exe"
-            VALUE "ProductName", "Flex Viewer"
+            VALUE "OriginalFilename", "ToolBox.exe"
+            VALUE "ProductName", "Tool Box"
             VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END

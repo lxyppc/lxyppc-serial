@@ -414,4 +414,23 @@ struct myclass_ : public class_<T,X1,X2,X3>
 };
 
 #define sig_prop(b, name)  property(#name, b##_get_##name, b##_set_##name)
+
+template<class B, class T>
+inline void enum_filter_set_value(B* b, void (B::*fn)(T), int v)
+{
+    (b->*fn)(T(v));
+}
+template<class B, class T>
+inline int enum_filter_get_value(B* b, T (B::*fn)()const)
+{
+    return (int)(b->*fn)();
+}
+
+#define ENUM_FILTER(base, getter, setter)    \
+static int base##_##getter(base* b){\
+    return enum_filter_get_value(b,&base::getter);\
+}\
+static void base##_##setter(base* b, int v){\
+    enum_filter_set_value(b,&base::setter,v);\
+}
 #endif

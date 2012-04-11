@@ -24,7 +24,9 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qtabwidget.cpp \
     src/protowrapper/lua_serial.cpp \
     src/protowrapper/serialhelper.cpp \
-    src/qtwrapper/lua_qevent.cpp
+    src/qtwrapper/lua_qevent.cpp \
+    src/qtwrapper/lua_qspin.cpp \
+    src/qtwrapper/lua_qpainter.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -33,7 +35,9 @@ HEADERS += ./src/mainwindow.h \
     src/qluaedit.h \
     src/qtwrapper/lua_qt_wrapper.hpp \
     src/protowrapper/lua_serial.h \
-    src/qtwrapper/lua_qevent.h
+    src/qtwrapper/lua_qevent.h \
+    src/qtwrapper/lua_qspin.h \
+    src/qtwrapper/lua_qpainter.h
 HEADERS += ./qextserialport/qextserialenumerator.h \
     ./qextserialport/qextserialport.h
 

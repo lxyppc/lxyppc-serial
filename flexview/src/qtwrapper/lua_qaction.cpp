@@ -1,4 +1,5 @@
 #include "lua_qaction.h"
+#include "luabind/tag_function.hpp"
 bool sigfunc_connect(QObject* sender, const char* signal, object func);
 QLuaSlot* get_slot(const QObject* obj, const char* member);
 
@@ -243,6 +244,18 @@ LQToolBar lqtoolbar()
          ;
 }
 
+
+#define _r const QRect&
+#define _p QPainter*
+#define _ri int,int,int,int
+#define  _R  (void (QIcon::*)(QPainter *, const QRect &, Qt::Alignment,QIcon::Mode,QIcon::State)const)
+#define  _RI (void (QIcon::*)(QPainter *, int,int,int,int, Qt::Alignment,QIcon::Mode,QIcon::State)const)
+#define _F(a, arg...) void (QIcon*,a, ## arg)
+
+namespace luabind{
+    QT_EMUN_CONVERTER(QIcon::Mode)
+    QT_EMUN_CONVERTER(QIcon::State)
+}
 LQIcon lqicon()
 {
     return
@@ -250,6 +263,14 @@ LQIcon lqicon()
         .def(constructor<>())
         .def(constructor<const QIcon&>())
         .def(constructor<const QString&>())
+        .def("paint", _R &QIcon::paint)
+        .def("paint", _RI &QIcon::paint)
+        .def("paint", tag_function<_F(_p,_r)>(boost::bind(_R &QIcon::paint, _1,_2,_3,Qt::AlignCenter,QIcon::Normal,QIcon::Off) ))
+        .def("paint", tag_function<_F(_p,_r,Qt::Alignment)>(boost::bind(_R &QIcon::paint, _1,_2,_3,_4,QIcon::Normal,QIcon::Off) ))
+        .def("paint", tag_function<_F(_p,_r,Qt::Alignment,QIcon::Mode)>(boost::bind(_R &QIcon::paint, _1,_2,_3,_4,_5,QIcon::Off) ))
+        .def("paint", tag_function<_F(_p,_ri)>(boost::bind(_RI &QIcon::paint, _1,_2,_3,_4,_5,_6,Qt::AlignCenter,QIcon::Normal,QIcon::Off) ))
+        .def("paint", tag_function<_F(_p,_ri,Qt::Alignment)>(boost::bind(_RI &QIcon::paint, _1,_2,_3,_4,_5,_6,_7,QIcon::Normal,QIcon::Off) ))
+        .def("paint", tag_function<_F(_p,_ri,Qt::Alignment,QIcon::Mode)>(boost::bind(_RI &QIcon::paint, _1,_2,_3,_4,_5,_6,_7,_8,QIcon::Off) ))
         ;
 }
 

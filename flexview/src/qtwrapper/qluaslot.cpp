@@ -258,6 +258,11 @@ void QLuaSlot::general_slot(int param)
     ::gen_slot(m_obj,m_method,param);
 }
 
+void QLuaSlot::general_slot(double param)
+{
+    ::gen_slot(m_obj,m_method,param);
+}
+
 void QLuaSlot::general_slot(bool param)
 {
     ::gen_slot(m_obj,m_method,param);
@@ -324,6 +329,26 @@ void QLuaSlot::general_slot(const QextPortInfo& param1)
 }
 
 void QLuaSlot::general_slot(QMdiSubWindow* param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QSystemTrayIcon::ActivationReason param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+}
+
+void QLuaSlot::general_slot(const QDate& param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(const QTime& param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(const QDateTime& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }

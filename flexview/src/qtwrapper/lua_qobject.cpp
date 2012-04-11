@@ -167,6 +167,7 @@ LQWidget lqwidget()
             .def("restoreGeometry", &QWidget::restoreGeometry)
 
             .property("windowTitle", &QWidget::windowTitle, &QWidget::setWindowTitle)
+            .property("windowIcon", &QWidget::windowIcon, &QWidget::setWindowIcon)
             .property("title", &QWidget::windowTitle, &QWidget::setWindowTitle)
             .property("styleSheet", &QWidget::styleSheet, &QWidget::setStyleSheet)
             .property("enabled", &QWidget::isEnabled, &QWidget::setEnabled)
@@ -318,6 +319,7 @@ IS_CLASS(QMenu)
 IS_CLASS(QIcon)
 IS_CLASS(QAction)
 IS_CLASS(QPoint)
+IS_CLASS(QLine)
 IS_CLASS(QRect)
 IS_CLASS(QSize)
 IS_CLASS(QMargins)
@@ -338,6 +340,10 @@ template<>bool is_class<QLayout*>(const object& obj){
 }
 template<>bool is_class<QLayout>(const object& obj){
     return obj_name_contain(obj, "Layout");
+}
+
+template<>bool is_class<double>(const object& obj){
+    return obj_name_is(obj,"number");
 }
 
 bool is_QVariant_wrapper(const luabind::object& obj)

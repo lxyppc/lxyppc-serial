@@ -214,6 +214,65 @@ LQMdiSubWindow lqmdisubwindow()
 
     .property("widget", &QMdiSubWindow::widget, &QMdiSubWindow::setWidget)
     .property("mdiArea", &QMdiSubWindow::mdiArea)
+    .property("systemMenu", &QMdiSubWindow::systemMenu, &QMdiSubWindow::setSystemMenu)
+    ;
+}
+
+namespace luabind{
+    QT_EMUN_CONVERTER(QSystemTrayIcon::MessageIcon)
+}
+SIGNAL_PROPERYT(lqsystemtrayicon, activated, QSystemTrayIcon, "(QSystemTrayIcon::ActivationReason)")
+SIGNAL_PROPERYT(lqsystemtrayicon, messageClicked, QSystemTrayIcon, "()")
+
+
+static setter_map<QSystemTrayIcon> lqsystemtrayicon_set_map;
+QSystemTrayIcon* lqsystemtrayicon_init(QSystemTrayIcon* widget, const object& obj)
+{
+    for(iterator i(obj),e; i!=e; ++i){
+        if(type(*i) == LUA_TUSERDATA){
+            if(q_cast(*i, &QSystemTrayIcon::setContextMenu, widget)){
+            }
+        }
+    }
+    return lq_general_init(widget, obj, lqsystemtrayicon_set_map);
+}
+
+template<>
+void table_init_general<QSystemTrayIcon>(const luabind::argument & arg, const object& obj)
+{
+    lqsystemtrayicon_init(construct<QSystemTrayIcon>(arg), obj);
+}
+
+LQSystemTrayIcon lqsystemtrayicon()
+{
+    return
+    myclass_<QSystemTrayIcon,QObject>("QSystemTrayIcon",lqsystemtrayicon_set_map)
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    .def(constructor<const QIcon&>())
+    .def(constructor<const QIcon&,QObject*>())
+    .def("__call", lqsystemtrayicon_init)
+    .def("__init", table_init_general<QSystemTrayIcon>)
+
+    .def("setVisible", &QSystemTrayIcon::setVisible)
+    .def("show", &QSystemTrayIcon::show)
+    .def("hide", &QSystemTrayIcon::hide)
+    .def("showMessage", &QSystemTrayIcon::showMessage)
+    .def("showMessage", tag_function<void(QSystemTrayIcon*, const QString&, const QString&,QSystemTrayIcon::MessageIcon)>(boost::bind(&QSystemTrayIcon::showMessage, _1, _2, _3, _4, 10000)))
+    .def("showMessage", tag_function<void(QSystemTrayIcon*, const QString&, const QString&)>(boost::bind(&QSystemTrayIcon::showMessage, _1, _2, _3, QSystemTrayIcon::Information, 10000)))
+
+    .property("icon", &QSystemTrayIcon::icon, &QSystemTrayIcon::setIcon)
+    .property("geometry", &QSystemTrayIcon::geometry)
+    .property("visible", &QSystemTrayIcon::isVisible, &QSystemTrayIcon::setVisible)
+    .property("toolTip", &QSystemTrayIcon::toolTip, &QSystemTrayIcon::setToolTip)
+    .property("activated", lqsystemtrayicon_get_activated, lqsystemtrayicon_set_activated)
+    .sig_prop(lqsystemtrayicon, messageClicked)
+    .class_<QSystemTrayIcon,QObject>::property("contextMenu", &QSystemTrayIcon::contextMenu, &QSystemTrayIcon::setContextMenu)
+
+    .scope[
+            def("isSystemTrayAvailable", &QSystemTrayIcon::isSystemTrayAvailable),
+            def("supportsMessages", &QSystemTrayIcon::supportsMessages)
+    ]
     ;
 }
 

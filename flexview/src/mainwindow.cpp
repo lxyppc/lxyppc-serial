@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     menu->addSeparator();
     QAction* act = menu->addAction(tr("&About..."));
     connect(act,SIGNAL(triggered()),this,SLOT(my_about()));
-    this->setWindowTitle(QString::fromLocal8Bit("Flex Viewer"));
+    this->setWindowTitle(QString::fromLocal8Bit("Tool Box"));
 }
 
 MainWindow::~MainWindow()

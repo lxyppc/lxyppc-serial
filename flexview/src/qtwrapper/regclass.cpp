@@ -265,6 +265,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqabstractscrollarea(),
         lqmdisubwindow(),
         lqmdiarea(),
+        lqsystemtrayicon(),
 
         class_<LuaDialog,QDialog>("LuaEditor")
             .def(constructor<>())
@@ -278,6 +279,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqtoolbar(),
 
         lqpoint(),
+        lqline(),
+        //lqpolygon(),
         lqrect(),
         lqsize(),
         lqcolor(),
@@ -324,6 +327,19 @@ void register_classes(lua_State* L, char const* name = 0)
         lqextportinfo(),
         lqportsetting(),
 
+
+        lqabstractspinbox(),
+        lqspinbox(),
+        lqdoublespinbox(),
+
+        lqdate(),
+        lqtime(),
+        lqdatetime(),
+        lqdatetimeedit(),
+        lqdateedit(),
+        lqtimeedit(),
+
+        lqpainter(),
         //lqvariant(),
 
         class_<QVariant_wrapper>("QVariant_wrapper"),
@@ -368,7 +384,7 @@ void run_script_init(MainWindow* mainwindow)
 {
     mwindow = mainwindow;
     set_pcall_callback(pcall_handler);
-    QFile file("script.lua");
+    QFile file("../src/script.lua");
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";
         mainwindow->addLog(QString::fromLocal8Bit("Script file missing"));

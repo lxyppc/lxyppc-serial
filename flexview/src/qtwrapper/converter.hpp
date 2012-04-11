@@ -121,6 +121,42 @@ struct default_converter<QList<T> const&>
 {};
 
 
+template <typename T>
+struct default_converter<QVector<T> >
+  : native_converter_base<QVector<T> >
+{
+    static int compute_score(lua_State* L, int index)
+    {
+        return lua_type(L, index) == LUA_TTABLE ? 0 : -1;
+    }
+
+    QVector<T> from(lua_State* L, int index)
+    {
+        object obj(luabind::from_stack(L,index));
+        QVector<T> arr;
+        for(iterator i(obj),e; i!=e; ++i){
+            if(is_class<T>(*i)){
+                arr.append(object_cast<T>(*i));
+            }
+        }
+        return arr;
+    }
+
+    void to(lua_State* L, QVector<T> const& arr)
+    {
+        object obj = luabind::newtable(L);
+        for(int i=0;i<arr.count();i++){
+            obj[i+1] = arr.at(i);
+        }
+        obj.push(L);
+    }
+};
+
+template <typename T>
+struct default_converter<QVector<T> const&>
+  : default_converter<QVector<T> >
+{};
+
 
 template <>
 struct default_converter<QByteArray>

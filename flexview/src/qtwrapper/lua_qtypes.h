@@ -13,5 +13,7 @@
 #include "lua_qdialog.h"
 #include "lua_qtabwidget.h"
 #include "lua_qevent.h"
+#include "lua_qspin.h"
+#include "lua_qpainter.h"
 #endif
 
