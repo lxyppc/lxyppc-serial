@@ -1,4 +1,5 @@
 #include "lua_qevent.h"
+#include "luabind/dependency_policy.hpp"
 
 namespace luabind{
     QT_EMUN_CONVERTER(Qt::KeyboardModifiers)
@@ -79,10 +80,17 @@ QObject* event_filter(const object& obj)
 {
     return new myEventFilter<T>(obj);
 }
+
+void lqevent_init_general(const luabind::argument & arg)
+{
+    construct<QEvent>(arg,QEvent::Type(0));
+}
+
 LQEvent lqevent()
 {
     return
     class_<QEvent>("QEvent")
+    .def("__init",lqevent_init_general)
     .def(constructor<QEvent::Type>())
     .def("accept", &QEvent::accept)
     .def("ignore", &QEvent::ignore)

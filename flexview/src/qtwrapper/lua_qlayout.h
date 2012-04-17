@@ -1,6 +1,7 @@
 #ifndef LUA_QLAYOUT_H
 #define LUA_QLAYOUT_H
 #include "lua_qt_wrapper.hpp"
+#include "lite_ptr.h"
 
 struct QLayoutWarp : public QLayout, public luabind::wrap_base
 {
@@ -36,7 +37,12 @@ typedef class_<QGridLayout, QLayout>        LQGridLayout;
 typedef class_<QFormLayout, QLayout>        LQFormLayout;
 typedef class_<QBoxLayout, QLayout>         LQBoxLayout;
 typedef class_<QVBoxLayout, QBoxLayout>     LQVBoxLayout;
-typedef class_<QHBoxLayout, QBoxLayout>     LQHBoxLayout;
+typedef class_<QHBoxLayout, QBoxLayout, lite_ptr<QHBoxLayout> >     LQHBoxLayout;
+
+inline QHBoxLayout* get_pointer(lite_ptr<QHBoxLayout>& l)
+{
+    return l.get();
+}
 
 LQLayout lqlayout();
 LQStackedLayout lqstatckedlayout();

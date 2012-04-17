@@ -1,9 +1,257 @@
+mainWindow{
+ x = 50, y = 50,
+ w = 1000, h = 700
+}
+
 function EditScript()
     dofile("../src/editor.lua")
     dlg = LuaEditDlg()
+    dlg.windowIcon = mainWindow.windowIcon
     dlg:load("../src/script.lua")
     dlg:show()
 end
+
+class "SerialView"(QFrame)
+function SerialView:__init()
+    QFrame.__init(self)
+    self.windowTitle = "Serial Port Viewer"
+    self.portList = QComboBox();
+    ports = QSerialPort.enumPort()
+    table.foreach(ports, function (k,v) self.portList:addItem(v.portName, v)  end)
+    self.serial = QSerialPort()
+
+    self.baudList = QComboBox{ QSerialPort.ValidBaudRate() }
+    self.parityList = QComboBox{ QSerialPort.ValidParity() }
+    self.dataBitsList = QComboBox{ QSerialPort.ValidDataBits() }
+    self.stopBitsList = QComboBox{ QSerialPort.ValidStopBits() }
+    self.flowList = QComboBox{ QSerialPort.ValidFlow() }
+    self.settingString = QLineEdit(self.serial.settingString){
+        readonly = true,
+        minw = 100,
+    }
+    self.baudList.currentIndex = self.serial.baudRate
+    self.parityList.currentIndex = self.serial.parity
+    self.dataBitsList.currentIndex = self.serial.dataBits
+    self.stopBitsList.currentIndex = self.serial.stopBits
+    self.flowList.currentIndex = self.serial.flowControl
+
+    self.baudList.currentIndexChanged = {self.serial,self.serial.setBaudRate}
+    self.parityList.currentIndexChanged = {self.serial,self.serial.setParity}
+    self.dataBitsList.currentIndexChanged = {self.serial,self.serial.setDataBits}
+    self.stopBitsList.currentIndexChanged = {self.serial,self.serial.setStopBits}
+    self.flowList.currentIndexChanged = {self.serial,self.serial.setFlowControl}
+    self.serial.settingChange = {self.settingString, self.settingString.setText}
+    self.btnOpen = QPushButton("Open")
+    self.btnRefresh = QPushButton("Refresh")
+
+    self.settingGroup = QGroupBox("Port Settings"){
+        layout =
+            QHBoxLayout{
+                QVBoxLayout{
+                    QHBoxLayout{
+                        QVBoxLayout{
+                            QLabel("Port:"),QLabel("Baud:"),QLabel("Parity:"),QLabel("Data Bits:"),
+                            QLabel("Stop Bits:"),QLabel("Flow:"),
+                            --QLabel(),
+                            --strech = "0,0,0,0,0,0,1",
+                        },
+                        QVBoxLayout{
+                            self.portList,self.baudList,self.parityList,self.dataBitsList,self.stopBitsList,self.flowList,
+                            --QLabel(),
+                            --strech = "0,0,0,0,0,0,1",
+                        },
+                    },
+                    QLabel(),
+                    strech = "0,1",
+                },
+                QVBoxLayout{
+                    --QLabel("Setting:"),
+                    --self.settingString,
+                    self.btnOpen,
+                    self.btnRefresh,
+                    QLabel(),
+                    strech = "0,0,1",
+                }
+            }
+    }
+
+
+    self.btnOpen.clicked =
+    function ()
+        if self.serial.isOpen then
+            self.serial:close()
+            self.btnOpen.text = "Open"
+        else
+            i = self.portList.currentIndex
+            portInfo = self.portList:itemData(i)
+            local name = portInfo.physName
+            logEdit:append("open: " .. name .. " with setting: " .. self.serial.settingString)
+            self.serial.portName = name
+            res = self.serial:open()
+            if res then
+                self.btnOpen.text = "Close"
+                logEdit:append("Success ...")
+            else
+                logEdit:append("Fail:  " .. self.serial.errorString)
+                end
+            end
+        end
+    
+    self.btnSend = QPushButton("Send")
+    self.btnClearRecv = QPushButton("Clear")
+    self.btnSend.clicked = function ()
+        self.serial:write(self.sendText.data)
+    end
+
+    self.btnRefresh.clicked = function()
+        self.portList:clear()
+        ports = QSerialPort.enumPort()
+        table.foreach(ports, function (k,v) self.portList:addItem(v.portName, v)  end)
+    end
+
+    self.serial.readyRead = function()
+        len = self.serial:bytesAvailable()
+        x = self.serial:readAll()
+        self.recvText:append(x)
+        self.recvText:scrollToEnd()
+        logEdit:append(string.format("%d,%d",len,#x))
+    end
+
+    self.sendText = QHexEdit{
+        overwriteMode = false,
+        readOnly = false,
+    }
+    self.recvText = QHexEdit()
+    self.recvText.overwriteMode = false
+    self.recvText.readOnly = true
+
+    self.btnClearRecv.clicked = function ()
+        self.recvText:clear()
+    end
+
+    self.layout = QHBoxLayout{
+        self.settingGroup,
+        QVBoxLayout{
+            QHBoxLayout{
+                QLabel("Send Buffer"),
+                self.btnSend,
+                QLabel(),
+                strech = "0,0,1",
+            },
+            self.sendText,
+            QHBoxLayout{
+                QLabel("Recv Buffer"),
+                self.btnClearRecv,
+                QLabel(),
+                strech = "0,0,1",
+            },
+            self.recvText,
+        },
+        strech = "0,1"
+    }
+end
+
+
+function LaunchSerial()
+    mdiArea:addSubWindow(SerialView()):showMaximized()
+end
+function sfdsfsdrf()
+    portList = QComboBox();
+    ports = QSerialPort.enumPort()
+    table.foreach(ports, function (k,v) portList:addItem(v.portName, v)  end)
+    serial = QSerialPort()
+
+    baudList = QComboBox{ QSerialPort.ValidBaudRate() }
+    parityList = QComboBox{ QSerialPort.ValidParity() }
+    dataBitsList = QComboBox{ QSerialPort.ValidDataBits() }
+    stopBitsList = QComboBox{ QSerialPort.ValidStopBits() }
+    flowList = QComboBox{ QSerialPort.ValidFlow() }
+    settingString = QLineEdit(serial.settingString){
+        readonly = true
+    }
+    baudList.currentIndex = serial.baudRate
+    parityList.currentIndex = serial.parity
+    dataBitsList.currentIndex = serial.dataBits
+    stopBitsList.currentIndex = serial.stopBits
+    flowList.currentIndex = serial.flowControl
+
+    baudList.currentIndexChanged = {serial,serial.setBaudRate}
+    parityList.currentIndexChanged = {serial,serial.setParity}
+    dataBitsList.currentIndexChanged = {serial,serial.setDataBits}
+    stopBitsList.currentIndexChanged = {serial,serial.setStopBits}
+    flowList.currentIndexChanged = {serial,serial.setFlowControl}
+    serial.settingChange = {settingString, settingString.setText}
+
+    settingGroup = QGroupBox("Port Settings"){
+        layout = QVBoxLayout{
+            QHBoxLayout{
+                QVBoxLayout{
+                    QLabel("Port:"),QLabel("Baud:"),QLabel("Parity:"),QLabel("Data Bits:"),
+                    QLabel("Stop Bits:"),QLabel("Flow:"),
+                },
+                QVBoxLayout{
+                    portList,baudList,parityList,dataBitsList,stopBitsList,flowList
+                },
+            },
+            settingString,
+        }
+    }
+
+
+    btnOpen = QPushButton("open")
+    btnOpen.clicked =
+    function ()
+        if serial.isOpen then
+            serial:close()
+            btnOpen.text = "open"
+        else
+            i = portList.currentIndex
+            portInfo = portList:itemData(i)
+            log:append("open: " .. portInfo.portName)
+            serial.portName = portInfo.portName
+            res = serial:open()
+            log:append(serial.errorString)
+            if res then
+                btnOpen.text = "close"
+            end
+        end
+    end
+
+    hlay = QHBoxLayout{
+    settingGroup,
+    QPushButton("Refresh"),
+    btnOpen,
+    }
+
+    frm = QFrame{
+        windowtitle = "Serial Port Viewer",
+        layout = hlay
+    }
+
+    mdiArea:addSubWindow(frm):showMaximized()
+end
+
+logEdit:append("Script started...")
+menubar = mainWindow:menuBar()
+menubar:addMenu("&File"){
+    QAction("&Serial Viewer ..."){
+        triggered = LaunchSerial
+    },
+}
+
+editMenu = menubar:addMenu("&Edit")
+actEdit = editMenu:addAction("&Edit script...")
+actEdit.statusTip = "Edit the default script file"
+actClear = editMenu:addAction("&Clear Log")
+actClear.statusTip = "Clear scrip execute log"
+
+actEdit.triggered = EditScript
+actClear.triggered = {logEdit,logEdit.clear}
+
+
+
+
+
 
 function filter(mw, obj,evt)
     if evt.type == 19 then
@@ -38,7 +286,7 @@ end
 logEdit:append("sfsdfdsgds")
 mainwindow = mainWindow
 
---function init_mainwindow2(mainwindow)
+function init_mainwindow2(mainwindow)
     mdi = mainwindow.mdiArea
     log = mainwindow.logEdit
 
@@ -278,4 +526,4 @@ x = [==[
 
     log:append("Initialize done")
 --]==]
---end
+end

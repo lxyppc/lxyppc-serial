@@ -1,4 +1,5 @@
 #include "lua_qobject.h"
+#include <luabind/adopt_policy.hpp>
 
 
 QObject* lqobject_get_filter(QObject* obj)
@@ -54,13 +55,18 @@ void lqobject_set_filter(QObject* parent, const object& obj)
     parent->installEventFilter(new myFilter(obj));
 }
 
+void installEventFilter_x(QObject* o, QObject* f)
+{
+    o->installEventFilter(f);
+}
+
 LQObject lqobject()
 {
     return
     class_<QObject>("QObject")
             .def(constructor<>())
             .def(constructor<QObject*>())
-            .def("installEventFilter", &QObject::installEventFilter)
+            .def("installEventFilter", installEventFilter_x)
             .def("removeEventFilter", &QObject::removeEventFilter)
             .def("killTimer", &QObject::killTimer)
             .def("startTimer", &QObject::startTimer)

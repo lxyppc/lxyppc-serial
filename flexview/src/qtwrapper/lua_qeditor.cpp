@@ -67,6 +67,11 @@ void table_init_general<QLuaEdit>(const luabind::argument & arg, const object& o
     lqluaedit_init(construct<QLuaEdit>(arg), obj);
 }
 
+void lqhexedit_append(QHexEdit* w, const QByteArray& a)
+{
+    w->insert(w->data().size(),a);
+    //w->setData(w->data() + a);
+}
 
 LQHexEdit  lqhexedit()
 {
@@ -76,6 +81,12 @@ LQHexEdit  lqhexedit()
     .def(constructor<QWidget*>())
     .def("__call", lqhexedit_init)
     .def("__init", table_init_general<QHexEdit>)
+    .def("undo", &QHexEdit::undo)
+    .def("redo", &QHexEdit::redo)
+    .def("clear", &QHexEdit::clear)
+    .def("append", lqhexedit_append)
+    .def("scrollToEnd", &QHexEdit::scrollToEnd)
+
 
 
     .property("overwriteMode", &QHexEdit::overwriteMode, &QHexEdit::setOverwriteMode)

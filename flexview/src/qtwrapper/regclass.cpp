@@ -234,6 +234,7 @@ void register_classes(lua_State* L, char const* name = 0)
 {
     __pL = L;
     luabind::open(L);
+    bind_class_info(L);
     luabind::module(L, name)
     [
         lqobject(),
@@ -342,7 +343,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqpainter(),
         //lqvariant(),
 
-        class_<QVariant_wrapper>("QVariant_wrapper"),
+        class_<QVariant_wrapper>("QVariant_wrapper")
+        .def(constructor<>()),
 
         class_<MainWindow,QMainWindow>("MainWindow")
             .def(constructor<>())
@@ -382,12 +384,20 @@ static int pcall_handler(lua_State* L)
 
 void run_script_init(MainWindow* mainwindow)
 {
+    object g = globals(__pL);
+    g["logEdit"] = mainwindow->getLogEdit();
+    g["mdiArea"] = mainwindow->getMdiArea();
+    g["mainWindow"] = mainwindow;
+
     mwindow = mainwindow;
     set_pcall_callback(pcall_handler);
-    QFile file("../src/script.lua");
+    QFile file("script.lua");
+    if(!file.exists()){
+        file.setFileName("../src/script.lua");
+    }
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";
-        mainwindow->addLog(QString::fromLocal8Bit("Script file missing"));
+        mainwindow->addLog(QString::fromLocal8Bit("Script file missing. Require \"Script.lua\""));
         return;
     }
     try{
@@ -410,7 +420,10 @@ void run_script_init(MainWindow* mainwindow)
                 lua_pop(__pL, 2);
                 qDebug()<<"Script call fail:"<<err.c_str();
             }
-            call_function<int>(__pL, "init_mainwindow", mainwindow);
+            object fun = g["init_mainwindow"];
+            if(fun && type(fun) == LUA_TFUNCTION){
+                call_function<int>(__pL, "init_mainwindow", mainwindow);
+            }
         }
     }
     catch (luabind::error const& e)

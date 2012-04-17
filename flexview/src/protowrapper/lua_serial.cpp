@@ -5,7 +5,9 @@
 #include "../qtwrapper/qluaslot.h"
 
 
-
+namespace luabind{
+    QT_EMUN_CONVERTER(qint64)
+}
 QextSerialEnumerator* QSerialPort::enumerator = 0;
 
 static setter_map<QSerialPort> lqserialport_set_map;

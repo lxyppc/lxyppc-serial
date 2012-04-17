@@ -719,7 +719,7 @@ LQCommonDlg  lqcommondlg()
     return
 //    namespace_("QCommonDlg")
     class_<QCommonDlg>("QCommonDlg")
-//    .def(constructor<>())
+    .def(constructor<>())
     .scope
     [
         def("getInt",(int(*)(QWidget*,const QString &, const QString &,bool*))get_int, pure_out_value(_4)),

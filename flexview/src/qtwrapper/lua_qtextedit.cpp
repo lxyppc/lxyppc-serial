@@ -1,4 +1,6 @@
 #include "lua_qtextedit.h"
+#include <luabind/adopt_policy.hpp>
+#include <luabind/dependency_policy.hpp>
 
 static setter_map<QLabel> lqlabel_set_map;
 static setter_map<QTextEdit> lqtextedit_set_map;

@@ -140,10 +140,16 @@ void lqboxlayout_add_layout(QBoxLayout* layout, QLayout* l)
     layout->addLayout(l,0);
 }
 
+void lqboxlayout_init_general(const luabind::argument & arg)
+{
+    construct<QBoxLayout>(arg,QBoxLayout::Direction(0));
+}
+
 LQBoxLayout  lqboxlayout()
 {
     return
     class_<QBoxLayout, QLayout>("QBoxLayout")
+        .def("__init",lqboxlayout_init_general)
         .def(constructor<QBoxLayout::Direction>())
         .def(constructor<QBoxLayout::Direction,QWidget*>())
         .def("addLayout", lqboxlayout_add_layout)
@@ -170,7 +176,7 @@ LQVBoxLayout lqvboxlayout()
 LQHBoxLayout lqhboxlayout()
 {
     return
-    class_<QHBoxLayout, QBoxLayout>("QHBoxLayout")
+    class_<QHBoxLayout, QBoxLayout, lite_ptr<QHBoxLayout> >("QHBoxLayout")
         .def(constructor<>())
         .def(constructor<QWidget*>())
         .def("__call", lqhboxlayout_init)
