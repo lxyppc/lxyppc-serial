@@ -240,6 +240,22 @@ PortSettings QextSerialPort::portSetting() const
 
 QString QextSerialPort::errorString()
 {
+#ifdef Q_OS_WIN
+    LPTSTR lpMsgBuf = 0;
+    DWORD ret = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS,
+                  0,
+                  ::GetLastError(),
+                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                  (LPTSTR) &lpMsgBuf, 0, 0);
+#ifdef UNICODE
+    QString res = QString::fromWCharArray( (LPTSTR)lpMsgBuf);
+#else
+    QString res =  QString::fromLocal8Bit((LPTSTR) lpMsgBuf);
+#endif
+    res.remove(QChar('\n'));
+    LocalFree(lpMsgBuf);
+    return res;
+#endif
     switch(lastErr)
     {
         case E_NO_ERROR: return "No Error has occurred";

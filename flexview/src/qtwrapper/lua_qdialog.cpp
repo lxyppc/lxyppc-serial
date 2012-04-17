@@ -47,6 +47,7 @@ LQDialog  lqdialog()
         .def(constructor<QWidget*>())
         .def("__call", lqdialog_init)
         .def("__init", table_init_general<QDialog>)
+        .def("exec", &QDialog::exec)
     ;
 }
 

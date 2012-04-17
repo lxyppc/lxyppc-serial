@@ -5,10 +5,10 @@ mainWindow{
 
 function EditScript()
     dofile("../src/editor.lua")
-    dlg = LuaEditDlg()
+    dlg = LuaEditDlg(mainWindow)
     dlg.windowIcon = mainWindow.windowIcon
     dlg:load("../src/script.lua")
-    dlg:show()
+    dlg:exec()
 end
 
 class "SerialView"(QFrame)
@@ -29,6 +29,7 @@ function SerialView:__init()
         readonly = true,
         minw = 100,
     }
+    self.serial.flowControl = QSerialPort.FLOW_OFF
     self.baudList.currentIndex = self.serial.baudRate
     self.parityList.currentIndex = self.serial.parity
     self.dataBitsList.currentIndex = self.serial.dataBits
@@ -84,7 +85,7 @@ function SerialView:__init()
         else
             i = self.portList.currentIndex
             portInfo = self.portList:itemData(i)
-            local name = portInfo.physName
+            local name = portInfo.portName
             logEdit:append("open: " .. name .. " with setting: " .. self.serial.settingString)
             self.serial.portName = name
             res = self.serial:open()
@@ -93,10 +94,10 @@ function SerialView:__init()
                 logEdit:append("Success ...")
             else
                 logEdit:append("Fail:  " .. self.serial.errorString)
-                end
             end
         end
-    
+    end
+
     self.btnSend = QPushButton("Send")
     self.btnClearRecv = QPushButton("Clear")
     self.btnSend.clicked = function ()
@@ -149,6 +150,13 @@ function SerialView:__init()
         },
         strech = "0,1"
     }
+    self.serial.connected = function(info)
+        logEdit:append(info.portName .. "   connected")
+    end
+
+    self.serial.disconnected = function(info)
+        logEdit:append(info.portName .. "   disconnected")
+    end
 end
 
 

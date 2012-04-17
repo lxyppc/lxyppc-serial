@@ -45,6 +45,11 @@ function LuaEditDlg:load(name)
     end
 end
 
+function LuaEditDlg:__init(x)
+    QDialog.__init(self,x)
+    LuaEditDlg.__init(self)
+end
+
 function LuaEditDlg:__init()
    QDialog.__init(self)
    self.windowTitle = "Lua Editor [*]"
