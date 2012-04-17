@@ -21,16 +21,3 @@ int main(int argc, char *argv[])
     //lua_close(L);
     return ret;
 }
-static QMutex mutex;
-extern "C"{
-    void my_lua_lock(lua_State* L)
-    {
-        mutex.lock();
-    }
-
-    void my_lua_unlock(lua_State* L)
-    {
-        mutex.unlock();
-    }
-
-}
