@@ -124,6 +124,7 @@ void QHexEditPrivate::insert(int index, const QByteArray & ba)
             emit dataChanged();
         }
     }
+    adjust();
 }
 
 void QHexEditPrivate::insert(int index, char ch)
