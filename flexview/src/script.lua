@@ -14,12 +14,38 @@ function filter(mw, obj,evt)
     return false
 end
 
-function init_mainwindow(mainwindow)
+class "MyListItem"(QListItem)
+function MyListItem:__init(x)
+    QListItem.__init(self,x);
+end
+
+function MyListItem:data(role)
+    if role == 8 then
+        r = self.row % 2
+        if r == 1 then
+            return QBrush(QColor("lightgray"))
+        else
+            return QBrush(QColor("darkgray"))
+        end
+    end
+    return QListItem.data(self,role)
+end
+
+function MyListItem:__lt(x)
+    return QListItem.__lt(self,x) == false
+end
+
+logEdit:append("sfsdfdsgds")
+mainwindow = mainWindow
+
+--function init_mainwindow2(mainwindow)
     mdi = mainwindow.mdiArea
     log = mainwindow.logEdit
+
     mx = 0
     my = 0
 
+---[[
     tray = QSystemTrayIcon(mainwindow.windowIcon,mainwindow)
     tray:show()
     tray.activated = function(r) log:append(string.format("reason:%d",r))  end
@@ -99,31 +125,36 @@ function init_mainwindow(mainwindow)
         QDoubleSpinBox(),
     }
 
-    frm = QFrame{
-        windowtitle = "Serial Port Viewer",
-        layout = QHBoxLayout{
-            settingGroup,
-            QPushButton("Refresh"),
-            btnOpen,
-            timeui,
-        }
+    hlay = QHBoxLayout{
+    settingGroup,
+    QPushButton("Refresh"),
+    btnOpen,
+    timeui,
     }
 
+    frm = QFrame{
+        windowtitle = "Serial Port Viewer",
+        layout = hlay
+    }
 
+    mdi:addSubWindow(frm)
+--]]
     frm2 = QFrame{
         windowtitle = "Painter Test",
         minh = 200,
         minw = 400,
     }
 
-    function MouseMove(evt)
-        --mx = evt.x
-        --my = evt.y
+    function MouseMove(obj,evt)
+        mx = evt.x
+        my = evt.y
         frm2:update()
-        log:append(string.format("x:%d,y:%d",evt.globalX,evt.globalX))
+        --dfdf = dfdf + 1
+        --log:append(string.format("x:%d,y:%d",evt.x,evt.x))
+        --log:append(string.format("type:%d,%s",xxx(evt.type),class_info(evt).name))
         return true
     end
-    function NeedPaint(evt)
+    function NeedPaint(obj,evt)
         pt = QPainter();
         pt:begin(frm2);
         pt.brush = QBrush(QColor("darkgray"))
@@ -132,14 +163,47 @@ function init_mainwindow(mainwindow)
         pt:drawRect(rect)
         rect = pt:drawText(1,1,100,50,0,string.format("x:%d,y:%d",mx,my))
         pt:done();
+        btn.text = string.format("x:%d,y:%d",mx,my)
         return true
     end
-    frm2.eventFilter = QPaintEvent.filter(NeedPaint)
-    frm2.eventFilter = QMouseEvent.filter(MouseMove)
+    frm2:installEventFilter(QPaintEvent.filter(NeedPaint))
+    frm2:installEventFilter(QMouseEvent.filter(MouseMove))
+    --frm2.eventFilter = QPaintEvent.filter(NeedPaint)
+    --frm2.eventFilter = QMouseEvent.filter(MouseMove)
     frm2.mouseTracking = true
 
-    mdi:addSubWindow(frm)
+    --frm2:startTimer(200)
+    btn = QLabel("hello",frm2){
+        x = 100, y = 0,
+        w = 100,h = 20
+    }
+    function on_time()
+        frm2:update();
+        return true
+    end
+    frm2.eventFilter = QTimerEvent.filter(on_time)
+
+
     mdi:addSubWindow(frm2)
+
+    listw = QListWidget()
+    listw:addItem(MyListItem("123"))
+    listw:addItem(MyListItem("456"))
+    listw:addItem(MyListItem("789"))
+    table.foreach({"2342","32432","sdfds","3435","gfdg45"},
+        function(k,v) listw:addItem(MyListItem(v)) end
+    )
+    listw:sortItems()
+    frm3 = QFrame{
+        windowtitle = "List Test",
+        minh = 200,
+        minw = 400,
+        layout = QVBoxLayout{
+            listw,
+        },
+    }
+
+    mdi:addSubWindow(frm3)
 
 x = [==[
     menubar = mainwindow:menuBar()
@@ -214,4 +278,4 @@ x = [==[
 
     log:append("Initialize done")
 --]==]
-end
+--end
