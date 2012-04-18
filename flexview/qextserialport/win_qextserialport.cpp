@@ -700,6 +700,10 @@ void QextSerialPort::setBaudRate(BaudRateType baudRate) {
                 TTY_PORTABILITY_WARNING("QextSerialPort Portability Warning: POSIX does not support 256000 baud operation.");
                 Win_CommConfig.dcb.BaudRate=CBR_256000;
                 break;
+
+            default:
+                Win_CommConfig.dcb.BaudRate=baudRate;
+                break;
         }
         SetCommConfig(Win_Handle, &Win_CommConfig, sizeof(COMMCONFIG));
     }

@@ -63,6 +63,12 @@ int lqprocess_getchar(QProcess* w)
     }
     return -1;
 }
+
+qint64 lqprocess_pid(QProcess* w)
+{
+    return (qint64)w->pid();
+}
+
 LQProcess lqprocess()
 {
     return
@@ -122,7 +128,7 @@ LQProcess lqprocess()
     .property("error", (QProcess::ProcessError(QProcess::*)()const)&QProcess::error)
     .property("exitCode", &QProcess::exitCode)
     .property("exitStatus", &QProcess::exitStatus)
-    .property("pid", &QProcess::pid)
+    .property("pid", lqprocess_pid)
     .property("state", &QProcess::state)
     .property("atEnd", &QProcess::atEnd)
     .property("sequential", &QProcess::isSequential)
@@ -142,7 +148,16 @@ QApplication* lqapplication_init(QApplication* widget, const object& obj)
 //    lqapplication_init(construct<QApplication>(arg), obj);
 //}
 
-ENUM_FILTER(QApplication,layoutDirection,setLayoutDirection)
+//ENUM_FILTER(QApplication,layoutDirection,setLayoutDirection)
+int QApplication_layoutDirection(QApplication* w)
+{
+    return w->layoutDirection();
+}
+
+void QApplication_setLayoutDirection(QApplication* w, int f)
+{
+    w->setLayoutDirection(Qt::LayoutDirection(f));
+}
 
 SIGNAL_PROPERYT(lqapplication, focusChanged, QApplication, "(QWidget*,QWidget*)")
 SIGNAL_PROPERYT(lqapplication, fontDatabaseChanged, QApplication, "()")
@@ -157,11 +172,11 @@ LQApplication lqapplication()
     return
     myclass_<QApplication,QObject>("QApplication",lqapplication_set_map)
     .def("__call", lqapplication_init)
-    .def("aboutQt", QApplication::aboutQt)
-    .def("quit", QApplication::quit)
-    .def("closeAllWindows", QApplication::closeAllWindows)
-    .def("setAutoSipEnabled", QApplication::setAutoSipEnabled)
-    .def("setStyleSheet", QApplication::setStyleSheet)
+    .def("aboutQt", &QApplication::aboutQt)
+    .def("quit", &QApplication::quit)
+    .def("closeAllWindows", &QApplication::closeAllWindows)
+    .def("setAutoSipEnabled", &QApplication::setAutoSipEnabled)
+    .def("setStyleSheet", &QApplication::setStyleSheet)
 
     .property("autoSipEnabled", &QApplication::autoSipEnabled, &QApplication::setAutoSipEnabled)
     .property("cursorFlashTime", &QApplication::cursorFlashTime, &QApplication::setCursorFlashTime)

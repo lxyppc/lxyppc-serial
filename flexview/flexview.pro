@@ -26,7 +26,8 @@ SOURCES += ./src/main.cpp \
     src/protowrapper/serialhelper.cpp \
     src/qtwrapper/lua_qevent.cpp \
     src/qtwrapper/lua_qspin.cpp \
-    src/qtwrapper/lua_qpainter.cpp
+    src/qtwrapper/lua_qpainter.cpp \
+    src/qtwrapper/lua_qprocess.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \

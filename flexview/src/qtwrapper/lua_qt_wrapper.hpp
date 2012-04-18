@@ -425,6 +425,11 @@ inline int enum_filter_get_value(B* b, T (B::*fn)()const)
 {
     return (int)(b->*fn)();
 }
+template<class B, class T>
+inline int enum_filter_get_value(B* b, T (B::*fn)())
+{
+    return (int)(b->*fn)();
+}
 
 #define ENUM_FILTER(base, getter, setter)    \
 static int base##_##getter(base* b){\

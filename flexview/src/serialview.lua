@@ -107,7 +107,7 @@ function SerialView:__init()
         else
             i = self.portList.currentIndex
             portInfo = self.portList:itemData(i)
-            local name = portInfo.physName
+            local name = portInfo.portName
             logEdit:append("open: " .. name .. " with setting: " .. self.serial.settingString)
             self.serial.portName = name
             res = self.serial:open()
