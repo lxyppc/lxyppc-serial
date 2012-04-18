@@ -25,6 +25,7 @@ SIGNAL_PROPERYT(lqaction, triggered, QAction, "()")
 //}
 
 static setter_map<QAction> lqaction_set_map;
+static setter_map<QMenu> lqmenu_set_map;
 
 QAction* lqaction_init(QAction* widget, const object& table)
 {
@@ -69,6 +70,10 @@ void table_action_init(const argument& arg, const object& table)
     lqaction_init(construct<QAction,QObject*>(arg,0), table);
 }
 
+void lqaction_seShortcuts(QAction* w, int s)
+{
+    w->setShortcuts(QKeySequence::StandardKey(s));
+}
 LQAction lqaction()
 {
     return
@@ -80,6 +85,7 @@ LQAction lqaction()
         .def("__init", &table_action_init)
         .def("__init", &string_action_init)
         .def("__init", &null_action_init)
+        .def("setShortcuts", lqaction_seShortcuts)
 
         .property("text",&QAction::text, &QAction::setText)
         .property("toolTip",&QAction::toolTip, &QAction::setToolTip)
@@ -91,7 +97,9 @@ LQAction lqaction()
         .property("triggered",&lqaction_get_triggered, &lqaction_set_triggered)
         .class_<QAction,QObject>::property("icon",&QAction::icon, &QAction::setIcon)
         .property("shortcut",&QAction::shortcut, &QAction::setShortcut)
+        .property("shortcuts",&QAction::shortcuts, (void(QAction::*)( const QList<QKeySequence>&))&QAction::setShortcuts)
         .property("menu", &QAction::menu, &QAction::setMenu)
+        .property("data", &QAction::data, &QAction::setData)
         ;
 }
 
@@ -150,6 +158,7 @@ LQMenuBar lqmenubar()
 
         .def("__call", &lqmenubar_init)
         .def("__init", &table_menubar_init)
+        .def("clear", &QMenuBar::clear)
 
         .property("defaultUp", &QMenuBar::isDefaultUp, &QMenuBar::setDefaultUp)
         ;
@@ -158,6 +167,7 @@ LQMenuBar lqmenubar()
 
 QMenu* lqmenu_init(QMenu* widget, const object& table)
 {
+    lq_general_init(widget,table,lqmenu_set_map);
     if(type(table) == LUA_TTABLE){
         for (iterator i(table), e; i != e; ++i){
             if(type(*i) == LUA_TUSERDATA){
@@ -180,22 +190,53 @@ void table_menu_init(const argument& arg, const object& table)
     lqmenu_init(construct<QMenu>(arg), table);
 }
 
+SIGNAL_PROPERYT(lqmenu, aboutToHide, QMenu, "()")
+SIGNAL_PROPERYT(lqmenu, aboutToShow, QMenu, "()")
+SIGNAL_PROPERYT(lqmenu, hovered, QMenu, "(QAction*)")
+SIGNAL_PROPERYT(lqmenu, triggered, QMenu, "(QAction*)")
 LQMenu  lqmenu()
 {
     return
-    class_<QMenu, QWidget>("QMenu")
+    myclass_<QMenu, QWidget>("QMenu",lqmenu_set_map)
         .def(constructor<>())
         .def(constructor<QWidget *>())
         .def(constructor<const QString&, QWidget *>())
         .def(constructor<const QString&>())
-        .def("addAction", (QAction*(QMenu::*)(const QString &))&QMenu::addAction)
-        .def("addAction", (QAction*(QMenu::*)(const QIcon &, const QString &))&QMenu::addAction)
-        .def("addAction", (void(QMenu::*)(QAction*))&QMenu::addAction)
         .def("__call", &lqmenu_init)
         .def("__init", &table_menu_init)
 
+        .def("addAction", (QAction*(QMenu::*)(const QString &))&QMenu::addAction)
+        .def("addAction", (QAction*(QMenu::*)(const QIcon &, const QString &))&QMenu::addAction)
+        .def("addAction", (void(QMenu::*)(QAction*))&QMenu::addAction)
+        .def("addMenu", (QAction*(QMenu::*)(QMenu*))&QMenu::addMenu)
+        .def("addMenu", (QMenu*(QMenu::*)(const QString&))&QMenu::addMenu)
+        .def("addMenu", (QMenu*(QMenu::*)(const QIcon&,const QString&))&QMenu::addMenu)
+        .def("addSeparator", &QMenu::addSeparator)
+        .def("exec", (QAction*(QMenu::*)())&QMenu::exec)
+        .def("exec", (QAction*(QMenu::*)(const QPoint &,QAction*))&QMenu::exec)
+        .def("exec", tag_function<QAction*(QMenu*,const QPoint &)>(boost::bind((QAction*(QMenu::*)(const QPoint &,QAction*))&QMenu::exec, _1,_2, (QAction*)0) ))
+        .def("insertMenu", &QMenu::insertMenu)
+        .def("insertSeparator", &QMenu::insertSeparator)
+        .def("menuAction", &QMenu::menuAction)
+        .def("popup", &QMenu::popup)
+        .def("popup", tag_function<void(QMenu*,const QPoint &)>(boost::bind(&QMenu::popup, _1,_2, (QAction*)0) ))
+        .def("clear", &QMenu::clear)
+
         .property("title", &QMenu::title, &QMenu::setTitle)
         .property("icon", &QMenu::icon, &QMenu::setIcon)
+        .property("isEmpty", &QMenu::isEmpty)
+        .sig_prop(lqmenu, aboutToHide)
+        .sig_prop(lqmenu, aboutToShow)
+        .sig_prop(lqmenu, hovered)
+        .sig_prop(lqmenu, triggered)
+        .class_<QMenu, QWidget>::property("activeAction", &QMenu::activeAction, &QMenu::setActiveAction)
+        .property("defaultAction", &QMenu::defaultAction, &QMenu::setDefaultAction)
+
+        .scope[
+            def("exec", (QAction*(*)(QList<QAction*>,const QPoint&,QAction*,QWidget*))&QMenu::exec),
+            def("exec", (QAction*(*)(QList<QAction*>,const QPoint&,QAction*))&QMenu::exec),
+            def("exec", tag_function<QAction*(QList<QAction*>,const QPoint&)>(boost::bind((QAction*(*)(QList<QAction*>,const QPoint&,QAction*))&QMenu::exec, _1,_2, (QAction*)0) ))
+        ]
         ;
 }
 
@@ -235,6 +276,7 @@ LQToolBar lqtoolbar()
          .def("toggleViewAction", &QToolBar::toggleViewAction)
          .def("__call", &lqtoolbar_init)
          .def("__init", &table_toolbar_init)
+         .def("clear", &QToolBar::clear)
          .property("allowedAreas", &QToolBar::allowedAreas, &QToolBar::setAllowedAreas)
          .property("floatable", &QToolBar::isFloatable, &QToolBar::setFloatable)
          .property("floating", &QToolBar::isFloating)

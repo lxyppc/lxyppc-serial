@@ -53,6 +53,12 @@ public slots:
     void general_slot(const QDate&);
     void general_slot(const QTime&);
     void general_slot(const QDateTime&);
+    void general_slot(QAction*);
+    void general_slot(QProcess::ProcessError);
+    void general_slot(QProcess::ExitStatus);
+    void general_slot(QProcess::ProcessState);
+    void general_slot(QWidget*,QWidget*);
+    void general_slot(QWidget*);
 private:
     object m_obj;
     QString m_method;

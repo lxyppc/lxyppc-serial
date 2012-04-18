@@ -352,3 +352,33 @@ void QLuaSlot::general_slot(const QDateTime& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }
+
+void QLuaSlot::general_slot(QAction* param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QProcess::ProcessError param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QProcess::ExitStatus param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QProcess::ProcessState param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QWidget* param1, QWidget* param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(QWidget* param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}

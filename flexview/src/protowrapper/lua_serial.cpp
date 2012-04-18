@@ -125,6 +125,13 @@ LQextSerialPort lqextserialport()
     .property("parity", &QSerialPort::parity, &QSerialPort::setParity)
     .property("stopBits", &QSerialPort::stopBits, &QSerialPort::setStopBits)
     .property("flowControl", &QSerialPort::flowControl, &QSerialPort::setFlowControl)
+    .property("lineStatus", &QSerialPort::lineStatus)
+    .property("CTS", &QSerialPort::CTS)
+    .property("DSR", &QSerialPort::DSR)
+    .property("DCD", &QSerialPort::DCD)
+    .property("RI", &QSerialPort::RI)
+    .property("RTS", &QSerialPort::RTS)
+    .property("DTR", &QSerialPort::DTR)
     .sig_prop(lqserialport, connected)
     .sig_prop(lqserialport, disconnected)
     .sig_prop(lqserialport, readyRead)
@@ -176,7 +183,8 @@ LQextSerialPort lqextserialport()
         value("BAUD76800",BAUD76800),             //POSIX ONLY
         value("BAUD115200",BAUD115200),
         value("BAUD128000",BAUD128000),            //WINDOWS ONLY
-        value("BAUD256000",BAUD256000)             //WINDOWS ONLY
+        value("BAUD256000",BAUD256000),            //WINDOWS ONLY
+        value("BAUDLAST",BAUDLAST)
     ]
     .enum_("DataBitsType")
     [
@@ -204,6 +212,17 @@ LQextSerialPort lqextserialport()
         value("FLOW_OFF",FLOW_OFF),
         value("FLOW_HARDWARE",FLOW_HARDWARE),
         value("FLOW_XONXOFF",FLOW_XONXOFF)
+    ]
+    .enum_("LineStatus")
+    [
+            value("LS_CTS",LS_CTS),
+            value("LS_DSR",LS_DSR),
+            value("LS_DCD",LS_DCD),
+            value("LS_RI",LS_RI),
+            value("LS_RTS",LS_RTS),
+            value("LS_DTR",LS_DTR),
+            value("LS_ST",LS_ST),
+            value("LS_SR",LS_SR)
     ]
     ;
 }

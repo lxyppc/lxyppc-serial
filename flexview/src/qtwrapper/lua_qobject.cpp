@@ -146,6 +146,11 @@ void for_all(const T& t)
     }
 }
 
+bool lqwidget_eq(QWidget* l, QWidget* r)
+{
+    return l == r;
+}
+
 LQWidget lqwidget()
 {
     return
@@ -162,6 +167,7 @@ LQWidget lqwidget()
             .def("lower",&QWidget::lower)
             .def("raise",&QWidget::raise)
             .def("repaint",(void(QWidget::*)())&QWidget::repaint)
+            .def("__eq", lqwidget_eq)
 
 
             .def("setGeometry", (void (QWidget::*)(int, int, int, int))&QWidget::setGeometry)

@@ -37,6 +37,13 @@ public:
 
     QString settingString() const { return PortSettingString(Settings);}
 
+    bool CTS(){ return (lineStatus() & LS_CTS) != 0;}
+    bool DSR(){ return (lineStatus() & LS_DSR) != 0;}
+    bool DCD(){ return (lineStatus() & LS_DCD) != 0;}
+    bool RI(){ return (lineStatus() & LS_RI) != 0;}
+    bool DTR(){ return (lineStatus() & LS_DTR) != 0;}
+    bool RTS(){ return (lineStatus() & LS_RTS) != 0;}
+
 protected:
     void initial();
 signals:

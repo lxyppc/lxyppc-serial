@@ -62,6 +62,6 @@ QString fromStdString(const std::string& str)
 
 QString fromStdWString(const std::wstring& str)
 {
-    return QString::fromStdString(str);
+    return QString::fromStdWString(str);
 }
 #endif

@@ -228,6 +228,9 @@ QFont createFont()
     return QFont();
 }
 
+int my_and(int x, int y) { return x & y;}
+int my_or(int x, int y) { return x | y;}
+int my_xor(int x, int y) { return x ^ y;}
 
 class_<QComboBox, QWidget> lqcombobox();
 void register_classes(lua_State* L, char const* name = 0)
@@ -343,6 +346,10 @@ void register_classes(lua_State* L, char const* name = 0)
         lqpainter(),
         //lqvariant(),
 
+        lqprocessenvironment(),
+        lqprocess(),
+        lqapplication(),
+
         class_<QVariant_wrapper>("QVariant_wrapper")
         .def(constructor<>()),
 
@@ -363,7 +370,10 @@ void register_classes(lua_State* L, char const* name = 0)
         def("toString", toString),
         def("toBase64", toBase64),
         def("fromBase64", fromBase64),
-        def("fromString", fromString)
+        def("fromString", fromString),
+        def("bit_and", my_and),
+        def("bit_or", my_or),
+        def("bit_xor", my_xor)
     ];
 }
 

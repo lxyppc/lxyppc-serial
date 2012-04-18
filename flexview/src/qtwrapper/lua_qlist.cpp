@@ -167,6 +167,12 @@ LQComboBox lqcombobox()
     .def("setCurrentIndex", &QComboBox::setCurrentIndex )
     .def("setEditText", &QComboBox::setEditText )
 
+    .def("findText", &QComboBox::findText)
+    .def("findText", tag_function<int(QComboBox*,const QString&)>(boost::bind( &QComboBox::findText,_1,_2, Qt::MatchExactly | Qt::MatchCaseSensitive )))
+
+    .def("findData", &QComboBox::findData)
+    .def("findData", tag_function<int(QComboBox*,const QVariant&, int)>(boost::bind( &QComboBox::findData,_1,_2, _3, Qt::MatchExactly | Qt::MatchCaseSensitive )))
+    .def("findData", tag_function<int(QComboBox*,const QVariant&)>(boost::bind( &QComboBox::findData,_1,_2, Qt::UserRole,Qt::MatchExactly | Qt::MatchCaseSensitive )))
 
     .property("count", &QComboBox::count)
     .property("editable", &QComboBox::isEditable, &QComboBox::setEditable)
@@ -597,6 +603,7 @@ void lqtreewidget_scrollToItem2(QTreeWidget* w, QTreeWidgetItem* i)
 
 void lqtreewidget_test(QTreeWidget* w)
 {
+    (void)w;
 }
 namespace luabind{
 QT_EMUN_CONVERTER(QItemSelectionModel::SelectionFlags)

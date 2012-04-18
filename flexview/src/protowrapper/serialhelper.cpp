@@ -63,6 +63,9 @@ END_TYPE_MAP()
 
 QString  BaudRateString( BaudRateType baudRate)
 {
+    if(baudRate>=BAUDLAST){
+        return QString("%1").arg(baudRate);
+    }
     return getString(BaudRateTypeMap, baudRate);
 }
 

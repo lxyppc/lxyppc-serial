@@ -186,7 +186,7 @@ LQMdiArea lqmdiarea()
     .def("closeActiveSubWindow",&QMdiArea::closeActiveSubWindow)
     .def("closeAllSubWindows",&QMdiArea::closeAllSubWindows)
     .def("subWindowList",&QMdiArea::subWindowList)
-    .def("subWindowList",tag_function<void(QMdiArea*)>(boost::bind(&QMdiArea::subWindowList, _1, QMdiArea::CreationOrder)))
+    .def("subWindowList",tag_function<QList<QMdiSubWindow *>(QMdiArea*)>(boost::bind(&QMdiArea::subWindowList, _1, QMdiArea::CreationOrder)))
 
     .property("background", &QMdiArea::background, &QMdiArea::setBackground)
     .property("activationOrder", &QMdiArea::activationOrder, &QMdiArea::setActivationOrder)
