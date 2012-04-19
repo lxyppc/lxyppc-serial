@@ -166,7 +166,7 @@ LQLineEdit lqlineedit()
     .property("selectedText", &QLineEdit::selectedText)
     .property("modified", &QLineEdit::isModified, &QLineEdit::setModified)
     .property("readOnly", &QLineEdit::isReadOnly, &QLineEdit::setReadOnly)
-#if (QT_VERSION >= 0x407000) || defined(Q_WS_MAEMO_5)
+#if (QT_VERSION >= 0x040700) || defined(Q_WS_MAEMO_5)
     .property("placeholderText", &QLineEdit::placeholderText, &QLineEdit::setPlaceholderText)
 #endif
     ;

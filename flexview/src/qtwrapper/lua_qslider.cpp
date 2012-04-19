@@ -169,7 +169,15 @@ void table_init_general<QProgressBar>(const luabind::argument & arg, const objec
 
 ENUM_FILTER(QProgressBar, alignment, setAlignment)
 ENUM_FILTER(QProgressBar, orientation, setOrientation)
-ENUM_FILTER(QProgressBar, textDirection, setTextDirection)
+//ENUM_FILTER(QProgressBar, textDirection, setTextDirection)
+int QProgressBar_textDirection(QProgressBar* w)
+{
+    return w->textDirection();
+}
+void QProgressBar_setTextDirection(QProgressBar* w, int f)
+{
+    return w->setTextDirection(QProgressBar::Direction(f));
+}
 
 SIGNAL_PROPERYT(lqprogressbar,valueChanged,QProgressBar,"(int)")
 LQProgressBar lqprogressbar()
@@ -192,7 +200,7 @@ LQProgressBar lqprogressbar()
 
     .property("alignment", QProgressBar_alignment, QProgressBar_setAlignment)
     .property("format", &QProgressBar::format, &QProgressBar::setFormat)
-    .property("invertedAppearance", &QProgressBar::invertedAppearance, &QProgressBar::setInvertedAppearance)
+    .property("invertedAppearance", (bool (QProgressBar::*)() const)&QProgressBar::invertedAppearance, &QProgressBar::setInvertedAppearance)
     .property("maximum", &QProgressBar::maximum, &QProgressBar::setMaximum)
     .property("max", &QProgressBar::maximum, &QProgressBar::setMaximum)
     .property("minimum", &QProgressBar::minimum, &QProgressBar::setMinimum)

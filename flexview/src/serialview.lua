@@ -1,4 +1,5 @@
 class "SerialView"(QFrame)
+
 function SerialView:__init()
     QFrame.__init(self)
     self.windowTitle = "Serial Port Viewer"
@@ -182,4 +183,10 @@ function SerialView:__init()
     self.serial.disconnected = function(info)
         logEdit:append(info.portName .. "   disconnected")
     end
+    self.eventFilter = QCloseEvent.filter({self,self.close})
+end
+
+function SerialView:close()
+    self.serial = nil
+    logEdit:append("Serial View Close")
 end
