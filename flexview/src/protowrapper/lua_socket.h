@@ -6,14 +6,16 @@
 typedef class_<QHostAddress>  LQHostAddress;
 typedef class_<QNetworkProxy> LQNetworkProxy;
 typedef class_<QTcpServer,QObject>  LQTcpServer;
-typedef class_<QTcpSocket,QObject>  LQTcpSocket;
-typedef class_<QUdpSocket,QObject>  LQUdpSocket;
+typedef class_<QAbstractSocket,QObject>  LQAbstractSocket;
+typedef class_<QTcpSocket,QAbstractSocket>  LQTcpSocket;
+typedef class_<QUdpSocket,QAbstractSocket>  LQUdpSocket;
 
 
 
 LQHostAddress lqhostaddress();
 LQNetworkProxy lqnetworkproxy();
 LQTcpServer lqtcpserver();
+LQAbstractSocket lqabstractsocket();
 LQTcpSocket lqtcpsocket();
 LQUdpSocket lqudpsocket();
 

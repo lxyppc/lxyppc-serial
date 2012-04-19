@@ -7,6 +7,8 @@ QT_EMUN_CONVERTER(QAbstractSocket::SocketError)
 QT_EMUN_CONVERTER(QNetworkProxy::ProxyType)
 QT_EMUN_CONVERTER(QNetworkProxy::Capability)
 QT_EMUN_CONVERTER(QNetworkProxy::Capabilities)
+QT_EMUN_CONVERTER(QAbstractSocket::SocketType)
+
 }
 
 void lqhostaddress_setAddr_ipv6(QHostAddress* w, const QByteArray& arr)
@@ -159,10 +161,30 @@ LQTcpServer lqtcpserver()
     ;
 }
 
+LQAbstractSocket lqabstractsocket()
+{
+    return
+    class_<QAbstractSocket,QObject>("QAbstractSocket")
+    .def(constructor<QAbstractSocket::SocketType,QObject*>())
+    .def("abort", &QAbstractSocket::abort)
+    .def("connectToHost", (void (QAbstractSocket::*)(const QString &,quint16,QIODevice::OpenMode))&QAbstractSocket::connectToHost)
+    .def("connectToHost", (void (QAbstractSocket::*)(const QHostAddress&,quint16,QIODevice::OpenMode))&QAbstractSocket::connectToHost)
+    ;
+}
+
 LQTcpSocket lqtcpsocket()
 {
     return
-    myclass_<QTcpSocket,QObject>("QTcpServer",lqtcpserver_set_map)
+    class_<QTcpSocket,QAbstractSocket>("QTcpServer")
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    ;
+}
+
+LQUdpSocket lqudpsocket()
+{
+    return
+    class_<QUdpSocket,QAbstractSocket>("QUdpSocket")
     .def(constructor<>())
     .def(constructor<QObject*>())
     ;
