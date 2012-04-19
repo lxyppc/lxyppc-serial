@@ -355,7 +355,15 @@ template<>bool is_class<QLayout>(const object& obj){
 }
 
 template<>bool is_class<double>(const object& obj){
-    return obj_name_is(obj,"number");
+    return type(obj) == LUA_TNUMBER;
+}
+
+template<>bool is_class<QRgb>(const object& obj){
+    return type(obj) == LUA_TNUMBER;
+}
+
+template<>bool is_class<int>(const object& obj){
+    return type(obj) == LUA_TNUMBER;
 }
 
 bool is_QVariant_wrapper(const luabind::object& obj)

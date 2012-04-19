@@ -16,34 +16,36 @@ struct myEventFilter : public QObject
     myEventFilter(const object& obj):m_obj(obj){}
     virtual bool eventFilter(QObject * obj, QEvent * event)
     {
-        if(isEvent<T>(event->type())){
-            T* evt = static_cast<T *>(event);
-            if(evt){
-                bool res = false;
-                if(type(m_obj) == LUA_TFUNCTION){
-                    res = call_function<bool>(m_obj,obj,evt);
-                }else if(type(m_obj) == LUA_TTABLE){
-                    object c,f;
-                    for(iterator i(m_obj),e;i!=e;++i){
-                        if(type(*i) == LUA_TUSERDATA){
-                            c = *i;
-                        }else if(type(*i) == LUA_TFUNCTION){
-                            f = *i;
-                        }else if(type(*i) == LUA_TSTRING){
-                            f = *i;
+        try{
+            if(isEvent<T>(event->type())){
+                T* evt = static_cast<T *>(event);
+                if(evt){
+                    bool res = false;
+                    if(type(m_obj) == LUA_TFUNCTION){
+                        res = call_function<bool>(m_obj,obj,evt);
+                    }else if(type(m_obj) == LUA_TTABLE){
+                        object c,f;
+                        for(iterator i(m_obj),e;i!=e;++i){
+                            if(type(*i) == LUA_TUSERDATA){
+                                c = *i;
+                            }else if(type(*i) == LUA_TFUNCTION){
+                                f = *i;
+                            }else if(type(*i) == LUA_TSTRING){
+                                f = *i;
+                            }
+                        }
+                        if(f && c){
+                            if(type(f) == LUA_TFUNCTION){
+                                res = call_function<bool>(f,c,obj,evt);
+                            }else if(type(f) == LUA_TSTRING){
+                                res = call_member<bool>(c,object_cast<const char*>(f),obj,evt);
+                            }
                         }
                     }
-                    if(f && c){
-                        if(type(f) == LUA_TFUNCTION){
-                            res = call_function<bool>(f,c,obj,evt);
-                        }else if(type(f) == LUA_TSTRING){
-                            res = call_member<bool>(c,object_cast<const char*>(f),obj,evt);
-                        }
-                    }
+                    if(res) return res;
                 }
-                if(res) return res;
             }
-        }
+        }catch(...){}
         return QObject::eventFilter(obj,event);
     }
 private:

@@ -5,6 +5,7 @@
 #include "lite_ptr.h"
 #include "lua_qtypes.h"
 #include "../protowrapper/lua_serial.h"
+#include "../protowrapper/lua_socket.h"
 #include <luabind/out_value_policy.hpp>
 #include "../mainwindow.h"
 using namespace luabind;
@@ -265,6 +266,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqdialog(),
         lqframe(),
         lqgroupbox(),
+        lqsplitter(),
 
         lqabstractscrollarea(),
         lqmdisubwindow(),
@@ -344,11 +346,25 @@ void register_classes(lua_State* L, char const* name = 0)
         lqtimeedit(),
 
         lqpainter(),
+        lqimage(),
+        lqpixmap(),
+        lqbitmap(),
         //lqvariant(),
 
         lqprocessenvironment(),
         lqprocess(),
         lqapplication(),
+
+        lqabstractslider(),
+        lqslider(),
+        lqscrollbar(),
+        lqdial(),
+
+        lqprogressbar(),
+        lqprogressdialog(),
+
+        lqhostaddress(),
+        lqnetworkproxy(),
 
         class_<QVariant_wrapper>("QVariant_wrapper")
         .def(constructor<>()),
@@ -398,6 +414,7 @@ void run_script_init(MainWindow* mainwindow)
     g["logEdit"] = mainwindow->getLogEdit();
     g["mdiArea"] = mainwindow->getMdiArea();
     g["mainWindow"] = mainwindow;
+    g["qApp"] = qApp;
 
     mwindow = mainwindow;
     set_pcall_callback(pcall_handler);

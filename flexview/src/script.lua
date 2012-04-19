@@ -66,3 +66,22 @@ windowMenu.triggered = function(ac)
         mdiArea:setActiveSubWindow(ac.data.window)
     end
 end
+
+icon = mainWindow.windowIcon
+
+frm2 = QFrame{
+w=800,h=600
+}
+
+sp = QSplitter(frm2)
+sp2 = QSplitter(2,frm2)
+sp2:addWidget(QDial(frm2))
+sp2:addWidget(QTextEdit(frm2))
+sp:addWidget(QDial(frm2))
+sp:addWidget(sp2)
+sp:addWidget(QTextEdit(frm2))
+mdiArea:addSubWindow(frm2){w=800,h=600}:show()
+
+log(QHostAddress(4).protocol)
+
+

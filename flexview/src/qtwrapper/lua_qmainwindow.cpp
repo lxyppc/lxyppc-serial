@@ -160,6 +160,16 @@ LQAbstractScrollArea lqabstractscrollarea()
     return
     class_<QAbstractScrollArea,QFrame>("LQAbstractScrollArea")
     .def(constructor<>())
+    .def(constructor<QWidget*>())
+    .def("addScrollBarWidget", &QAbstractScrollArea::addScrollBarWidget)
+
+    .property("verticalScrollBar", &QAbstractScrollArea::verticalScrollBar, &QAbstractScrollArea::setVerticalScrollBar)
+    .property("verticalScrollBarPolicy", &QAbstractScrollArea::verticalScrollBarPolicy, &QAbstractScrollArea::setVerticalScrollBarPolicy)
+    .property("horizontalScrollBar", &QAbstractScrollArea::horizontalScrollBar, &QAbstractScrollArea::setHorizontalScrollBar)
+    .property("horizontalScrollBarPolicy", &QAbstractScrollArea::horizontalScrollBarPolicy, &QAbstractScrollArea::setHorizontalScrollBarPolicy)
+    .property("cornerWidget", &QAbstractScrollArea::cornerWidget, &QAbstractScrollArea::setCornerWidget)
+    .property("viewport", &QAbstractScrollArea::viewport, &QAbstractScrollArea::setViewport)
+    .property("maximumViewportSize", &QAbstractScrollArea::maximumViewportSize)
     ;
 }
 

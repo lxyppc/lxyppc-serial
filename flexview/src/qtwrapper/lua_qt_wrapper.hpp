@@ -107,7 +107,17 @@ T* construct(const argument& arg, T1 t1, T2 t2){
     return object_cast<T*>(arg);
 }
 
+template<typename T, typename T1, typename T2, typename T3>
+T* construct(const argument& arg, T1 t1, T2 t2, T3 t3){
+    luabind::detail::construct<T, std::auto_ptr<T>, typename constructor<T1,T2,T3>::signature >()(arg,t1,t2,t3);
+    return object_cast<T*>(arg);
+}
 
+template<typename T, typename T1, typename T2, typename T3, typename T4>
+T* construct(const argument& arg, T1 t1, T2 t2, T3 t3, T4 t4){
+    luabind::detail::construct<T, std::auto_ptr<T>, typename constructor<T1,T2,T3,T4>::signature >()(arg,t1,t2,t3,t4);
+    return object_cast<T*>(arg);
+}
 
 
 template<typename Type> struct LuaType{enum{v = 0};};

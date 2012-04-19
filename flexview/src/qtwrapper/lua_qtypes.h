@@ -16,5 +16,6 @@
 #include "lua_qspin.h"
 #include "lua_qpainter.h"
 #include "lua_qprocess.h"
+#include "lua_qslider.h"
 #endif
 
