@@ -3,6 +3,7 @@
 # -------------------------------------------------
 TARGET = flexview
 TEMPLATE = app
+QT += network
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \
@@ -27,7 +28,9 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qevent.cpp \
     src/qtwrapper/lua_qspin.cpp \
     src/qtwrapper/lua_qpainter.cpp \
-    src/qtwrapper/lua_qprocess.cpp
+    src/qtwrapper/lua_qprocess.cpp \
+    src/qtwrapper/lua_qslider.cpp \
+    src/protowrapper/lua_socket.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -38,7 +41,10 @@ HEADERS += ./src/mainwindow.h \
     src/protowrapper/lua_serial.h \
     src/qtwrapper/lua_qevent.h \
     src/qtwrapper/lua_qspin.h \
-    src/qtwrapper/lua_qpainter.h
+    src/qtwrapper/lua_qpainter.h \
+    src/qtwrapper/lua_qprocess.h \
+    src/qtwrapper/lua_qslider.h \
+    src/protowrapper/lua_socket.h
 HEADERS += ./qextserialport/qextserialenumerator.h \
     ./qextserialport/qextserialport.h
 
