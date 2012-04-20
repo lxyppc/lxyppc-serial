@@ -139,5 +139,7 @@ INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers
 FORMS += src/luadialog.ui
-OTHER_FILES += src/script.lua
+OTHER_FILES += src/script.lua \
+    src/serialview.lua \
+    src/tcpview.lua
 RESOURCES += res.qrc
