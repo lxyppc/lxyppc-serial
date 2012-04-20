@@ -4,10 +4,6 @@
 #include <luabind/out_value_policy.hpp>
 #include "../qtwrapper/qluaslot.h"
 
-
-namespace luabind{
-    QT_EMUN_CONVERTER(qint64)
-}
 QextSerialEnumerator* QSerialPort::enumerator = 0;
 
 static setter_map<QSerialPort> lqserialport_set_map;
@@ -30,6 +26,12 @@ void QSerialPort::initial()
     }
     connect(enumerator, SIGNAL(deviceDiscovered(QextPortInfo)), this, SIGNAL(connected(QextPortInfo)));
     connect(enumerator, SIGNAL(deviceRemoved(QextPortInfo)), this, SIGNAL(disconnected(QextPortInfo)));
+}
+
+void QSerialPort::deinitial()
+{
+    disconnect(enumerator, SIGNAL(deviceDiscovered(QextPortInfo)), this, SIGNAL(connected(QextPortInfo)));
+    disconnect(enumerator, SIGNAL(deviceRemoved(QextPortInfo)), this, SIGNAL(disconnected(QextPortInfo)));
 }
 
 LQextPortInfo lqextportinfo()
@@ -81,11 +83,14 @@ LQextSerialPort lqextserialport()
     return
     myclass_<QSerialPort>("QSerialPort",lqserialport_set_map)
     .def(constructor<>())
-    .def(constructor<int>())
+    .def(constructor<QObject*>())
+    .def(constructor<QObject*,int>())
     .def(constructor<const QString&>())
-    .def(constructor<const QString&, int>())
+    .def(constructor<const QString&, QObject*>())
+    .def(constructor<const QString&, QObject*, int>())
     .def(constructor<const QString&, const PortSettings&>())
-    .def(constructor<const QString&, const PortSettings&, int>())
+    .def(constructor<const QString&, const PortSettings&, QObject*>())
+    .def(constructor<const QString&, const PortSettings&, QObject*, int>())
     .def("__init", table_init_general<QSerialPort>)
     .def("__call", lqserialport_init)
     .def("setDtr", &QSerialPort::setDtr)

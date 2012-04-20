@@ -382,3 +382,18 @@ void QLuaSlot::general_slot(QWidget* param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }
+
+void QLuaSlot::general_slot(QAbstractSocket::SocketError param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QAbstractSocket::SocketState param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(QClipboard::Mode param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}

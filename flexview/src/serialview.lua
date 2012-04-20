@@ -6,7 +6,7 @@ function SerialView:__init()
     self.portList = QComboBox();
     ports = QSerialPort.enumPort()
     table.foreach(ports, function (k,v) self.portList:addItem(v.portName, v)  end)
-    self.serial = QSerialPort()
+    self.serial = QSerialPort(self)
 
     self.baudList = QComboBox{ QSerialPort.ValidBaudRate(), editable = true }
     self.baudList.lineEdit.inputMask = "00000000"
@@ -28,7 +28,7 @@ function SerialView:__init()
     --self.baudList.currentIndexChanged = {self.serial,self.serial.setBaudRate}
     self.baudList.editTextChanged = function(text)
         idx = self.baudList:findText(text)
-        if idx > 0 then
+        if idx > 0 and idx < QSerialPort.BAUDLAST then
             self.serial:setBaudRate(idx)
         else
             bd = tonumber(text)
@@ -58,22 +58,13 @@ function SerialView:__init()
     self.settingGroup = QGroupBox("Port Settings"){
         layout =
             QHBoxLayout{
-                QVBoxLayout{
-                    QHBoxLayout{
-                        QVBoxLayout{
-                            QLabel("Port:"),QLabel("Baud:"),QLabel("Parity:"),QLabel("Data Bits:"),
-                            QLabel("Stop Bits:"),QLabel("Flow:"),
-                            --QLabel(),
-                            --strech = "0,0,0,0,0,0,1",
-                        },
-                        QVBoxLayout{
-                            self.portList,self.baudList,self.parityList,self.dataBitsList,self.stopBitsList,self.flowList,
-                            --QLabel(),
-                            --strech = "0,0,0,0,0,0,1",
-                        },
-                    },
-                    QLabel(),
-                    strech = "0,1",
+                QFormLayout{
+                    {"Port:", self.portList},
+                    {"Baud:", self.baudList},
+                    {"Parity:", self.parityList},
+                    {"Data Bits:", self.dataBitsList},
+                    {"Stop Bits:", self.stopBitsList},
+                    {"Flow:", self.flowList},
                 },
                 QVBoxLayout{
                     --QLabel("Setting:"),
@@ -183,10 +174,4 @@ function SerialView:__init()
     self.serial.disconnected = function(info)
         logEdit:append(info.portName .. "   disconnected")
     end
-    self.eventFilter = QCloseEvent.filter({self,self.close})
-end
-
-function SerialView:close()
-    self.serial = nil
-    logEdit:append("Serial View Close")
 end

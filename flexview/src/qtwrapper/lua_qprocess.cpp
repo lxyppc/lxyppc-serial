@@ -44,6 +44,7 @@ namespace luabind{
     QT_EMUN_CONVERTER(QProcess::ExitStatus)
     QT_EMUN_CONVERTER(QIODevice::OpenMode)
     QT_EMUN_CONVERTER(QIODevice::OpenModeFlag)
+    QT_EMUN_CONVERTER(QClipboard::Mode)
 }
 
 ENUM_FILTER(QProcess,processChannelMode,setProcessChannelMode)
@@ -203,9 +204,89 @@ LQApplication lqapplication()
             def("arguments", &QApplication::arguments),
             def("libraryPaths", &QApplication::libraryPaths),
             def("setLibraryPaths", &QApplication::setLibraryPaths),
-            def("instance", lqapplication_instance)
+            def("instance", lqapplication_instance),
+            def("desktop", &QApplication::desktop),
+            def("clipboard", &QApplication::clipboard)
     ]
 
 
+    ;
+}
+
+const QRect lqdesktopwidget_availableGeometry(QDesktopWidget* w){ return w->availableGeometry();}
+QWidget* lqdesktopwidget_screen(QDesktopWidget* w) { return w->screen(); }
+const QRect lqdesktopwidget_screenGeometry(QDesktopWidget* w) { return w->screenGeometry(); }
+int lqdesktopwidget_screenNumber(QDesktopWidget* w) { return w->screenNumber(); }
+
+SIGNAL_PROPERYT(lqdesktopwidget, resized, QDesktopWidget, "(int)")
+SIGNAL_PROPERYT(lqdesktopwidget, screenCountChanged, QDesktopWidget, "(int)")
+SIGNAL_PROPERYT(lqdesktopwidget, workAreaResized, QDesktopWidget, "(int)")
+
+LQDesktopWidget lqdesktopwidget()
+{
+    return
+    class_<QDesktopWidget, QWidget>("QDesktopWidget")
+    .def("availableGeometry", lqdesktopwidget_availableGeometry)
+    .def("availableGeometry", (const QRect(QDesktopWidget::*)(int) const)&QDesktopWidget::availableGeometry)
+    .def("availableGeometry", (const QRect(QDesktopWidget::*)(const QWidget*) const)&QDesktopWidget::availableGeometry)
+    .def("availableGeometry", (const QRect(QDesktopWidget::*)(const QPoint&) const)&QDesktopWidget::availableGeometry)
+    .def("screen", lqdesktopwidget_screen)
+    .def("screen", &QDesktopWidget::screen)
+    .def("screenGeometry", lqdesktopwidget_screenGeometry)
+    .def("screenGeometry", (const QRect(QDesktopWidget::*)(int) const)&QDesktopWidget::screenGeometry)
+    .def("screenGeometry", (const QRect(QDesktopWidget::*)(const QWidget*) const)&QDesktopWidget::screenGeometry)
+    .def("screenGeometry", (const QRect(QDesktopWidget::*)(const QPoint&) const)&QDesktopWidget::screenGeometry)
+    .def("screenNumber", lqdesktopwidget_screenNumber)
+    .def("screenNumber", (int(QDesktopWidget::*)(const QWidget*) const)&QDesktopWidget::screenNumber)
+    .def("screenNumber", (int(QDesktopWidget::*)(const QPoint&) const)&QDesktopWidget::screenNumber)
+
+
+    .property("isVirtualDesktop", &QDesktopWidget::isVirtualDesktop)
+    .property("primaryScreen", &QDesktopWidget::primaryScreen)
+    .property("screenCount", &QDesktopWidget::screenCount)
+    .sig_prop(lqdesktopwidget, resized)
+    .sig_prop(lqdesktopwidget, screenCountChanged)
+    .sig_prop(lqdesktopwidget, workAreaResized)
+    ;
+}
+
+SIGNAL_PROPERYT(lqclipboard, changed, QClipboard, "(QClipboard::Mode)")
+SIGNAL_PROPERYT(lqclipboard, dataChanged, QClipboard, "()")
+SIGNAL_PROPERYT(lqclipboard, findBufferChanged, QClipboard, "()")
+SIGNAL_PROPERYT(lqclipboard, selectionChanged, QClipboard, "()")
+LQClipboard lqclipboard()
+{
+    return
+    class_<QClipboard, QObject>("QClipboard")
+    .def("clear", &QClipboard::clear)
+    .def("clear", tag_function<void(QClipboard*)>(boost::bind(&QClipboard::clear,_1,QClipboard::Clipboard)))
+    .def("image", &QClipboard::image)
+    .def("image", tag_function<QImage(QClipboard*)>(boost::bind(&QClipboard::image,_1,QClipboard::Clipboard)))
+    .def("mimeData", &QClipboard::mimeData)
+    .def("mimeData", tag_function<const QMimeData *(QClipboard*)>(boost::bind(&QClipboard::mimeData,_1,QClipboard::Clipboard)))
+    .def("pixmap", &QClipboard::pixmap)
+    .def("pixmap", tag_function<QPixmap(QClipboard*)>(boost::bind(&QClipboard::pixmap,_1,QClipboard::Clipboard)))
+    .def("setImage", &QClipboard::setImage)
+    .def("setImage", tag_function<void(QClipboard*, const QImage &)>(boost::bind(&QClipboard::setImage,_1,_2,QClipboard::Clipboard)))
+    .def("setMimeData", &QClipboard::setMimeData)
+    .def("setMimeData", tag_function<void(QClipboard*, QMimeData*)>(boost::bind(&QClipboard::setMimeData,_1,_2,QClipboard::Clipboard)))
+    .def("setPixmap", &QClipboard::setPixmap)
+    .def("setPixmap", tag_function<void(QClipboard*, const QPixmap &)>(boost::bind(&QClipboard::setPixmap,_1,_2,QClipboard::Clipboard)))
+    .def("setText", &QClipboard::setText)
+    .def("setText", tag_function<void(QClipboard*, const QString&)>(boost::bind(&QClipboard::setText,_1,_2,QClipboard::Clipboard)))
+    .def("text", (QString(QClipboard::*)(QClipboard::Mode)const)&QClipboard::text)
+    .def("text", tag_function<QString(QClipboard*)>(boost::bind((QString(QClipboard::*)(QClipboard::Mode)const)&QClipboard::text,_1,QClipboard::Clipboard)))
+    .def("text", (QString(QClipboard::*)(QString &,QClipboard::Mode)const)&QClipboard::text)
+    .def("text", tag_function<QString(QClipboard*,QString &)>(boost::bind((QString(QClipboard::*)(QString &,QClipboard::Mode)const)&QClipboard::text,_1,_2,QClipboard::Clipboard)))
+
+    .property("ownsClipboard", &QClipboard::ownsClipboard)
+    .property("ownsFindBuffer", &QClipboard::ownsFindBuffer)
+    .property("ownsSelection", &QClipboard::ownsSelection)
+    .property("supportsFindBuffer", &QClipboard::supportsFindBuffer)
+    .property("supportsSelection", &QClipboard::supportsSelection)
+    .sig_prop(lqclipboard, changed)
+    .sig_prop(lqclipboard, dataChanged)
+    .sig_prop(lqclipboard, findBufferChanged)
+    .sig_prop(lqclipboard, selectionChanged)
     ;
 }

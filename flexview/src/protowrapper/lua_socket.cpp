@@ -8,6 +8,8 @@ QT_EMUN_CONVERTER(QNetworkProxy::ProxyType)
 QT_EMUN_CONVERTER(QNetworkProxy::Capability)
 QT_EMUN_CONVERTER(QNetworkProxy::Capabilities)
 QT_EMUN_CONVERTER(QAbstractSocket::SocketType)
+QT_EMUN_CONVERTER(QAbstractSocket::SocketState)
+QT_EMUN_CONVERTER(QAbstractSocket::SocketOption)
 
 }
 
@@ -161,31 +163,210 @@ LQTcpServer lqtcpserver()
     ;
 }
 
+void lqabstractsocket_connectToHost1(QAbstractSocket* w, const QString& a,quint16 port)
+{
+    w->connectToHost(a,port);
+}
+void lqabstractsocket_connectToHost2(QAbstractSocket* w, const QHostAddress& a,quint16 port)
+{
+    w->connectToHost(a,port);
+}
+
+void lqabstractsocket_setSocketDescriptor1(QAbstractSocket* w, int d)
+{
+    w->setSocketDescriptor(d);
+}
+void lqabstractsocket_setSocketDescriptor2(QAbstractSocket* w, int d,QAbstractSocket::SocketState s)
+{
+    w->setSocketDescriptor(d,s);
+}
+bool QAbstractSocket_waitForConnected(QAbstractSocket* w){return w->waitForConnected();}
+bool QAbstractSocket_waitForDisconnected(QAbstractSocket* w){return w->waitForDisconnected();}
+bool QAbstractSocket_waitForBytesWritten(QAbstractSocket* w){return w->waitForBytesWritten();}
+bool QAbstractSocket_waitForReadyRead(QAbstractSocket* w){return w->waitForReadyRead();}
+
+SIGNAL_PROPERYT(lqabstractsocket, aboutToClose, QAbstractSocket, "()")
+SIGNAL_PROPERYT(lqabstractsocket, bytesWritten, QAbstractSocket, "(qint64)")
+SIGNAL_PROPERYT(lqabstractsocket, readChannelFinished, QAbstractSocket, "()")
+SIGNAL_PROPERYT(lqabstractsocket, readyRead, QAbstractSocket, "()")
+SIGNAL_PROPERYT(lqabstractsocket, connected, QAbstractSocket, "()")
+SIGNAL_PROPERYT(lqabstractsocket, disconnected, QAbstractSocket, "()")
+SIGNAL_PROPERYT(lqabstractsocket, error, QAbstractSocket, "(QAbstractSocket::SocketError)")
+SIGNAL_PROPERYT(lqabstractsocket, hostFound, QAbstractSocket, "()")
+SIGNAL_PROPERYT(lqabstractsocket, stateChanged, QAbstractSocket, "(QAbstractSocket::SocketState)")
+
+static setter_map<QAbstractSocket> lqabs_set_map;
+QAbstractSocket* lqabs_init(QAbstractSocket* widget, const object& table)
+{
+    lq_general_init(widget, table, lqabs_set_map);
+    return widget;
+}
+
 LQAbstractSocket lqabstractsocket()
 {
     return
-    class_<QAbstractSocket,QObject>("QAbstractSocket")
+    myclass_<QAbstractSocket,QObject>("QAbstractSocket",lqabs_set_map)
     .def(constructor<QAbstractSocket::SocketType,QObject*>())
+    .def("__call", lqabs_init)
     .def("abort", &QAbstractSocket::abort)
     .def("connectToHost", (void (QAbstractSocket::*)(const QString &,quint16,QIODevice::OpenMode))&QAbstractSocket::connectToHost)
     .def("connectToHost", (void (QAbstractSocket::*)(const QHostAddress&,quint16,QIODevice::OpenMode))&QAbstractSocket::connectToHost)
+    .def("connectToHost",lqabstractsocket_connectToHost1)
+    .def("connectToHost",lqabstractsocket_connectToHost2)
+    .def("disconnectFromHost",&QAbstractSocket::disconnectFromHost)
+    .def("flush",&QAbstractSocket::flush)
+    .def("setSocketDescriptor",lqabstractsocket_setSocketDescriptor2)
+    .def("setSocketDescriptor",&QAbstractSocket::setSocketDescriptor)
+    .def("socketOption",&QAbstractSocket::socketOption)
+    .def("setSocketOption",&QAbstractSocket::setSocketOption)
+    .def("waitForConnected",&QAbstractSocket::waitForConnected)
+    .def("waitForConnected",QAbstractSocket_waitForConnected)
+    .def("waitForDisconnected",&QAbstractSocket::waitForDisconnected)
+    .def("waitForDisconnected",QAbstractSocket_waitForDisconnected)
+
+    .def("close",&QAbstractSocket::close)
+    .def("waitForBytesWritten",&QAbstractSocket::waitForBytesWritten)
+    .def("waitForBytesWritten",QAbstractSocket_waitForBytesWritten)
+    .def("waitForReadyRead",&QAbstractSocket::waitForReadyRead)
+    .def("waitForReadyRead",QAbstractSocket_waitForReadyRead)
+    .def("flush", &QAbstractSocket::flush)
+    .def("readAll", &QAbstractSocket::readAll)
+    .def("read", (QByteArray (QAbstractSocket::*)(qint64))&QAbstractSocket::read)
+    .def("write", (qint64 (QAbstractSocket::*)(const char *,qint64))&QAbstractSocket::write)
+    .def("write", (qint64 (QAbstractSocket::*)(const char *))&QAbstractSocket::write)
+    .def("write", (qint64 (QAbstractSocket::*)(const QByteArray&))&QAbstractSocket::write)
+
+
+    .property("atEnd", &QAbstractSocket::atEnd)
+    .property("bytesAvailable", &QAbstractSocket::bytesAvailable)
+    .property("bytesToWrite", &QAbstractSocket::bytesToWrite)
+    .property("canReadLine", &QAbstractSocket::canReadLine)
+    .property("isSequential", &QAbstractSocket::isSequential)
+    .property("isOpen", &QAbstractSocket::isOpen)
+    .property("isReadable", &QAbstractSocket::isReadable)
+    .property("isWritable", &QAbstractSocket::isWritable)
+
+    .property("error",(QAbstractSocket::SocketError (QAbstractSocket::*)() const)&QAbstractSocket::error)
+    .property("errorString",&QAbstractSocket::errorString)
+    .property("isValid",&QAbstractSocket::isValid)
+    .property("localAddress",&QAbstractSocket::localAddress)
+    .property("localPort",&QAbstractSocket::localPort)
+    .property("peerAddress",&QAbstractSocket::peerAddress)
+    .property("peerName",&QAbstractSocket::peerName)
+    .property("peerPort",&QAbstractSocket::peerPort)
+
+    .property("socketDescriptor",&QAbstractSocket::socketDescriptor, lqabstractsocket_setSocketDescriptor1)
+
+    .property("socketType",&QAbstractSocket::socketType)
+    .property("state",&QAbstractSocket::state)
+
+    .sig_prop(lqabstractsocket, aboutToClose)
+    .sig_prop(lqabstractsocket, bytesWritten)
+    .sig_prop(lqabstractsocket, readChannelFinished)
+    .sig_prop(lqabstractsocket, readyRead)
+    .sig_prop(lqabstractsocket, connected)
+    .sig_prop(lqabstractsocket, disconnected)
+    .sig_prop(lqabstractsocket, error)
+    .sig_prop(lqabstractsocket, hostFound)
+    .sig_prop(lqabstractsocket, stateChanged)
+
+    .class_<QAbstractSocket,QObject>::property("proxy",&QAbstractSocket::proxy, &QAbstractSocket::setProxy)
+    .property("readBufferSize",&QAbstractSocket::readBufferSize, &QAbstractSocket::setReadBufferSize)
     ;
 }
 
+static setter_map<QTcpSocket> lqtcps_set_map;
+QTcpSocket* lqtcps_init(QTcpSocket* widget, const object& table)
+{
+    lqabs_init(widget,table);
+    lq_general_init(widget, table, lqtcps_set_map);
+    return widget;
+}
+template<>
+void table_init_general<QTcpSocket>(const luabind::argument & arg, const object& obj)
+{
+    lqtcps_init(construct<QTcpSocket>(arg), obj);
+}
 LQTcpSocket lqtcpsocket()
 {
     return
-    class_<QTcpSocket,QAbstractSocket>("QTcpServer")
+    myclass_<QTcpSocket,QAbstractSocket>("QTcpServer",lqtcps_set_map)
     .def(constructor<>())
     .def(constructor<QObject*>())
+    .def("__call", lqtcps_init)
+    .def("__init", table_init_general<QTcpSocket>)
     ;
+}
+
+
+static setter_map<QUdpSocket> lqudps_set_map;
+QUdpSocket* lqudps_init(QUdpSocket* widget, const object& table)
+{
+    lqabs_init(widget,table);
+    lq_general_init(widget, table, lqudps_set_map);
+    return widget;
+}
+template<>
+void table_init_general<QUdpSocket>(const luabind::argument & arg, const object& obj)
+{
+    lqudps_init(construct<QUdpSocket>(arg), obj);
+}
+bool lqudpsocket_bind(QUdpSocket* w){ return w->bind(); }
+
+extern lua_State* __pL;
+QByteArray lqudpsocket_readDatagram(QUdpSocket* w, qint64 max)
+{
+    QByteArray res;
+    QHostAddress addr;
+    quint16 port;
+    char* p = new char[max];
+    qint64 len = w->readDatagram(p,max,&addr,&port);
+    if(len>=0){
+        res = QByteArray::fromRawData(p,len);
+    }
+    delete[] p;
+    luabind::detail::make_pointee_instance(__pL, addr, boost::mpl::true_());
+    ::lua_pushnumber(__pL,port);
+    return res;
+}
+
+void lqudpsocket_readDatagram2(qint64 max)
+{
+    QByteArray res;
+    QHostAddress addr("192.168.0.195");
+    quint16 port = 23234;
+    char* p = new char[max];
+    memset(p,37,max);
+    res = QByteArray::fromRawData(p,max);
+    delete[] p;
+    object obj = luabind::newtable(__pL);
+    for(int i=0;i<res.length();i++){
+        obj[i+1] = (int)res.at(i);
+    }
+    obj.push(__pL);
+    luabind::detail::make_pointee_instance(__pL, addr, boost::mpl::true_());
+    ::lua_pushnumber(__pL,port);
+    //return res;
 }
 
 LQUdpSocket lqudpsocket()
 {
     return
-    class_<QUdpSocket,QAbstractSocket>("QUdpSocket")
+    myclass_<QUdpSocket,QAbstractSocket>("QUdpSocket",lqudps_set_map)
     .def(constructor<>())
     .def(constructor<QObject*>())
+    .def("bind", (bool (QUdpSocket::*)(quint16))&QUdpSocket::bind)
+    .def("bind", lqudpsocket_bind)
+    .def("bind", (bool (QUdpSocket::*)(quint16,QUdpSocket::BindMode))&QUdpSocket::bind)
+    .def("bind", (bool (QUdpSocket::*)(const QHostAddress &,quint16,QUdpSocket::BindMode))&QUdpSocket::bind)
+    .def("bind", (bool (QUdpSocket::*)(const QHostAddress &,quint16))&QUdpSocket::bind)
+    .def("readDatagram", lqudpsocket_readDatagram)
+    .def("writeDatagram", (qint64(QUdpSocket::*)( const QByteArray&,const QHostAddress&, quint16))&QUdpSocket::writeDatagram)
+
+    .property("hasPendingDatagrams", &QUdpSocket::hasPendingDatagrams)
+    .property("pendingDatagramSize", &QUdpSocket::pendingDatagramSize)
+    .scope[
+            def("test", lqudpsocket_readDatagram2)
+    ]
     ;
 }

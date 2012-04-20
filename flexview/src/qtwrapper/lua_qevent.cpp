@@ -5,6 +5,8 @@ namespace luabind{
     QT_EMUN_CONVERTER(Qt::KeyboardModifiers)
     QT_EMUN_CONVERTER(Qt::MouseButtons)
     QT_EMUN_CONVERTER(Qt::MouseButton)
+    QT_EMUN_CONVERTER(Qt::DropAction)
+    QT_EMUN_CONVERTER(Qt::DropActions)
 }
 
 template<typename T>
@@ -76,6 +78,9 @@ template<>bool isEvent<QResizeEvent>(QEvent::Type type){ return type == QEvent::
 template<>bool isEvent<QShowEvent>(QEvent::Type type){ return type == QEvent::Show; }
 template<>bool isEvent<QHideEvent>(QEvent::Type type){ return type == QEvent::Hide; }
 template<>bool isEvent<QDropEvent>(QEvent::Type type){ return type == QEvent::Drop; }
+template<>bool isEvent<QDragEnterEvent>(QEvent::Type type){ return type == QEvent::DragEnter; }
+template<>bool isEvent<QDragMoveEvent>(QEvent::Type type){ return type == QEvent::DragMove; }
+template<>bool isEvent<QDragLeaveEvent>(QEvent::Type type){ return type == QEvent::DragLeave; }
 
 template<typename T>
 QObject* event_filter(const object& obj)
@@ -226,8 +231,45 @@ LQDropEvent lqdropevent()
 {
     return
     LQDropEvent("QDropEvent")
+    .def("acceptProposedAction", &QDropEvent::acceptProposedAction)
+
+    .property("dropAction", &QDropEvent::dropAction, &QDropEvent::setDropAction)
+    .property("keyboardModifiers", &QDropEvent::keyboardModifiers)
+    .property("mimeData", &QDropEvent::mimeData)
+    .property("mouseButtons", &QDropEvent::mouseButtons)
+    .property("possibleActions", &QDropEvent::possibleActions)
+    .property("proposedAction", &QDropEvent::proposedAction)
     .property("source", &QDropEvent::source)
     .property("pos", &QDropEvent::pos)
     .scope[ def("filter", event_filter<QDropEvent>)]
+    ;
+}
+
+LQDragMoveEvent lqdragmoveevent()
+{
+    return
+    LQDragMoveEvent("QDragMoveEvent")
+    .def("accept", ( void (QDragMoveEvent::*)())&QDragMoveEvent::accept)
+    .def("accept", ( void (QDragMoveEvent::*)(const QRect&))&QDragMoveEvent::accept)
+    .def("ignore", ( void (QDragMoveEvent::*)())&QDragMoveEvent::ignore)
+    .def("ignore", ( void (QDragMoveEvent::*)(const QRect&))&QDragMoveEvent::ignore)
+    .property("answerRect", &QDragMoveEvent::answerRect)
+    .scope[ def("filter", event_filter<QDragMoveEvent>)]
+    ;
+}
+
+LQDragEnterEvent lqdragenterevent()
+{
+    return
+    LQDragEnterEvent("QDragEnterEvent")
+    .scope[ def("filter", event_filter<QDragEnterEvent>)]
+    ;
+}
+
+LQDragLeaveEvent lqdragleaveevent()
+{
+    return
+    LQDragLeaveEvent("QDragLeaveEvent")
+    .scope[ def("filter", event_filter<QDragLeaveEvent>)]
     ;
 }

@@ -280,6 +280,7 @@ QT_EMUN_CONVERTER(Qt::WindowFlags)
 QT_EMUN_CONVERTER(QMessageBox::StandardButtons)
 QT_EMUN_CONVERTER(QFileDialog::Options)
 QT_EMUN_CONVERTER(Qt::MatchFlags)
+QT_EMUN_CONVERTER(qint64)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

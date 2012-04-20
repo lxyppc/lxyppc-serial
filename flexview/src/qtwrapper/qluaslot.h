@@ -2,6 +2,7 @@
 #define QLUASLOT_H
 
 #include <QtGui>
+#include <QtNetwork>
 #include "lua.hpp"
 #include <luabind/luabind.hpp>
 #include <boost/smart_ptr.hpp>
@@ -59,6 +60,9 @@ public slots:
     void general_slot(QProcess::ProcessState);
     void general_slot(QWidget*,QWidget*);
     void general_slot(QWidget*);
+    void general_slot(QAbstractSocket::SocketError);
+    void general_slot(QAbstractSocket::SocketState);
+    void general_slot(QClipboard::Mode);
 private:
     object m_obj;
     QString m_method;

@@ -10,9 +10,9 @@ class QSerialPort : public QextSerialPort
 {
     Q_OBJECT
 public:
-    QSerialPort(int mode = EventDriven):QextSerialPort(QueryMode(mode)){initial();}
-    QSerialPort(const QString & name, int mode = EventDriven):QextSerialPort(name,QueryMode(mode)){initial();}
-    QSerialPort(const QString & name, const PortSettings& s, int mode = EventDriven):QextSerialPort(name,s,QueryMode(mode)){initial();}
+    QSerialPort(QObject* parent = 0, int mode = EventDriven):QextSerialPort(parent,QueryMode(mode)){initial();}
+    QSerialPort(const QString & name, QObject* parent = 0, int mode = EventDriven):QextSerialPort(name,parent,QueryMode(mode)){initial();}
+    QSerialPort(const QString & name, const PortSettings& s, QObject* parent = 0, int mode = EventDriven):QextSerialPort(name,s,parent,QueryMode(mode)){initial();}
 
     QString portName() const{ return QextSerialPort::portName(); }
     void setPortName(const QString& name){ QextSerialPort::setPortName(name); }
@@ -46,6 +46,7 @@ public:
 
 protected:
     void initial();
+    void deinitial();
 signals:
     void connected(const QextPortInfo&);
     void disconnected(const QextPortInfo&);

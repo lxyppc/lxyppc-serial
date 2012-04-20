@@ -249,6 +249,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqcloseevent(),
         lqcontextmenuevent(),
         lqdropevent(),
+        lqdragmoveevent(),
+        lqdragenterevent(),
+        lqdragleaveevent(),
         lqkeyevent(),
         lqmouseevent(),
         lqpaintevent(),
@@ -296,6 +299,8 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqlayout(),
         lqstatckedlayout(),
+        lqformlayout(),
+        lqgridlayout(),
         lqboxlayout(),
         lqvboxlayout(),
         lqhboxlayout(),
@@ -354,6 +359,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqprocessenvironment(),
         lqprocess(),
         lqapplication(),
+        lqdesktopwidget(),
+        lqclipboard(),
 
         lqabstractslider(),
         lqslider(),
