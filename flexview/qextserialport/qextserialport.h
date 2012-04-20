@@ -190,10 +190,10 @@ class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
             EventDriven
         };
 
-        QextSerialPort(QueryMode mode = EventDriven);
-        QextSerialPort(const QString & name, QueryMode mode = EventDriven);
-        QextSerialPort(PortSettings const& s, QueryMode mode = EventDriven);
-        QextSerialPort(const QString & name, PortSettings const& s, QueryMode mode = EventDriven);
+        QextSerialPort(QObject* parent = 0, QueryMode mode = EventDriven);
+        QextSerialPort(const QString & name, QObject* parent = 0, QueryMode mode = EventDriven);
+        QextSerialPort(PortSettings const& s, QObject* parent = 0, QueryMode mode = EventDriven);
+        QextSerialPort(const QString & name, PortSettings const& s, QObject* parent = 0, QueryMode mode = EventDriven);
         ~QextSerialPort();
 
         void setPortName(const QString & name);
