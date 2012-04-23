@@ -376,6 +376,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqabstractsocket(),
         lqtcpsocket(),
         lqudpsocket(),
+        lqhostinfo(),
+        lqnetworkinterface(),
+        lqnetworkaddressentry(),
 
         class_<QVariant_wrapper>("QVariant_wrapper")
         .def(constructor<>()),

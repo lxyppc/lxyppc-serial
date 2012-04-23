@@ -1,6 +1,6 @@
 #include "lua_qobject.h"
 #include <luabind/adopt_policy.hpp>
-
+#include <QtNetwork>
 
 QObject* lqobject_get_filter(QObject* obj)
 {
@@ -344,6 +344,9 @@ IS_CLASS2(QListWidgetItem,QListItem)
 IS_CLASS2(QTreeWidgetItem,QTreeItem)
 IS_CLASS2(QTableWidgetItem,QTableItem)
 IS_CLASS(QTableWidgetSelectionRange)
+IS_CLASS(QHostAddress)
+IS_CLASS(QNetworkInterface)
+IS_CLASS(QNetworkAddressEntry)
 
 template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}
 template<>bool is_class<QWidget*>(const object& obj){ return type(obj) == LUA_TUSERDATA; }

@@ -118,6 +118,7 @@ int lqsplitter_get_range(QSplitter* w, int i, int* max)
 {
     int min = 0;
     w->getRange(i,&min,max);
+    return min;
 }
 
 void lqsplitter_setOpaqueResize(QSplitter* w)

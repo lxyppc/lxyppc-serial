@@ -74,5 +74,3 @@ windowMenu.triggered = function(ac)
         mdiArea:setActiveSubWindow(ac.data.window)
     end
 end
-
-

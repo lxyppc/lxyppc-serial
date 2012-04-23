@@ -10,6 +10,9 @@ QT_EMUN_CONVERTER(QNetworkProxy::Capabilities)
 QT_EMUN_CONVERTER(QAbstractSocket::SocketType)
 QT_EMUN_CONVERTER(QAbstractSocket::SocketState)
 QT_EMUN_CONVERTER(QAbstractSocket::SocketOption)
+QT_EMUN_CONVERTER(QHostInfo::HostInfoError)
+QT_EMUN_CONVERTER(QNetworkInterface::InterfaceFlag)
+QT_EMUN_CONVERTER(QNetworkInterface::InterfaceFlags)
 
 }
 
@@ -370,3 +373,65 @@ LQUdpSocket lqudpsocket()
     ]
     ;
 }
+
+int lqhostinfo_lookupHost(const QString& name, const object& obj)
+{
+    QLuaSlot* p = new QLuaSlot(obj,"dummy");
+    return QHostInfo::lookupHost(name,p,SLOT(general_slot(QHostInfo)));
+}
+
+LQHostInfo lqhostinfo()
+{
+    return
+    class_<QHostInfo>("QHostInfo")
+    .def(constructor<>())
+    .def(constructor<int>())
+    .def(constructor<const QHostInfo&>())
+    .property("addresses", &QHostInfo::addresses, &QHostInfo::setAddresses)
+    .property("error", &QHostInfo::error, &QHostInfo::setError)
+    .property("errorString", &QHostInfo::errorString, &QHostInfo::setErrorString)
+    .property("hostName", &QHostInfo::hostName, &QHostInfo::setHostName)
+    .property("lookupId", &QHostInfo::lookupId, &QHostInfo::setLookupId)
+    .scope[
+            def("abortHostLookup", &QHostInfo::abortHostLookup),
+            def("fromName", &QHostInfo::fromName),
+            def("localDomainName", &QHostInfo::localDomainName),
+            def("localHostName", &QHostInfo::localHostName),
+            def("lookupHost", lqhostinfo_lookupHost)
+    ]
+    ;
+}
+
+LQNetworkInterface lqnetworkinterface()
+{
+    return
+    class_<QNetworkInterface>("QNetworkInterface")
+    .def(constructor<>())
+    .def(constructor<const QNetworkInterface&>())
+    .property("addressEntries", &QNetworkInterface::addressEntries)
+    .property("flags", &QNetworkInterface::flags)
+    .property("hardwareAddress", &QNetworkInterface::hardwareAddress)
+    .property("humanReadableName", &QNetworkInterface::humanReadableName)
+    .property("index", &QNetworkInterface::index)
+    .property("isValid", &QNetworkInterface::isValid)
+    .property("name", &QNetworkInterface::name)
+    .scope[
+            def("allAddresses", &QNetworkInterface::allAddresses),
+            def("allInterfaces", &QNetworkInterface::allInterfaces),
+            def("interfaceFromIndex", &QNetworkInterface::interfaceFromIndex),
+            def("interfaceFromName", &QNetworkInterface::interfaceFromName)
+    ]
+    ;
+}
+
+LQNetworkAddressEntry lqnetworkaddressentry()
+{
+    return
+    class_<QNetworkAddressEntry>("QNetworkAddressEntry")
+    .property("broadcast", &QNetworkAddressEntry::broadcast , &QNetworkAddressEntry::setBroadcast)
+    .property("ip", &QNetworkAddressEntry::ip , &QNetworkAddressEntry::setIp)
+    .property("netmask", &QNetworkAddressEntry::netmask , &QNetworkAddressEntry::setNetmask)
+    .property("prefixLength", &QNetworkAddressEntry::prefixLength , &QNetworkAddressEntry::setPrefixLength)
+    ;
+}
+

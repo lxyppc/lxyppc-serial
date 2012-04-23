@@ -9,6 +9,9 @@ typedef class_<QTcpServer,QObject>  LQTcpServer;
 typedef class_<QAbstractSocket,QObject>  LQAbstractSocket;
 typedef class_<QTcpSocket,QAbstractSocket>  LQTcpSocket;
 typedef class_<QUdpSocket,QAbstractSocket>  LQUdpSocket;
+typedef class_<QHostInfo>   LQHostInfo;
+typedef class_<QNetworkInterface> LQNetworkInterface;
+typedef class_<QNetworkAddressEntry> LQNetworkAddressEntry;
 
 
 
@@ -18,6 +21,8 @@ LQTcpServer lqtcpserver();
 LQAbstractSocket lqabstractsocket();
 LQTcpSocket lqtcpsocket();
 LQUdpSocket lqudpsocket();
-
+LQHostInfo lqhostinfo();
+LQNetworkInterface lqnetworkinterface();
+LQNetworkAddressEntry lqnetworkaddressentry();
 
 #endif // LUA_SOCKET_H

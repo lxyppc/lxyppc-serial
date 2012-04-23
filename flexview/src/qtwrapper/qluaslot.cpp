@@ -397,3 +397,8 @@ void QLuaSlot::general_slot(QClipboard::Mode param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }
+
+void QLuaSlot::general_slot(const QHostInfo& param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
