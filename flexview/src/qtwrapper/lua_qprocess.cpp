@@ -290,3 +290,23 @@ LQClipboard lqclipboard()
     .sig_prop(lqclipboard, selectionChanged)
     ;
 }
+
+LQSound lqsound()
+{
+    return
+    class_<QSound, QObject>("QSound")
+    .def(constructor<const QString&>())
+    .def(constructor<const QString&,QObject*>())
+    .def("setLoops", &QSound::setLoops)
+    .def("setLoops", (void (QSound::*)())&QSound::play)
+    .def("setLoops", &QSound::stop)
+    .property("fileName", &QSound::fileName)
+    .property("isFinished", &QSound::isFinished)
+    .property("loops", &QSound::loops)
+    .property("loopsRemaining", &QSound::loopsRemaining)
+    .scope[
+        def("isAvailable", &QSound::isAvailable),
+        def("play", (void(*)(const QString&))&QSound::play)
+     ]
+    ;
+}

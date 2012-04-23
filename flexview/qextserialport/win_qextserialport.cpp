@@ -83,7 +83,7 @@ bool QextSerialPort::open(OpenMode mode) {
                 Win_CommTimeouts.WriteTotalTimeoutMultiplier = 0;
                 Win_CommTimeouts.WriteTotalTimeoutConstant = 0;
                 SetCommTimeouts(Win_Handle, &Win_CommTimeouts);
-                if (!SetCommMask( Win_Handle, EV_TXEMPTY | EV_RXCHAR | EV_DSR)) {
+                if (!SetCommMask( Win_Handle, EV_TXEMPTY | EV_RXCHAR | EV_DSR | EV_CTS | EV_RING | EV_RLSD)) {
                     qWarning() << "failed to set Comm Mask. Error code:", GetLastError();
                     return false;
                 }
@@ -839,6 +839,26 @@ void QextSerialPort::onWinEvent(HANDLE h)
                 emit dsrChanged(true);
             else
                 emit dsrChanged(false);
+        }
+        if(eventMask & (EV_DSR | EV_CTS | EV_RING | EV_RLSD)){
+            int Status = 0;
+            unsigned long Temp=0;
+            if (isOpen()) {
+                GetCommModemStatus(Win_Handle, &Temp);
+                if (Temp&MS_CTS_ON) {
+                    Status|=LS_CTS;
+                }
+                if (Temp&MS_DSR_ON) {
+                    Status|=LS_DSR;
+                }
+                if (Temp&MS_RING_ON) {
+                    Status|=LS_RI;
+                }
+                if (Temp&MS_RLSD_ON) {
+                    Status|=LS_DCD;
+                }
+            }
+            emit lineChanged(Status);
         }
     }
     WaitCommEvent(Win_Handle, &eventMask, &overlap);

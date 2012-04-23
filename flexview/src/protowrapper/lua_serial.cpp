@@ -16,6 +16,7 @@ SIGNAL_PROPERYT(lqserialport, aboutToClose, QSerialPort, "()")
 SIGNAL_PROPERYT(lqserialport, readChannelFinished, QSerialPort, "()")
 SIGNAL_PROPERYT(lqserialport, dsrChanged, QSerialPort, "(bool)")
 SIGNAL_PROPERYT(lqserialport, settingChange, QSerialPort, "(const QString&)")
+SIGNAL_PROPERYT(lqserialport, lineChanged, QSerialPort, "(int)")
 
 
 void QSerialPort::initial()
@@ -145,6 +146,7 @@ LQextSerialPort lqextserialport()
     .sig_prop(lqserialport, readChannelFinished)
     .sig_prop(lqserialport, dsrChanged)
     .sig_prop(lqserialport, settingChange)
+    .sig_prop(lqserialport, lineChanged)
 
     .class_<QSerialPort>::property("portSetting", &QSerialPort::portSetting, &QSerialPort::setPortSetting)
     .property("isOpen", &QSerialPort::isOpen)

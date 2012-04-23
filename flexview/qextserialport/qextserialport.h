@@ -332,6 +332,7 @@ class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
          * 	\see lineStatus().
          */
         void dsrChanged(bool status);
+        void lineChanged(int lineStatus);
 
 };
 

@@ -83,11 +83,11 @@ function SerialView:__init()
             }
     }
 
-    function update_ls()
-        self.lsdcd.checked = self.serial.DCD
-        self.lsdsr.checked = self.serial.DSR
-        self.lscts.checked = self.serial.CTS
-        self.lsri.checked = self.serial.RI
+    function update_ls(ls)
+        self.lsdcd.checked = bit_and(ls, QSerialPort.LS_DCD) ~= 0
+        self.lsdsr.checked = bit_and(ls, QSerialPort.LS_DSR) ~= 0
+        self.lscts.checked = bit_and(ls, QSerialPort.LS_CTS) ~= 0
+        self.lsri.checked = bit_and(ls, QSerialPort.LS_RI) ~= 0
     end
 
 
@@ -105,7 +105,7 @@ function SerialView:__init()
             res = self.serial:open()
             if res then
                 self.btnOpen.text = "Close"
-                update_ls()
+                update_ls(self.serial.lineStatus)
                 logEdit:append("Success ...")
             else
                 logEdit:append("Fail:  " .. self.serial.errorString)
@@ -132,7 +132,6 @@ function SerialView:__init()
         self.recvText:scrollToEnd()
         --ls = self.serial.lineStatus
         --logEdit:append(string.format("%x",ls))
-        update_ls()
     end
 
     self.sendText = QHexEdit{
@@ -167,6 +166,10 @@ function SerialView:__init()
         },
         strech = "0,1"
     }
+    self.serial.lineChanged = function(ls)
+        update_ls(ls)
+    end
+
     self.serial.connected = function(info)
         logEdit:append(info.portName .. "   connected")
     end

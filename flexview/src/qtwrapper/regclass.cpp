@@ -361,6 +361,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqapplication(),
         lqdesktopwidget(),
         lqclipboard(),
+        lqsound(),
 
         lqabstractslider(),
         lqslider(),
