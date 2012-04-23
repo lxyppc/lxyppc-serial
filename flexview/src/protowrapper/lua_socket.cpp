@@ -293,7 +293,7 @@ void table_init_general<QTcpSocket>(const luabind::argument & arg, const object&
 LQTcpSocket lqtcpsocket()
 {
     return
-    myclass_<QTcpSocket,QAbstractSocket>("QTcpServer",lqtcps_set_map)
+    myclass_<QTcpSocket,QAbstractSocket>("QTcpSocket",lqtcps_set_map)
     .def(constructor<>())
     .def(constructor<QObject*>())
     .def("__call", lqtcps_init)

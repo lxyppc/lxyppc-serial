@@ -19,18 +19,25 @@ function LaunchSerial()
     mdiArea:addSubWindow(SerialView()):showMaximized()
 end
 
-function LaunchTcp()
-    mdiArea:addSubWindow(TcpView()):showMaximized()
+function LaunchTcpClient()
+    mdiArea:addSubWindow(TcpClientView()):showMaximized()
+end
+
+function LaunchTcpServer()
+    mdiArea:addSubWindow(TcpServerView()):showMaximized()
 end
 
 logEdit:append("Script started...")
 menubar = mainWindow:menuBar()
 menubar:addMenu("&File"){
-    QAction("&Serial Viewer ..."){
+    QAction("&Serial Viewer"){
         triggered = LaunchSerial
     },
-    QAction("&TCP Viewer ..."){
-        triggered = LaunchTcp
+    QAction("TCP &Client"){
+        triggered = LaunchTcpClient
+    },
+    QAction("TCP &Server"){
+        triggered = LaunchTcpServer
     },
 }
 
