@@ -141,5 +141,7 @@ QMAKE_CXXFLAGS += -Wno-ignored-qualifiers
 FORMS += src/luadialog.ui
 OTHER_FILES += src/script.lua \
     src/serialview.lua \
-    src/tcpview.lua
+    src/tcpview.lua \
+    src/editor.lua \
+    src/udpview.lua
 RESOURCES += res.qrc
