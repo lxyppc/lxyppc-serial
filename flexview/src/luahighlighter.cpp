@@ -34,6 +34,12 @@ LuaHighlighter::LuaHighlighter(QTextDocument *parent)
     quotationFormat.setForeground(Qt::darkRed);
 
     rule.format = quotationFormat;
+    rule.pattern = QRegExp("\"\"|''");
+    rule.name = "quotation";
+    rule.blockState = BS_Dummy;
+    highlightingRules.append(rule);
+
+    rule.format = quotationFormat;
     rule.pattern = QRegExp("\"");
     rule.endPattern = QRegExp("[^\\\\]\"");
     rule.name = "double quotation";

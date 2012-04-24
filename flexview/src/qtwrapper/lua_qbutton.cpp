@@ -16,35 +16,15 @@ SIGNAL_PROPERYT(lqab, toggled, QAbstractButton, "(bool)")
 
 QAbstractButton* lqab_init(QAbstractButton* widget, const object& table)
 {
-    //lq_general_init(widget, obj, lqab_set_map);
+    lq_general_init(widget, table, lqab_set_map);
     lqwidget_init(widget, table);
     if(type(table) == LUA_TTABLE){
         for (iterator i(table), e; i != e; ++i){
-            if(type(i.key()) == LUA_TSTRING){
-                QString key = object_cast<QString>(i.key());
-                if(lqab_set_map.find(key) != lqab_set_map.end()){
-                    lqab_set_map[key](widget,*i);
-                }else if(key.compare("clicked", Qt::CaseInsensitive) == 0){
-                    lqab_set_clicked(widget, *i);
-                }else if(key.compare("pressed", Qt::CaseInsensitive) == 0){
-                    lqab_set_pressed(widget, *i);
-                }else if(key.compare("released", Qt::CaseInsensitive) == 0){
-                    lqab_set_released(widget, *i);
-                }else if(key.compare("toggled", Qt::CaseInsensitive) == 0){
-                    lqab_set_toggled(widget, *i);
-                }
-            }
-
             if(type(*i) == LUA_TUSERDATA){
-                if(q_cast(*i, (void(QAbstractButton::*)( const QIcon &))&QAbstractButton::setIcon, widget)){
-                }else if(q_cast(*i, &QAbstractButton::setShortcut, widget)){
+                if(q_cast(*i, &QAbstractButton::setShortcut, widget)){
                     //widget->setShortcut(QKeySequence(QObject::tr("Alt+T")));
                 }
-            }/*else if(type(*i)== LUA_TSTRING){
-                if(q_cast(*i, (QAction*(QToolBar::*)(const QString&))&QToolBar::addAction, widget)){
-                }
-            }*/
-            //qDebug()<<"key:"<<toString(i.key())<<"val:"<<toString(*i);
+            }
         }
     }
     return widget;
@@ -55,7 +35,7 @@ QAbstractButton* lqab_init(QAbstractButton* widget, const object& table)
 QCheckBox* lqcb_init(QCheckBox* widget, const object& obj)
 {
     lqab_init(widget, obj);
-    return lq_general_init(widget, obj, lqcb_set_map);
+    return widget;
 }
 
 template<>
@@ -143,12 +123,12 @@ LQAbstractButton lqabstractbutton()
     .property("checked", &QAbstractButton::isChecked, &QAbstractButton::setChecked)
     .property("down", &QAbstractButton::isDown, &QAbstractButton::setDown)
     .property("text", &QAbstractButton::text, &QAbstractButton::setText)
-    .class_<QAbstractButton,QAbstractButtonWrap,QWidget>::property("icon", &QAbstractButton::icon, &QAbstractButton::setIcon)
-    .property("clicked",&lqab_get_clicked, &lqab_set_clicked)
-    .property("pressed",&lqab_get_pressed, &lqab_set_pressed)
-    .property("released",&lqab_get_released, &lqab_set_released)
-    .property("toggled",&lqab_get_toggled, &lqab_set_toggled)
-    .property("shortcut",&QAbstractButton::shortcut, &QAbstractButton::setShortcut)
+    .sig_prop(lqab,clicked)
+    .sig_prop(lqab,pressed)
+    .sig_prop(lqab,released)
+    .sig_prop(lqab,toggled)
+    .property("icon", &QAbstractButton::icon, &QAbstractButton::setIcon)
+    .class_<QAbstractButton,QAbstractButtonWrap,QWidget>::property("shortcut",&QAbstractButton::shortcut, &QAbstractButton::setShortcut)
     ;
 }
 

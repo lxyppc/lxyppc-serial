@@ -72,8 +72,10 @@ LQObject lqobject()
             .def("startTimer", &QObject::startTimer)
             .def("property", &QObject::property)
             .def("setProperty", &QObject::setProperty)
+            .def("setParent", &QObject::setParent)
             .property("objectName", &QObject::objectName, &QObject::setObjectName)
             .property("eventFilter", lqobject_get_filter, lqobject_set_filter)
+            .property("parent", &QObject::parent, &QObject::setParent)
    ;
 }
 
@@ -150,7 +152,10 @@ bool lqwidget_eq(QWidget* l, QWidget* r)
 {
     return l == r;
 }
-
+namespace luabind{
+    QT_EMUN_CONVERTER(Qt::ContextMenuPolicy)
+}
+ENUM_FILTER(QWidget, contextMenuPolicy, setContextMenuPolicy)
 LQWidget lqwidget()
 {
     return
@@ -168,6 +173,8 @@ LQWidget lqwidget()
             .def("raise",&QWidget::raise)
             .def("repaint",(void(QWidget::*)())&QWidget::repaint)
             .def("__eq", lqwidget_eq)
+            .def("setFocus",(void (QWidget::*)(Qt::FocusReason))&QWidget::setFocus)
+            .def("setFocus",(void (QWidget::*)())&QWidget::setFocus)
 
 
             .def("setGeometry", (void (QWidget::*)(int, int, int, int))&QWidget::setGeometry)
@@ -177,9 +184,13 @@ LQWidget lqwidget()
             .def("action",lqwidget_action)
             .def("saveGeometry", &QWidget::saveGeometry)
             .def("restoreGeometry", &QWidget::restoreGeometry)
+            .def("setAttribute", &QWidget::setAttribute)
+            .def("testAttribute", &QWidget::testAttribute)
 
             .property("windowTitle", &QWidget::windowTitle, &QWidget::setWindowTitle)
             .property("windowIcon", &QWidget::windowIcon, &QWidget::setWindowIcon)
+            .property("windowIconText", &QWidget::windowIconText, &QWidget::setWindowIconText)
+            .property("windowFilePath", &QWidget::windowFilePath, &QWidget::setWindowFilePath)
             .property("title", &QWidget::windowTitle, &QWidget::setWindowTitle)
             .property("styleSheet", &QWidget::styleSheet, &QWidget::setStyleSheet)
             .property("enabled", &QWidget::isEnabled, &QWidget::setEnabled)
@@ -188,6 +199,12 @@ LQWidget lqwidget()
             .property("visible", &QWidget::isVisible, &QWidget::setVisible)
             .property("hidden", &QWidget::isHidden, &QWidget::setHidden)
             .property("mouseTracking", &QWidget::hasMouseTracking, &QWidget::setMouseTracking)
+            .property("toolTip", &QWidget::toolTip, &QWidget::setToolTip)
+            .property("statusTip", &QWidget::statusTip, &QWidget::setStatusTip)
+            .property("whatsThis", &QWidget::whatsThis, &QWidget::setWhatsThis)
+            .property("font", &QWidget::font, &QWidget::setFont)
+            .property("focus", &QWidget::hasFocus)
+            .property("contextMenuPolicy", QWidget_contextMenuPolicy, QWidget_setContextMenuPolicy)
 
             .property("x", &QWidget::x, lqwidget_set_x)
             .property("y", &QWidget::y, lqwidget_set_y)
@@ -214,6 +231,8 @@ LQWidget lqwidget()
 
             .property("layout", &QWidget::layout, &QWidget::setLayout)
             .property("acceptDrops", &QWidget::acceptDrops, &QWidget::setAcceptDrops)
+
+            .class_<QWidget, QObject>::property("cursor", &QWidget::cursor, &QWidget::setCursor)
 
             .scope[
                def("setTabOrder", &QWidget::setTabOrder)

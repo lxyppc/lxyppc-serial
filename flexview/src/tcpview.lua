@@ -1,8 +1,88 @@
-class "TcpView"(QTabWidget)
+class "ServerClientView"(QFrame)
+function ServerClientView:__init(socket)
+    QFrame.__init(self)
+    socket.parent = self
+    self.closeBtn = QPushButton("Close")
+    self.clearBtn = QPushButton("Clear")
+    self.sendBtn = QPushButton("Send")
+    self.recvEdit = QHexEdit{
+        overwriteMode = false,
+        readOnly = true,
+    }
+    self.sendEdit = QHexEdit{
+        overwriteMode = false,
+        readOnly = false,
+    }
+    self.clientIP = QLineEdit(self){
+        text = tostring(socket.peerAddress),
+        inputMask = "999.999.999.999",
+        readOnly = true,
+    }
+    self.clientPort = QLineEdit(self){
+        text = string.format("%d",socket.peerPort),
+        inputMask = "999999",
+        readOnly = true,
+    }
 
-function TcpView:__init()
+    self.settings = QGroupBox("Client Info",self){
+        layout = QHBoxLayout{
+            QLabel("Client IP:"), self.clientIP,
+            QLabel("Client Port:"), self.clientPort,
+            self.closeBtn,
+        }
+    }
+    self.socket = socket
+    self.layout = QVBoxLayout{
+            self.settings,
+            QVBoxLayout{
+                QHBoxLayout{ QLabel("Recv buf:"), self.clearBtn, QLabel(""), strech = "0,0,1" },
+                self.recvEdit,
+                QHBoxLayout{ QLabel("Send buf:"), self.sendBtn, QLabel(""), strech = "0,0,1" },
+                self.sendEdit,
+            },
+            strech = "0,1",
+        }
+
+    self.closeBtn.clicked = function()
+        if self.socket.state == 3 then
+            self.socket:close()
+        end
+    end
+
+    self.clearBtn.clicked = function()
+        self.recvEdit:clear()
+    end
+
+    self.sendBtn.clicked = function()
+        self.socket:write(self.sendEdit.data)
+    end
+
+    self.socket.error = function(err)
+        logEdit:append("TCP server socket error, reason:" .. err)
+    end
+
+    self.socket.readyRead = function()
+        --logEdit:append("Server socket ready read")
+        self.recvEdit:append(self.socket:readAll())
+        self.recvEdit:scrollToEnd()
+    end
+
+    self.socket.stateChanged = function(state)
+        --logEdit:append("TCP server socket state changed, state:" .. state)
+        if state == 0 then
+            self.closeBtn.enabled = false
+        end
+    end
+
+
+    self.eventFilter = QCloseEvent.filter( function(obj,evt)
+        if self.socket.isValid then
+            self.socket:close()
+        end
+        return true
+    end)
+
 end
-
 
 class "TcpServerView"(QFrame)
 function TcpServerView:__init()
@@ -17,41 +97,35 @@ function TcpServerView:__init()
         inputMask = "999999",
     }
     self.listenBtn = QPushButton("Listen", self)
-    self.sClearBtn = QPushButton("Clear", self)
-    self.sSendBtn = QPushButton("Send", self)
-    self.sRecvEdit = QHexEdit()
-    self.sSendEdit = QHexEdit()
     self.sSettings = QGroupBox("Server Setting",self){
-        layout = QFormLayout{
-            {"IP:", self.bindIP},
-            {"Port:", self.bindPort},
+        layout = QHBoxLayout{
+            QLabel("IP:"), self.bindIP,
+            QLabel("Port:"), self.bindPort,
             self.listenBtn,
         }
     }
-    self.layout = QHBoxLayout{
+    self.tab = QTabWidget(self){
+        tabsClosable = true,
+        movable = true,
+    }
+    self.layout = QVBoxLayout{
             self.sSettings,
-            QVBoxLayout{
-                QHBoxLayout{ QLabel("Recv buf:"), self.sClearBtn, QLabel(""), strech = "0,0,1" },
-                self.sRecvEdit,
-                QHBoxLayout{ QLabel("Send buf:"), self.sSendBtn, QLabel(""), strech = "0,0,1" },
-                self.sSendEdit,
-            },
-            strech = "0,1",
+            QLabel("Clients:"),
+            self.tab,
+            strech = "0,0,1",
         }
 
     self.tcpServer = QTcpServer(self)
-    self.tcpList = {}
 
     self.listenBtn.clicked = function()
         if self.tcpServer.isListening then
             self.tcpServer:close()
-            logEdit:append("Closed")
         else
             res = self.tcpServer:listen(QHostAddress(self.bindIP.text), tonumber(self.bindPort.text))
             if res then
-                logEdit:append("listen" .. self.bindIP.text .. ":" .. self.bindPort.text .. "success")
+                logEdit:append("listen " .. self.bindIP.text .. ":" .. self.bindPort.text .. "  success")
             else
-                logEdit:append("listen" .. self.bindIP.text .. ":" .. self.bindPort.text .. "fail")
+                logEdit:append("listen " .. self.bindIP.text .. ":" .. self.bindPort.text .. "  fail")
             end
         end
 
@@ -62,10 +136,18 @@ function TcpServerView:__init()
         end
     end
 
+    self.tab.tabCloseRequested = function(index)
+        self.tab:widget(index):close()
+        self.tab:removeTab(index)
+    end
+
     self.tcpServer.newConnection = function()
         if self.tcpServer.hasPendingConnections then
             tcpsocket = self.tcpServer.nextPendingConnection
             logEdit:append("New connection: " .. tostring(tcpsocket.peerAddress))
+            client = ServerClientView(tcpsocket)
+            self.tab:addTab(client, tostring(tcpsocket.peerAddress))
+            self.tab:setCurrentWidget(client)
         end
     end
 end
@@ -73,6 +155,8 @@ end
 class "TcpClientView"(QFrame)
 function TcpClientView:__init()
     QFrame.__init(self)
+    self.tcpClient = QTcpSocket(self)
+
     self.windowTitle = "TCP Client"
     self.serverIP = QLineEdit(self){
         text = "127.0.0.1",
@@ -86,16 +170,22 @@ function TcpClientView:__init()
     self.connectBtn = QPushButton("Connect", self)
     self.clearBtn = QPushButton("Clear", self)
     self.sendBtn = QPushButton("Send", self)
-    self.recvEdit = QHexEdit()
-    self.sendEdit = QHexEdit()
+    self.recvEdit = QHexEdit{
+        overwriteMode = false,
+        readOnly = true,
+    }
+    self.sendEdit = QHexEdit{
+        overwriteMode = false,
+        readOnly = false,
+    }
     self.settings = QGroupBox("Client Setting",self){
-        layout = QFormLayout{
-            {"Server IP:", self.serverIP},
-            {"Server Port:", self.serverPort},
+        layout = QHBoxLayout{
+            QLabel("Server IP:"), self.serverIP,
+            QLabel("Server Port:"), self.serverPort,
             self.connectBtn,
         }
     }
-    self.layout = QHBoxLayout{
+    self.layout = QVBoxLayout{
             self.settings,
             QVBoxLayout{
                 QHBoxLayout{ QLabel("Recv buf:"), self.clearBtn, QLabel(""), strech = "0,0,1" },
@@ -106,7 +196,7 @@ function TcpClientView:__init()
             strech = "0,1",
         }
 
-    self.tcpClient = QTcpSocket(self)
+
     self.connectBtn.clicked = function()
         if self.tcpClient.state == 0 then
             self.tcpClient:connectToHost(self.serverIP.text, tonumber(self.serverPort.text))
@@ -129,24 +219,22 @@ function TcpClientView:__init()
     end
 
     self.tcpClient.readyRead = function()
+        logEdit:append("TCP Client ready read")
         self.recvEdit:append(self.tcpClient:readAll())
-        self.recvText:scrollToEnd()
-    end
-    self.tcpClient.disconnected = function()
-        logEdit:append("disconnected")
+        self.recvEdit:scrollToEnd()
     end
 
     self.tcpClient.stateChanged = function(state)
-        logEdit:append("TCP client state changed, state:" .. state)
+        --logEdit:append("TCP client state changed, state:" .. state)
         if state == 0 then
-            self.connectBtn.enabled = true
             self.connectBtn.text = "Connect"
+            self.connectBtn.enabled = true
         elseif state == 3 then
             self.connectBtn.text = "Disconnect"
             self.connectBtn.enabled = true
-        elseif state == 2 then
+        elseif state == 1 then
             self.connectBtn.enabled = false
-        elseif state == 3 then
+        elseif state == 2 then
             self.connectBtn.enabled = false
         elseif state == 6 then
             self.connectBtn.enabled = false

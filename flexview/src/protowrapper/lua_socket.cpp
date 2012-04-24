@@ -13,7 +13,8 @@ QT_EMUN_CONVERTER(QAbstractSocket::SocketOption)
 QT_EMUN_CONVERTER(QHostInfo::HostInfoError)
 QT_EMUN_CONVERTER(QNetworkInterface::InterfaceFlag)
 QT_EMUN_CONVERTER(QNetworkInterface::InterfaceFlags)
-
+QT_EMUN_CONVERTER(QUdpSocket::BindFlag)
+QT_EMUN_CONVERTER(QUdpSocket::BindMode)
 }
 
 void lqhostaddress_setAddr_ipv6(QHostAddress* w, const QByteArray& arr)
@@ -317,7 +318,7 @@ void table_init_general<QUdpSocket>(const luabind::argument & arg, const object&
 bool lqudpsocket_bind(QUdpSocket* w){ return w->bind(); }
 
 extern lua_State* __pL;
-QByteArray lqudpsocket_readDatagram(QUdpSocket* w, qint64 max)
+void lqudpsocket_readDatagram(QUdpSocket* w, qint64 max)
 {
     QByteArray res;
     QHostAddress addr;
@@ -327,10 +328,14 @@ QByteArray lqudpsocket_readDatagram(QUdpSocket* w, qint64 max)
     if(len>=0){
         res = QByteArray::fromRawData(p,len);
     }
-    delete[] p;
+    object obj = luabind::newtable(__pL);
+    for(int i=0;i<len;i++){
+        obj[i+1] = p[i];
+    }
+    obj.push(__pL);
     luabind::detail::make_pointee_instance(__pL, addr, boost::mpl::true_());
     ::lua_pushnumber(__pL,port);
-    return res;
+    delete[] p;
 }
 
 void lqudpsocket_readDatagram2(qint64 max)

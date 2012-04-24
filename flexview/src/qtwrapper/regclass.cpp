@@ -286,6 +286,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqmenu(),
         lqmenubar(),
         lqtoolbar(),
+        lqcursor(),
 
         lqpoint(),
         lqline(),

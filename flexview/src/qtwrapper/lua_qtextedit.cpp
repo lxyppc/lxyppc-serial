@@ -117,6 +117,10 @@ void lqtextedit_set_lineWrapMode(QTextEdit* edit, int p)
     return edit->setLineWrapMode(QTextEdit::LineWrapMode(p));
 }
 
+
+void QTextEdit_zoomIn(QTextEdit* w){ w->zoomIn(); }
+void QTextEdit_zoomOut(QTextEdit* w){ w->zoomOut(); }
+
 LQTextEdit lqtextedit()
 {
     return
@@ -128,6 +132,31 @@ LQTextEdit lqtextedit()
     .def("__init", table_init_general<QTextEdit>)
     .def("clear", &QTextEdit::clear)
     .def("append", &QTextEdit::append)
+    .def("copy", &QTextEdit::copy)
+    .def("cut", &QTextEdit::cut)
+    .def("insertHtml", &QTextEdit::insertHtml)
+    .def("insertPlainText", &QTextEdit::insertPlainText)
+    .def("paste", &QTextEdit::paste)
+    .def("redo", &QTextEdit::redo)
+    .def("scrollToAnchor", &QTextEdit::scrollToAnchor)
+    .def("selectAll", &QTextEdit::selectAll)
+    .def("setAlignment", &QTextEdit::setAlignment)
+    .def("setCurrentFont", &QTextEdit::setCurrentFont)
+    .def("setFontFamily", &QTextEdit::setFontFamily)
+    .def("setFontItalic", &QTextEdit::setFontItalic)
+    .def("setFontPointSize", &QTextEdit::setFontPointSize)
+    .def("setFontUnderline", &QTextEdit::setFontUnderline)
+    .def("setFontWeight", &QTextEdit::setFontWeight)
+    .def("setHtml", &QTextEdit::setHtml)
+    .def("setPlainText", &QTextEdit::setPlainText)
+    .def("setText", &QTextEdit::setText)
+    .def("setTextBackgroundColor", &QTextEdit::setTextBackgroundColor)
+    .def("setTextColor", &QTextEdit::setTextColor)
+    .def("undo", &QTextEdit::undo)
+    .def("zoomIn", &QTextEdit::zoomIn)
+    .def("zoomOut", &QTextEdit::zoomOut)
+    .def("zoomIn", &QTextEdit_zoomIn)
+    .def("zoomOut", &QTextEdit_zoomOut)
 
     .property("text", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("plainText", &QTextEdit::toPlainText, &QTextEdit::setPlainText)

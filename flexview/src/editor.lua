@@ -32,6 +32,7 @@ end
 
 function LuaEditDlg:new()
     self.editor:clear()
+    self.path = ""
     self.windowModified = false
 end
 
@@ -43,6 +44,10 @@ function LuaEditDlg:load(name)
         self.windowModified = false
         file:close()
     end
+end
+
+function LuaEditDlg:test()
+    loadstring(self.editor.plainText)()
 end
 
 function LuaEditDlg:__init(x)
@@ -58,12 +63,13 @@ function LuaEditDlg:__init()
    self.editor = QLuaEdit()
    self.layout = QHBoxLayout{
        QVBoxLayout{
-           QPushButton("&New"){ clicked = {self, self.new}, QKeySequence("Ctrl+N") },
-           QPushButton("&Open"){ clicked = {self, self.open}, QKeySequence("Ctrl+O") },
-           QPushButton("&Save"){ clicked = {self, self.save}, QKeySequence("Ctrl+S") },
-           QPushButton("&Save as"){ clicked = {self, self.saveAs}, QKeySequence("Ctrl+Shift+S") },
+           QPushButton("&New"){ clicked = {self, self.new}, QKeySequence("Ctrl+N"), toolTip = "Ctrl+N" },
+           QPushButton("&Open"){ clicked = {self, self.open}, QKeySequence("Ctrl+O"), toolTip = "Ctrl+O" },
+           QPushButton("&Save"){ clicked = {self, self.save}, QKeySequence("Ctrl+S"), toolTip = "Ctrl+S" },
+           QPushButton("&Save as"){ clicked = {self, self.saveAs}, QKeySequence("Ctrl+Shift+S"), toolTip = "Ctrl+Shift+N" },
            QLabel(),
-           "0,0,0,0,1",
+           QPushButton("&Test"){ clicked = {self, self.test}, QKeySequence("Ctrl+T"), toolTip = "Ctrl+T"},
+           "0,0,0,0,1,0",
        },
        self.editor,
    }

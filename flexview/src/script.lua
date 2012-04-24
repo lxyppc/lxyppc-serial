@@ -1,6 +1,7 @@
 dofile("../src/editor.lua")
 dofile("../src/serialview.lua")
 dofile("../src/tcpview.lua")
+dofile("../src/udpview.lua")
 
 mainWindow{
  x = 50, y = 50,
@@ -12,7 +13,7 @@ function EditScript()
     dlg.windowIcon = mainWindow.windowIcon
     dlg:load("../src/script.lua")
     dlg:exec()
-    logEdit.plainText = dlg.editor.html
+    --logEdit.plainText = dlg.editor.html
 end
 
 function LaunchSerial()
@@ -27,6 +28,10 @@ function LaunchTcpServer()
     mdiArea:addSubWindow(TcpServerView()):showMaximized()
 end
 
+function LaunchUdp()
+    mdiArea:addSubWindow(UdpView()):showMaximized()
+end
+
 logEdit:append("Script started...")
 menubar = mainWindow:menuBar()
 menubar:addMenu("&File"){
@@ -38,6 +43,9 @@ menubar:addMenu("&File"){
     },
     QAction("TCP &Server"){
         triggered = LaunchTcpServer
+    },
+    QAction("&UDP Socket"){
+        triggered = LaunchUdp
     },
 }
 
