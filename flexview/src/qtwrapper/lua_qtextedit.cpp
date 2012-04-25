@@ -117,6 +117,28 @@ void lqtextedit_set_lineWrapMode(QTextEdit* edit, int p)
     return edit->setLineWrapMode(QTextEdit::LineWrapMode(p));
 }
 
+void look_text_corlor(QTextEdit* w, const object& fun)
+{
+    QColor color;
+    QTextCursor tc = w->textCursor();
+    int pos = tc.position();
+    int ach = tc.anchor();
+    tc.movePosition(QTextCursor::Start);
+    color = w->textColor();
+    while(tc.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor)){
+        QColor color2 = w->textColor();
+        if(color2 != color){
+            tc.movePosition(QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor);
+            call_function<void>(fun,w, tc.selectedText() ,color);
+            color = color2;
+            tc.movePosition(QTextCursor::NextCharacter);
+            tc.movePosition(QTextCursor::PreviousCharacter);
+        }
+    }
+    call_function<void>(fun,w, tc.selectedText() ,color);
+    tc.setPosition(ach);
+    tc.setPosition(pos, QTextCursor::KeepAnchor);
+}
 
 void QTextEdit_zoomIn(QTextEdit* w){ w->zoomIn(); }
 void QTextEdit_zoomOut(QTextEdit* w){ w->zoomOut(); }
@@ -157,17 +179,18 @@ LQTextEdit lqtextedit()
     .def("zoomOut", &QTextEdit::zoomOut)
     .def("zoomIn", &QTextEdit_zoomIn)
     .def("zoomOut", &QTextEdit_zoomOut)
+    .def("lookColor", look_text_corlor)
 
     .property("text", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("plainText", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("html", &QTextEdit::toHtml, &QTextEdit::setHtml)
     .property("readOnly", &QTextEdit::isReadOnly, &QTextEdit::setReadOnly)
-    .property("verticalScrollBar", lqtextedit_v_scroll_bar, lqtextedit_set_v_scroll_bar)
-    .property("horizontalScrollBar", lqtextedit_h_scroll_bar, lqtextedit_set_h_scroll_bar)
-    .property("vScrollBar", lqtextedit_v_scroll_bar, lqtextedit_set_v_scroll_bar)
-    .property("hScrollBar", lqtextedit_h_scroll_bar, lqtextedit_set_h_scroll_bar)
-    .property("lineWrapMode", lqtextedit_lineWrapMode, lqtextedit_set_lineWrapMode)
-    .class_<QTextEdit,QAbstractScrollArea>::property("textChanged", lqtextedit_get_textChanged, lqtextedit_set_textChanged)
+    //.property("verticalScrollBarPolicy", lqtextedit_v_scroll_bar, lqtextedit_set_v_scroll_bar)
+    //.property("horizontalScrollBarPolicy", lqtextedit_h_scroll_bar, lqtextedit_set_h_scroll_bar)
+    //.property("vScrollBarPolicy", lqtextedit_v_scroll_bar, lqtextedit_set_v_scroll_bar)
+    //.property("hScrollBarPolicy", lqtextedit_h_scroll_bar, lqtextedit_set_h_scroll_bar)
+    //.property("lineWrapMode", lqtextedit_lineWrapMode, lqtextedit_set_lineWrapMode)
+    .sig_prop(lqtextedit,textChanged)
     ;
 }
 

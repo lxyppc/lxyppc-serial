@@ -8,12 +8,18 @@ mainWindow{
  w = 1000, h = 700
 }
 
+function LookColor(obj,text,color)
+    log(color)
+    log(text)
+end
+
 function EditScript()
     dlg = LuaEditDlg(mainWindow)
     dlg.windowIcon = mainWindow.windowIcon
     dlg:load("../src/script.lua")
     dlg:exec()
-    --logEdit.plainText = dlg.editor.html
+    logEdit.plainText = dlg.editor:tagText()
+    --dlg.editor:lookColor(LookColor)
 end
 
 function LaunchSerial()
@@ -89,3 +95,19 @@ windowMenu.triggered = function(ac)
         mdiArea:setActiveSubWindow(ac.data.window)
     end
 end
+
+frm2 = QFrame()
+
+function onPaint(obj,evt)
+    pt = QPainter()
+    pt:begin(frm2)
+    mainWindow.windowIcon:paint(pt,0,0,frm2.w,frm2.h)
+    pt:done()
+    return true
+end
+
+frm2.eventFilter = QPaintEvent.filter(onPaint)
+
+mdiArea:addSubWindow(frm2){minw=16,minh=16}
+
+--QCommonDlg.about(mainWindow,"Toolbox",'<p><b>Toolbox</b></p><p>by lxyppc</p><table href="mailto:lxyppc@163.com" name=xxx>lxyppc@163.com</table>')

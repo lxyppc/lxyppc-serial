@@ -11,6 +11,7 @@ public:
     explicit QLuaEdit(QWidget *parent = 0);
 
     void addKeyWord(const QString& key);
+    QString toTagText() const;
 
 signals:
 

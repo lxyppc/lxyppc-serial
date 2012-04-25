@@ -47,5 +47,5 @@ void MainWindow::addLog(const QString& log)
 
 void MainWindow::my_about()
 {
-    QMessageBox::about(this, "Toolbox", QString::fromLocal8Bit("<p><b>Toolbox</b></p><p>by lxyppc</p>lxyppc@163.com"));
+    QMessageBox::about(this, "Toolbox", QString::fromLocal8Bit("<p><b>Toolbox</b></p><p>by lxyppc</p><a>lxyppc@163.com</a>"));
 }

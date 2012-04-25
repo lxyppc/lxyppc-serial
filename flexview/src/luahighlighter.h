@@ -5,6 +5,27 @@
 
 #define LONG_QUOTA_LEVEL 10
 
+class MyTextBlockUserData : public QTextBlockUserData
+{
+public:
+    struct HighlightInfo{
+        QString name;
+        int offset;
+        int len;
+    };
+    MyTextBlockUserData(){}
+    virtual ~MyTextBlockUserData(){}
+    void addRule(const QString& name, int offset, int len){
+        HighlightInfo info;
+        info.name = name;
+        info.offset = offset;
+        info.len = len;
+        infoList.append(info);
+    }
+    void clear() { infoList.clear(); }
+    QList<HighlightInfo>  infoList;
+};
+
 class LuaHighlighter : public QSyntaxHighlighter
 {
 Q_OBJECT
@@ -14,9 +35,6 @@ public:
     void addUserKeyword(const QString& keyword);
 
 protected:
-    void highlightBlock(const QString &text);
-
-private:
     enum BlockState{
         BS_Dummy,
         BS_BlockComment,
@@ -35,6 +53,19 @@ private:
         QString name;
         BlockState blockState;
     };
+
+    void highlightBlock(const QString &text);
+
+    void setFormat(int start, int count, const HighlightingRule& rule){
+        QSyntaxHighlighter::setFormat(start,count,rule.format);
+        MyTextBlockUserData* p = static_cast<MyTextBlockUserData*>(currentBlockUserData());
+        if(p){
+            p->addRule(rule.name,start,count);
+        }
+    }
+
+private:
+
     int matchBlockEnd(const QString &text, int index, const HighlightingRule& rule);
     int matchPatten(const QString &text, int offset, HighlightingRule& rule, int& matchedLength);
     QVector<HighlightingRule> highlightingRules;

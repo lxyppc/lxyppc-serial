@@ -110,6 +110,7 @@ LQLuaEdit lqluaedit()
     .def("__call", lqluaedit_init)
     .def("__init", table_init_general<QLuaEdit>)
     .def("addKeyWord", &QLuaEdit::addKeyWord)
+    .def("tagText", &QLuaEdit::toTagText)
     ;
 }
 

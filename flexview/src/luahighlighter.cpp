@@ -109,15 +109,21 @@ void LuaHighlighter::addUserKeyword(const QString& keyword)
 void LuaHighlighter::highlightBlock(const QString &text)
 {
     setCurrentBlockState(BS_Dummy);
+    MyTextBlockUserData* p = static_cast<MyTextBlockUserData*>(currentBlockUserData());
+    if(p){
+        p->clear();
+    }else{
+        p = new MyTextBlockUserData();
+        setCurrentBlockUserData(p);
+    }
     qDebug()<<text;
     int offset = 0;
     int prevState = previousBlockState();
-
     //*
     if (prevState != BS_Dummy && prevState < BS_LastState && prevState>0){
         HighlightingRule prevRule = highlightingRules.at(prevState);
         int len = matchBlockEnd(text, offset, prevRule);
-        setFormat(offset, len, prevRule.format);
+        setFormat(offset, len, prevRule);
         qDebug()<<"last rule: "<<prevRule.name<<"("<<offset<<","<<len<<")";
         offset += len;
     }
@@ -140,7 +146,7 @@ void LuaHighlighter::highlightBlock(const QString &text)
             }else{
                 qDebug()<<"match: "<<rule.name<<"("<<offset<<","<<length<<")";
             }
-            setFormat(index, length, rule.format);
+            setFormat(index, length, rule);
             offset = index + length;
             index = matchPatten(text,offset,rule,matchedLength);
         }
