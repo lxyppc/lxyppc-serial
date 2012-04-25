@@ -50,6 +50,14 @@ function LuaEditDlg:test()
     loadstring(self.editor.plainText)()
 end
 
+function LuaEditDlg:toTag()
+    self.editor:setTag("clas","[color=#800080]","[/color]")
+    self.editor:setTag("key","[color=#0000FF]","[/color]")
+    self.editor:setTag("quo","[color=#C80000]","[/color]")
+    self.editor:setTag("com","[color=#008000]","[/color]")
+    QApplication.clipboard():setText(self.editor.tagText)
+end
+
 function LuaEditDlg:__init(x)
     QDialog.__init(self,x)
     LuaEditDlg.__init(self)
@@ -61,15 +69,19 @@ function LuaEditDlg:__init()
    self.path = " "
    self {  minw = 800, minh = 400 }
    self.editor = QLuaEdit()
+   self.editor:addKeyWord("mainWindow")
+   self.editor:addKeyWord("logEdit")
+   self.editor:addKeyWord("qApp")
    self.layout = QHBoxLayout{
        QVBoxLayout{
            QPushButton("&New"){ clicked = {self, self.new}, QKeySequence("Ctrl+N"), toolTip = "Ctrl+N" },
            QPushButton("&Open"){ clicked = {self, self.open}, QKeySequence("Ctrl+O"), toolTip = "Ctrl+O" },
            QPushButton("&Save"){ clicked = {self, self.save}, QKeySequence("Ctrl+S"), toolTip = "Ctrl+S" },
            QPushButton("&Save as"){ clicked = {self, self.saveAs}, QKeySequence("Ctrl+Shift+S"), toolTip = "Ctrl+Shift+N" },
+           QPushButton("to &BBS"){ clicked = {self, self.toTag}, QKeySequence("Ctrl+B"), toolTip = "Ctrl+B" },
            QLabel(),
            QPushButton("&Test"){ clicked = {self, self.test}, QKeySequence("Ctrl+T"), toolTip = "Ctrl+T"},
-           "0,0,0,0,1,0",
+           "0,0,0,0,0,1,0",
        },
        self.editor,
    }

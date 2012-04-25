@@ -18,8 +18,6 @@ function EditScript()
     dlg.windowIcon = mainWindow.windowIcon
     dlg:load("../src/script.lua")
     dlg:exec()
-    logEdit.plainText = dlg.editor:tagText()
-    --dlg.editor:lookColor(LookColor)
 end
 
 function LaunchSerial()

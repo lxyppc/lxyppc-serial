@@ -65,20 +65,19 @@ LuaHighlighter::LuaHighlighter(QTextDocument *parent)
         s+="=";
     }
 
-    functionFormat.setFontItalic(true);
-    functionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
-    rule.format = functionFormat;
-    rule.name = "function";
-    rule.blockState = BS_Dummy;
-    highlightingRules.append(rule);
-
-
     classFormat.setFontWeight(QFont::Bold);
     classFormat.setForeground(Qt::darkMagenta);
     rule.pattern = QRegExp("\\bQ[A-Za-z]+\\b");
     rule.format = classFormat;
     rule.name = "class";
+    rule.blockState = BS_Dummy;
+    highlightingRules.append(rule);
+
+    functionFormat.setFontItalic(true);
+    functionFormat.setForeground(Qt::blue);
+    rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
+    rule.format = functionFormat;
+    rule.name = "function";
     rule.blockState = BS_Dummy;
     highlightingRules.append(rule);
 

@@ -27,6 +27,22 @@ void QLuaEdit::keyPressEvent(QKeyEvent * event)
     }
 }
 
+QString match(const QString& name, const std::map<QString,QString>& map)
+{
+    int len = 0;
+    QString res;
+    std::map<QString,QString>::const_iterator it = map.begin();
+    for(; it != map.end(); it++){
+        if(name.contains(it->first,Qt::CaseInsensitive)){
+            if(it->first.length() > len){
+                res = it->second;
+                len = it->first.length();
+            }
+        }
+    }
+    return res;
+}
+
 QString QLuaEdit::toTagText() const
 {
     QString res;
@@ -39,10 +55,10 @@ QString QLuaEdit::toTagText() const
         if(p){
             int goff = 0;
             foreach(MyTextBlockUserData::HighlightInfo info, p->infoList){
-                QString s = tr("[%1]").arg(info.name);
+                QString s = match(info.name,startMap);//  tr("[%1]").arg(info.name);
                 bres.insert(info.offset + goff, s);
                 goff+=s.length();
-                s = tr("[/%1]").arg(info.name);
+                s = match(info.name,endMap);//tr("[/%1]").arg(info.name);
                 bres.insert(info.offset + info.len + goff, s);
                 goff+=s.length();
             }
@@ -51,3 +67,12 @@ QString QLuaEdit::toTagText() const
     }
     return res;
 }
+
+void QLuaEdit::setTag(const QString& name, const QString& start, const QString& end)
+{
+    startMap[name] = start;
+    endMap[name] = end;
+}
+
+
+

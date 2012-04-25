@@ -38,6 +38,7 @@ protected:
     enum BlockState{
         BS_Dummy,
         BS_BlockComment,
+        BS_Dummy_Quota,
         BS_DoubleQuota,
         BS_SingleQuota,
         BS_LongQuota,
