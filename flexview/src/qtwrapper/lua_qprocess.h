@@ -8,6 +8,7 @@ typedef class_<QApplication,QObject>  LQApplication;
 typedef class_<QDesktopWidget, QWidget> LQDesktopWidget;
 typedef class_<QClipboard, QObject> LQClipboard;
 typedef class_<QSound, QObject> LQSound;
+typedef class_<QFileSystemWatcher, QObject> LQFileSystemWatcher;
 
 LQProcessEnvironment lqprocessenvironment();
 LQProcess lqprocess();
@@ -16,5 +17,6 @@ LQApplication lqapplication();
 LQDesktopWidget lqdesktopwidget();
 LQClipboard lqclipboard();
 LQSound lqsound();
+LQFileSystemWatcher lqfilesystemwatcher();
 
 #endif // LUA_QPROCESS_H

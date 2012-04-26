@@ -363,6 +363,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqdesktopwidget(),
         lqclipboard(),
         lqsound(),
+        lqfilesystemwatcher(),
 
         lqabstractslider(),
         lqslider(),
@@ -381,6 +382,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqhostinfo(),
         lqnetworkinterface(),
         lqnetworkaddressentry(),
+
+        lqurl(),
+        lqmimedata(),
 
         class_<QVariant_wrapper>("QVariant_wrapper")
         .def(constructor<>()),

@@ -101,6 +101,11 @@ QFont* lqfont_init(QFont* widget, const object& obj)
     return lq_general_init(widget, obj, lqfont_set_map);
 }
 
+namespace luabind{
+    QT_EMUN_CONVERTER(Qt::BrushStyle)
+    QT_EMUN_CONVERTER(Qt::GlobalColor)
+}
+
 LQPoint lqpoint()
 {
     return
@@ -285,6 +290,7 @@ int lqbursh_get_style(QBrush* f)
 {
     return f->style();
 }
+
 LQBrush  lqbrush()
 {
     return
@@ -295,6 +301,9 @@ LQBrush  lqbrush()
     .def(constructor<const QColor &, Qt::BrushStyle>())
     .def(constructor<Qt::GlobalColor>())
     .def(constructor<Qt::GlobalColor, Qt::BrushStyle>())
+    .def(constructor<const QPixmap&>())
+    .def(constructor<const QImage&>())
+    .def(constructor<const QBrush&>())
     .def("__call", &lqbrush_init)
     .def("__init", &table_init_general<QBrush>)
     .def("setColor", (void(QBrush::*)(Qt::GlobalColor))&QBrush::setColor)

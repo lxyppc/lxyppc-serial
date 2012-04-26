@@ -310,3 +310,22 @@ LQSound lqsound()
      ]
     ;
 }
+
+SIGNAL_PROPERYT(lqfilesystemwatcher, directoryChanged, QFileSystemWatcher, "(const QString&)")
+SIGNAL_PROPERYT(lqfilesystemwatcher, fileChanged, QFileSystemWatcher, "(const QString&)")
+LQFileSystemWatcher lqfilesystemwatcher()
+{
+    return
+    class_<QFileSystemWatcher, QObject>("QFileSystemWatcher")
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    .def("addPath", &QFileSystemWatcher::addPath)
+    .def("addPaths", &QFileSystemWatcher::addPaths)
+    .def("removePath", &QFileSystemWatcher::removePath)
+    .def("removePaths", &QFileSystemWatcher::removePaths)
+    .property("directories", &QFileSystemWatcher::directories)
+    .property("files", &QFileSystemWatcher::files)
+    .sig_prop(lqfilesystemwatcher, directoryChanged)
+    .sig_prop(lqfilesystemwatcher, fileChanged)
+    ;
+}

@@ -95,7 +95,6 @@ windowMenu.triggered = function(ac)
 end
 
 frm2 = QFrame()
-
 function onPaint(obj,evt)
     pt = QPainter()
     pt:begin(frm2)
@@ -103,9 +102,5 @@ function onPaint(obj,evt)
     pt:done()
     return true
 end
-
 frm2.eventFilter = QPaintEvent.filter(onPaint)
-
-mdiArea:addSubWindow(frm2){minw=16,minh=16}
-
---QCommonDlg.about(mainWindow,"Toolbox",'<p><b>Toolbox</b></p><p>by lxyppc</p><table href="mailto:lxyppc@163.com" name=xxx>lxyppc@163.com</table>')
+mdiArea:addSubWindow(frm2){minw=160,minh=160}
