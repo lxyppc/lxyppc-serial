@@ -5,6 +5,7 @@
 #include "qextserialport.h"
 #include <QMutexLocker>
 #include <QDebug>
+#include <QRegExp>
 
 void QextSerialPort::platformSpecificInit()
 {
@@ -18,6 +19,17 @@ Standard destructor.
 void QextSerialPort::platformSpecificDestruct()
 {}
 
+QString QextSerialPort::fullPortNameUnix(const QString & name)
+{
+    QRegExp rx("dev/");
+    QString fullName(name);
+    if(fullName.contains(rx)) {
+        return fullName;
+    }
+    fullName = tr("/dev/%1").arg(fullName);
+    fullName.remove("//");
+    return fullName;
+}
 /*!
 Sets the baud rate of the serial port.  Note that not all rates are applicable on
 all platforms.  The following table shows translations of the various baud rate
@@ -347,6 +359,16 @@ void QextSerialPort::setBaudRate(BaudRateType baudRate)
             /*256000 baud*/
             case BAUD256000:
                 TTY_WARNING("QextSerialPort: POSIX does not support 256000 baud operation.  Switching to 115200 baud.");
+#ifdef CBAUD
+                Posix_CommConfig.c_cflag&=(~CBAUD);
+                Posix_CommConfig.c_cflag|=B115200;
+#else
+                cfsetispeed(&Posix_CommConfig, B115200);
+                cfsetospeed(&Posix_CommConfig, B115200);
+#endif
+                break;
+        default:
+                TTY_WARNING("QextSerialPort: POSIX does not support any baud operation.  Switching to 115200 baud.");
 #ifdef CBAUD
                 Posix_CommConfig.c_cflag&=(~CBAUD);
                 Posix_CommConfig.c_cflag|=B115200;

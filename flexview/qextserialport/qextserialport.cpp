@@ -139,7 +139,7 @@ void QextSerialPort::setPortName(const QString & name)
     #ifdef Q_OS_WIN
     port = fullPortNameWin( name );
     #else
-    port = name;
+    port = fullPortNameUnix( name );
     #endif
 }
 

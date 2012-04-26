@@ -273,7 +273,9 @@ class QEXTSERIALPORT_EXPORT QextSerialPort: public QIODevice
         virtual qint64 bytesToWrite() const;
         static QString fullPortNameWin(const QString & name);
 #endif
-
+#ifdef Q_OS_UNIX
+        static QString fullPortNameUnix(const QString & name);
+#endif
     protected:
         QMutex* mutex;
         QString port;
