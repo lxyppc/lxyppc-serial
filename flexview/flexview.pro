@@ -30,7 +30,8 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qpainter.cpp \
     src/qtwrapper/lua_qprocess.cpp \
     src/qtwrapper/lua_qslider.cpp \
-    src/protowrapper/lua_socket.cpp
+    src/protowrapper/lua_socket.cpp \
+    src/qtwrapper/lua_qurl.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -44,7 +45,8 @@ HEADERS += ./src/mainwindow.h \
     src/qtwrapper/lua_qpainter.h \
     src/qtwrapper/lua_qprocess.h \
     src/qtwrapper/lua_qslider.h \
-    src/protowrapper/lua_socket.h
+    src/protowrapper/lua_socket.h \
+    src/qtwrapper/lua_qurl.h
 HEADERS += ./qextserialport/qextserialenumerator.h \
     ./qextserialport/qextserialport.h
 
@@ -137,7 +139,8 @@ win32 {
 }
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
-QMAKE_CXXFLAGS += -Wno-ignored-qualifiers -Wno-strict-aliasing
+QMAKE_CXXFLAGS += -Wno-ignored-qualifiers \
+    -Wno-strict-aliasing
 FORMS += src/luadialog.ui
 OTHER_FILES += src/script.lua \
     src/serialview.lua \
