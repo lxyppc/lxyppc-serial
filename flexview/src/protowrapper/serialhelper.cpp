@@ -243,6 +243,7 @@ QStringList validValues<FlowType>()
 void tranverseSetting(pfnTranverse_t pfn, void* context)
 {
     PortSettings setting;
+    (void)setting;
     tranverseSetting(setting.BaudRate, pfn, context);
     tranverseSetting(setting.DataBits, pfn, context);
     tranverseSetting(setting.Parity, pfn, context);

@@ -254,6 +254,7 @@ QString QextSerialPort::errorString()
 #endif
     res.remove(QChar('\n'));
     LocalFree(lpMsgBuf);
+    (void)ret;
     return res;
 #endif
     switch(lastErr)

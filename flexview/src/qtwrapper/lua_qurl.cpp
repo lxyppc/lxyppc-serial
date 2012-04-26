@@ -127,7 +127,7 @@ namespace luabind
     template<typename T>
     T __getValue(const T& t) {return(t);}
 
-    char* __getValue(const QString& t) { t.toStdString().c_str(); }
+    const char* __getValue(const QString& t) { return t.toStdString().c_str(); }
 
 
     template <typename T1, typename T2>
@@ -206,6 +206,8 @@ QByteArray QUrl_toPercentEncoding2(const QString& input, const QByteArray & excl
     return QUrl::toPercentEncoding(input,exclude);
 }
 
+QString QUrl_toString(QUrl* w){ return w->toString();}
+
 QByteArray QUrl_toEncoded(QUrl* w) { return w->toEncoded(); }
 LQUrl lqurl()
 {
@@ -256,8 +258,10 @@ LQUrl lqurl()
     .property("scheme", &QUrl::scheme, &QUrl::setScheme)
     .property("toLocalFile", &QUrl::toLocalFile)
     .property("toEncoded", QUrl_toEncoded)
-    .property("toString", &QUrl::toString)
+    .def("toString", &QUrl::toString)
     .def("__tostring", &QUrl::toString)
+    .property("toString", QUrl_toString)
+    .def("__tostring", QUrl_toString)
     .property("userInfo", &QUrl::userInfo, &QUrl::setUserInfo)
     .property("userName", &QUrl::userName, &QUrl::setUserName)
 
