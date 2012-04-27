@@ -71,8 +71,8 @@ public:
       Get list of ports.
       \return list of ports currently available in the system.
     */
-    static QList<QUsbHidInfo> getPorts(){getPorts(0,0);}
-    static QList<QUsbHidInfo> getPorts(WORD vid){getPorts(vid,0);}
+    static QList<QUsbHidInfo> getPorts(){ return getPorts(0,0); }
+    static QList<QUsbHidInfo> getPorts(WORD vid){ return getPorts(vid,0); }
     static QList<QUsbHidInfo> getPorts(WORD vid, WORD pid);
     /*!
       Enable event-driven notifications of board discovery/removal.

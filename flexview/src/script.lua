@@ -123,3 +123,28 @@ frm2.eventFilter = QPaintEvent.filter(onPaint)
 frm2.eventFilter = QDropEvent.filter(onDrop)
 frm2.eventFilter = QDragEnterEvent.filter(onDragEnter)
 mdiArea:addSubWindow(frm2){minw=160,minh=160}
+
+hid = QUsbHid(frm2)
+hid:monitor(0x051a,0x511b)
+hid.connected = function(v)
+ log("connected" .. v.path)
+end
+hid.disconnected = function(v)
+ log("disconnected" .. v.path)
+end
+
+devs = QUsbHid.enumDevices(0x051a,0x511b)
+table.foreach(devs, function(k,v)
+ log(v.path .. "||" .. v.friendName)
+end)
+
+hid.path = devs[1].path
+res = hid:open()
+log(res)
+log(hid.caps.inputReportLength)
+log(hid.caps.outputReportLength)
+log(hid.caps.featureReportLength)
+--hid:writeData({0,1,4,0xc6,0,0,0,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3})
+hid:writeData({0x10,4,0xc6,0,0,0,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3})
+log(hid.errorString)
+hid:close()

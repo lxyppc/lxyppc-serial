@@ -251,4 +251,17 @@ HidD_GetIndexedString (
    IN    ULONG    BufferLength
    );
 
+extern "C" BOOLEAN __stdcall
+HidD_GetInputReport(
+    IN    HANDLE   HidDeviceObject,
+    IN    PVOID    ReportBuffer,
+    IN    ULONG    ReportBufferLength
+   );
+
+extern "C" BOOLEAN __stdcall
+HidD_SetOutputReport(
+    IN    HANDLE   HidDeviceObject,
+    IN    PVOID    ReportBuffer,
+    IN    ULONG    ReportBufferLength
+   );
 #endif

@@ -11,6 +11,7 @@
     #include <setupapi.h>
     #include <dbt.h>
     #include "qwineventnotifier_p.h"
+    #include "./inc/hidsdi++.h"
 #endif /*Q_OS_WIN*/
 #include "qusbhidenumerator.h"
 
@@ -31,8 +32,8 @@ struct QHidCaps
 {
     QHidCaps(){ memset(this,0,sizeof(QHidCaps));}
     QHidCaps(const HIDP_CAPS& cap){
-        usage = cap.Uasge;
-        uasgePage = cap.UasgePage;
+        usage = cap.Usage;
+        uasgePage = cap.UsagePage;
         inputReportLength = cap.InputReportByteLength;
         outputReportLength = cap.OutputReportByteLength;
         featureReportLength = cap.FeatureReportByteLength;
@@ -78,6 +79,9 @@ public:
     QByteArray readData(int reportID, qint64 len);
     qint64 writeData(const QByteArray& data);
     qint64 writeData(int reportID, const QByteArray& data);
+
+    virtual qint64 readData(char *data, qint64 maxlen);
+    virtual qint64 writeData(const char *data, qint64 len);
 
 
     QHidCaps  caps() const { return QHidCaps(hidCaps); }
@@ -143,7 +147,7 @@ protected:
         QByteArray  readBuffer;
         PHIDP_PREPARSED_DATA  hidPrepParsedData;
         HIDP_CAPS             hidCaps;
-        char   rawDara[128];
+        char   rawData[128];
         DWORD lastErr;
 #endif
     private:

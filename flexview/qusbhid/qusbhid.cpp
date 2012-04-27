@@ -1,5 +1,5 @@
 #include "qusbhid.h"
-
+#include <QDebug>
 QUsbHid::QUsbHid(QObject *parent,QueryMode mode) :
     QIODevice(parent),
     m_queryMode(mode)
@@ -69,8 +69,8 @@ bool QUsbHid::open(OpenMode mode)
         if (queryMode() == QUsbHid::EventDriven) {
             winEventNotifier = new QWinEventNotifier(overlap.hEvent, this);
             connect(winEventNotifier, SIGNAL(activated(HANDLE)), this, SLOT(onWinEvent(HANDLE)));
-            rawDara[0] = 0;
-            ::ReadFile(Win_Handle, rawDara, hidCaps.InputReportByteLength, 0, &overlap);
+            rawData[0] = 0;
+            ::ReadFile(Win_Handle, rawData, hidCaps.InputReportByteLength, 0, &overlap);
         }
 
     }else{
@@ -174,7 +174,7 @@ qint64 QUsbHid::writeData(int reportID, const QByteArray& data)
     QByteArray arr;
     arr.append(char(reportID));
     arr.append(data);
-    writeData(data);
+    return writeData(data);
 }
 
 qint64 QUsbHid::writeData(const QByteArray& data)
@@ -209,15 +209,28 @@ qint64 QUsbHid::writeData(const QByteArray& data)
             qDebug() << "USB write error:" << lastErr;
             retVal = (DWORD)-1;
             if(!CancelIo(newOverlapWrite.hEvent))
-                qDebug() << "serialport: couldn't cancel IO";
+                qDebug() << "QUsbHid: couldn't cancel IO";
             if(!CloseHandle(newOverlapWrite.hEvent))
-                qDebug() << "serialport: couldn't close OVERLAPPED handle";
+                qDebug() << "QUsbHid: couldn't close OVERLAPPED handle";
         }
     } else if (!WriteFile(Win_Handle, (char*)data.data(), (DWORD)data.length(), & retVal, NULL)) {
         lastErr = GetLastError();
         retVal = (DWORD)-1;
     }
     return (qint64)retVal;
+}
+
+
+qint64 QUsbHid::readData(char *data, qint64 maxlen)
+{
+    QByteArray res = readData(maxlen);
+    memcpy(data, res.data(), res.length());
+    return res.length();
+}
+
+qint64 QUsbHid::writeData(const char *data, qint64 len)
+{
+    return writeData(QByteArray::fromRawData(data,len));
 }
 
 void QUsbHid::onWinEvent(HANDLE h)
@@ -233,8 +246,8 @@ void QUsbHid::onWinEvent(HANDLE h)
         }
         if (sender() != this && bytesAvailable() > 0)
             emit readyRead();
-        rawDara[0] = 0;
-        ::ReadFile(Win_Handle, rawDara, hidCaps.InputReportByteLength, 0, &overlap);
+        rawData[0] = 0;
+        ::ReadFile(Win_Handle, rawData, hidCaps.InputReportByteLength, 0, &overlap);
         lastErr = GetLastError();
     }
 }
@@ -263,7 +276,7 @@ QString QUsbHid::errorString()const
 
 QList<QUsbHidInfo> QUsbHid::enumDevices(int vid, int pid)
 {
-    QUsbHidEnumerator::getPorts((WORD)vid,(WORD)pid);
+    return QUsbHidEnumerator::getPorts((WORD)vid,(WORD)pid);
 }
 
 
@@ -283,8 +296,8 @@ QByteArray QUsbHid::getFeature(int maxLen, bool* r)
 QByteArray QUsbHid::getFeature(int reportID, int maxLen,bool* r)
 {
     QByteArray ret;
-    res.resize(maxLen);
-    res[0] = reportID;
+    ret.resize(maxLen);
+    ret[0] = reportID;
     bool res = HidD_GetFeature(Win_Handle, (char*)ret.data(), ret.length());
     if(r) *r = res;
     lastErr = GetLastError();
@@ -299,8 +312,8 @@ QByteArray QUsbHid::getInputReport(int maxLen,bool* r)
 QByteArray QUsbHid::getInputReport(int reportID, int maxLen,bool* r)
 {
     QByteArray ret;
-    res.resize(maxLen);
-    res[0] = reportID;
+    ret.resize(maxLen);
+    ret[0] = reportID;
     bool res = HidD_GetInputReport(Win_Handle, (char*)ret.data(), ret.length());
     if(r) *r = res;
     lastErr = GetLastError();
@@ -319,8 +332,7 @@ int QUsbHid::getNumInputBuffers(bool* r)
 QByteArray QUsbHid::getPhysicalDescriptor(int maxLen, bool* r)
 {
     QByteArray ret;
-    res.resize(maxLen);
-    res[0] = reportID;
+    ret.resize(maxLen);
     bool res = HidD_GetPhysicalDescriptor(Win_Handle, (char*)ret.data(), ret.length());
     if(r) *r = res;
     lastErr = GetLastError();
@@ -354,10 +366,10 @@ QString QUsbHid::getProductString(bool* r)
     return QString::fromUtf16((ushort*)ret);
 }
 
-QString QUsbHid::HidD_GetSerialNumberString(bool* r)
+QString QUsbHid::getSerialNumberString(bool* r)
 {
     wchar_t ret[128];
-    bool res = HidD_GetIndexedString(Win_Handle, index, ret, sizeof(ret));
+    bool res = HidD_GetSerialNumberString(Win_Handle, ret, sizeof(ret));
     if(r) *r = res;
     lastErr = GetLastError();
     return QString::fromUtf16((ushort*)ret);
@@ -365,7 +377,8 @@ QString QUsbHid::HidD_GetSerialNumberString(bool* r)
 
 bool QUsbHid::setFeature(const QByteArray& arr)
 {
-    bool res =  HidD_SetFeature(Win_Handle,arr.data(), arr.length());
+    QByteArray s(arr);
+    bool res =  HidD_SetFeature(Win_Handle,s.data(), arr.length());
     lastErr = GetLastError();
     return res;
 }
@@ -380,9 +393,11 @@ bool QUsbHid::setFeature(int reportID, const QByteArray& arr)
 
 bool QUsbHid::setOutputReport(const QByteArray& arr)
 {
-    bool res =  HidD_SetOutputReport(Win_Handle,arr.data(), arr.length());
+    QByteArray s(arr);
+    bool res =  HidD_SetOutputReport(Win_Handle,s.data(), arr.length());
     lastErr = GetLastError();
     return res;
+    //return false;
 }
 
 bool QUsbHid::setOutputReport(int reportID, const QByteArray& arr)

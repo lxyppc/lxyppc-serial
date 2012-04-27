@@ -32,7 +32,9 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qslider.cpp \
     src/protowrapper/lua_socket.cpp \
     src/qtwrapper/lua_qurl.cpp \
-    src/protowrapper/lua_usbhid.cpp
+    src/protowrapper/lua_usbhid.cpp \
+    qusbhid/qusbhid.cpp \
+    qusbhid/qusbhidenumerator.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -48,7 +50,9 @@ HEADERS += ./src/mainwindow.h \
     src/qtwrapper/lua_qslider.h \
     src/protowrapper/lua_socket.h \
     src/qtwrapper/lua_qurl.h \
-    src/protowrapper/lua_usbhid.h
+    src/protowrapper/lua_usbhid.h \
+    qusbhid/qusbhidenumerator.h \
+    qusbhid/qusbhid.h
 HEADERS += ./qextserialport/qextserialenumerator.h \
     ./qextserialport/qextserialport.h
 
@@ -136,7 +140,7 @@ win32 {
     SOURCES += ./qextserialport/win_qextserialport.cpp \
         ./qextserialport/qextserialenumerator_win.cpp
     DEFINES += WINVER=0x0501 # needed for mingw to pull in appropriate dbt business...probably a better way to do this
-    LIBS += -lsetupapi
+    LIBS += -lsetupapi -lhid
     RC_FILE = ./res/app.rc
 }
 INCLUDEPATH += ./lua-5.1.5/src \

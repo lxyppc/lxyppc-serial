@@ -1,6 +1,7 @@
 #include "qluaslot.h"
 #include <QDebug>
 #include "../../qextserialport/qextserialenumerator.h"
+#include "../../qusbhid/qusbhid.h"
 
 QLuaSlot::QLuaSlot(const QString& signature) :
     QObject(0),m_signature(signature)
@@ -404,6 +405,11 @@ void QLuaSlot::general_slot(const QHostInfo& param1)
 }
 
 void QLuaSlot::general_slot(Qt::DropAction param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(const QUsbHidInfo& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }
