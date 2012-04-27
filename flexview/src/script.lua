@@ -16,8 +16,8 @@ end
 function EditScript()
     dlg = LuaEditDlg(mainWindow)
     dlg.windowIcon = mainWindow.windowIcon
-    dlg:load("../src/script.lua")
-    dlg:exec()
+    dlg:load("../src/clocktree.lua")
+    dlg:show()
 end
 
 function LaunchSerial()
@@ -102,5 +102,24 @@ function onPaint(obj,evt)
     pt:done()
     return true
 end
+
+function onDrop(obj,evt)
+    log("Drop")
+    evt:acceptProposedAction()
+    xx = evt.mimeData.formats
+    log(xx)
+    table.foreach(xx, function(k,v) log(v) end)
+    return true
+end
+
+function onDragEnter(obj,evt)
+    log("Drag enter")
+    evt:acceptProposedAction()
+    return true
+end
+
+frm2.acceptDrops = true
 frm2.eventFilter = QPaintEvent.filter(onPaint)
+frm2.eventFilter = QDropEvent.filter(onDrop)
+frm2.eventFilter = QDragEnterEvent.filter(onDragEnter)
 mdiArea:addSubWindow(frm2){minw=160,minh=160}

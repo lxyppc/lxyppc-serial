@@ -402,3 +402,8 @@ void QLuaSlot::general_slot(const QHostInfo& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }
+
+void QLuaSlot::general_slot(Qt::DropAction param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}

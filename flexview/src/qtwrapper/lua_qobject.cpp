@@ -366,6 +366,7 @@ IS_CLASS(QTableWidgetSelectionRange)
 IS_CLASS(QHostAddress)
 IS_CLASS(QNetworkInterface)
 IS_CLASS(QNetworkAddressEntry)
+IS_CLASS(QUrl)
 
 template<>bool is_class<QString>(const object& obj){ return type(obj) == LUA_TSTRING;}
 template<>bool is_class<QWidget*>(const object& obj){ return type(obj) == LUA_TUSERDATA; }

@@ -64,6 +64,7 @@ public slots:
     void general_slot(QAbstractSocket::SocketState);
     void general_slot(QClipboard::Mode);
     void general_slot(const QHostInfo&);
+    void general_slot(Qt::DropAction);
 private:
     object m_obj;
     QString m_method;

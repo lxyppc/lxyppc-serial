@@ -1,5 +1,5 @@
 #include "lua_qurl.h"
-
+#include "qluaslot.h"
 
 static setter_map<QUrl> lqurl_set_map;
 
@@ -17,6 +17,10 @@ namespace luabind
 {
     QT_EMUN_CONVERTER(QUrl::ParsingMode)
     QT_EMUN_CONVERTER(QUrl::FormattingOptions)
+    QT_EMUN_CONVERTER(Qt::DropActions)
+    QT_EMUN_CONVERTER(Qt::DropAction)
+    QT_EMUN_CONVERTER(QRegExp::CaretMode)
+    QT_EMUN_CONVERTER(QRegExp::PatternSyntax)
 
     QByteArray byteArrayFromObject(const object& obj){
         QByteArray arr;
@@ -296,6 +300,112 @@ LQMimeData lqmimedata()
 {
     return
     myclass_<QMimeData,QObject>("QMimeData")
+    .def(constructor<>())
+    .def("clear", &QMimeData::clear)
+    .def("data", &QMimeData::data)
+    .def("setData", &QMimeData::setData)
+    .def("hasFormat", &QMimeData::hasFormat)
+    .def("removeFormat", &QMimeData::removeFormat)
+
+    .property("colorData", &QMimeData::hasColor)
+    .property("hasHtml", &QMimeData::hasHtml)
+    .property("hasImage", &QMimeData::hasImage)
+    .property("hasText", &QMimeData::hasText)
+    .property("hasUrls", &QMimeData::hasUrls)
+
+    .property("html", &QMimeData::html, &QMimeData::setHtml)
+    .property("text", &QMimeData::text, &QMimeData::setText)
+
+
+    .class_<QMimeData,QObject>::property("colorData", &QMimeData::colorData, &QMimeData::setColorData)
+    .property("formats", &QMimeData::formats)
+    .property("imageData", &QMimeData::imageData, &QMimeData::setImageData)
+    .property("urls", &QMimeData::urls, &QMimeData::setUrls)
     ;
 }
 
+Qt::DropAction QDrag_exec1(QDrag* w){ return w->exec(); }
+Qt::DropAction QDrag_exec2(QDrag* w, Qt::DropActions supportedActions){ return w->exec(supportedActions); }
+Qt::DropAction QDrag_exec3(QDrag* w, Qt::DropActions supportedActions, Qt::DropAction defAct){ return w->exec(supportedActions,defAct); }
+
+static setter_map<QDrag> lqdrag_set_map;
+
+QDrag* lqdrag_init(QDrag* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqdrag_set_map);
+}
+//template<>
+//void table_init_general<QDrag>(const luabind::argument & arg, const object& obj)
+//{
+//    lqdrag_init(construct<QDrag>(arg), obj);
+//}
+
+SIGNAL_PROPERYT(lqdrag, actionChanged , QDrag,"(Qt::DropAction)")
+SIGNAL_PROPERYT(lqdrag, targetChanged , QDrag,"(QWidget*)")
+LQDrag lqdrag()
+{
+    return
+    myclass_<QDrag,QObject>("QDrag",lqdrag_set_map)
+    .def(constructor<QWidget*>())
+    .def("__call", lqdrag_init)
+    .def("exec", QDrag_exec1)
+    .def("exec", QDrag_exec2)
+    .def("exec", QDrag_exec3)
+    .def("setDragCursor", &QDrag::setDragCursor)
+
+    .sig_prop(lqdrag, actionChanged)
+    .sig_prop(lqdrag, targetChanged)
+    .property("hotSpot", &QDrag::hotSpot, &QDrag::setHotSpot)
+    .class_<QDrag,QObject>::property("mimeData", &QDrag::mimeData, &QDrag::setMimeData)
+    .property("pixmap", &QDrag::pixmap, &QDrag::setPixmap)
+    .property("source", &QDrag::source)
+    .property("target", &QDrag::target)
+    ;
+}
+
+QString QRegExp_cap1(QRegExp* w){ return w->cap(); }
+QString QRegExp_cap2(QRegExp* w, int n){ return w->cap(n); }
+int QRegExp_indexIn1(QRegExp* w, const QString& str){ return w->indexIn(str); }
+int QRegExp_indexIn2(QRegExp* w, const QString& str, int offset){ return w->indexIn(str,offset); }
+int QRegExp_lastIndexIn1(QRegExp* w, const QString& str){ return w->lastIndexIn(str); }
+int QRegExp_lastIndexIn2(QRegExp* w, const QString& str, int offset){ return w->lastIndexIn(str,offset); }
+int QRegExp_pos1(QRegExp* w){ return w->pos();}
+int QRegExp_pos2(QRegExp* w, int n){ return w->pos(n);}
+
+LQRegExp lqregexp()
+{
+    return
+    class_<QRegExp>("QRegExp")
+    .def(constructor<>())
+    .def(constructor<const QString &, Qt::CaseSensitivity, QRegExp::PatternSyntax>())
+    .def(constructor<const QString &, Qt::CaseSensitivity>())
+    .def(constructor<const QString &>())
+    .def(constructor<const QRegExp &>())
+    .def("cap", QRegExp_cap1)
+    .def("cap", QRegExp_cap2)
+    .def("indexIn", &QRegExp::indexIn)
+    .def("indexIn", QRegExp_indexIn1)
+    .def("indexIn", QRegExp_indexIn2)
+    .def("lastIndexIn", &QRegExp::lastIndexIn)
+    .def("lastIndexIn", QRegExp_lastIndexIn1)
+    .def("lastIndexIn", QRegExp_lastIndexIn2)
+    .def("pos", QRegExp_pos1)
+    .def("pos", QRegExp_pos2)
+
+
+    .property("captureCount", &QRegExp::captureCount)
+    .property("capturedTexts", (QStringList (QRegExp::*)()const)&QRegExp::capturedTexts)
+    .property("caseSensitivity", &QRegExp::caseSensitivity, &QRegExp::setCaseSensitivity)
+    .property("errorString", (QString (QRegExp::*)()const)&QRegExp::errorString)
+    .property("exactMatch", &QRegExp::exactMatch)
+    .property("isEmpty", &QRegExp::isEmpty)
+    .property("minimal", &QRegExp::isMinimal, &QRegExp::setMinimal)
+    .property("isValid", &QRegExp::isValid)
+    .property("matchedLength", &QRegExp::matchedLength)
+    .property("pattern", &QRegExp::pattern, &QRegExp::setPattern)
+    .property("patternSyntax", &QRegExp::patternSyntax, &QRegExp::setPatternSyntax)
+    .scope[
+            def("escape",  &QRegExp::escape)
+    ]
+    ;
+}

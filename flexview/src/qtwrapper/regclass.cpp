@@ -6,6 +6,7 @@
 #include "lua_qtypes.h"
 #include "../protowrapper/lua_serial.h"
 #include "../protowrapper/lua_socket.h"
+#include "../protowrapper/lua_usbhid.h"
 #include <luabind/out_value_policy.hpp>
 #include "../mainwindow.h"
 using namespace luabind;
@@ -385,6 +386,14 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqurl(),
         lqmimedata(),
+        lqdrag(),
+        lqregexp(),
+
+        lqusbhidinfo(),
+        lqusbhid(),
+        lqhidattr(),
+        lqhidcaps(),
+
 
         class_<QVariant_wrapper>("QVariant_wrapper")
         .def(constructor<>()),
