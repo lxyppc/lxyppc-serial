@@ -12,9 +12,6 @@
     #include <IOKit/usb/IOUSBLib.h>
 #endif
 
-#ifdef Q_OS_WIN
-#ifdef QT_GUI_LIB
-#include <QWidget>
 class QUsbHidEnumerator;
 
 struct QUsbHidInfo {
@@ -26,6 +23,10 @@ struct QUsbHidInfo {
     int productID;      ///< Product ID
     int version;        ///< Version No.
 };
+
+#ifdef Q_OS_WIN
+#ifdef QT_GUI_LIB
+#include <QWidget>
 
 class QUsbHidRegistrationWidget : public QWidget
 {
@@ -70,7 +71,7 @@ public:
       Get list of ports.
       \return list of ports currently available in the system.
     */
-     static QList<QUsbHidInfo> getPorts(){getPorts(0,0);}
+    static QList<QUsbHidInfo> getPorts(){getPorts(0,0);}
     static QList<QUsbHidInfo> getPorts(WORD vid){getPorts(vid,0);}
     static QList<QUsbHidInfo> getPorts(WORD vid, WORD pid);
     /*!
