@@ -113,14 +113,14 @@ QWidget* lqwidget_init(QWidget* widget, const object& obj)
 void lqwidget_set_x(QWidget* w, int x)
 {
     QRect rect = w->geometry();
-    rect.setX(x);
+    rect.moveLeft(x);
     w->setGeometry(rect);
 }
 
 void lqwidget_set_y(QWidget* w, int y)
 {
     QRect rect = w->geometry();
-    rect.setY(y);
+    rect.moveTop(y);
     w->setGeometry(rect);
 }
 
