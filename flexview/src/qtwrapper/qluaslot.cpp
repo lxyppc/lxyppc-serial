@@ -4,6 +4,8 @@
 #ifdef Q_OS_WIN
 #include "../../qusbhid/qusbhid.h"
 #endif
+#include <QFtp>
+
 QLuaSlot::QLuaSlot(const QString& signature) :
     QObject(0),m_signature(signature)
 {
@@ -409,6 +411,27 @@ void QLuaSlot::general_slot(Qt::DropAction param1)
 {
     ::gen_slot(m_obj,m_method,param1);
 }
+
+void QLuaSlot::general_slot(int param1, bool param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(qint64 param1,qint64 param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
+void QLuaSlot::general_slot(const QUrlInfo & param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+}
+
+void QLuaSlot::general_slot(int param1,const QString& param2)
+{
+    ::gen_slot(m_obj,m_method,param1,param2);
+}
+
 
 #ifdef Q_OS_WIN
 void QLuaSlot::general_slot(const QUsbHidInfo& param1)

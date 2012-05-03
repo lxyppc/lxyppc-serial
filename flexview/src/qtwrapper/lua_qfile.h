@@ -1,0 +1,16 @@
+#ifndef LUA_QFILE_H
+#define LUA_QFILE_H
+#include "lua_qt_wrapper.hpp"
+
+typedef class_<QFile> LQFile;
+typedef class_<QTemporaryFile, QFile> LQTemporaryFile;
+typedef class_<QDir> LQDir;
+typedef class_<QFileInfo> LQFileInfo;
+
+
+LQFile lqfile();
+LQTemporaryFile lqtemporaryfile();
+LQDir lqdir();
+LQFileInfo lqfileinfo();
+
+#endif // LUA_QFILE_H

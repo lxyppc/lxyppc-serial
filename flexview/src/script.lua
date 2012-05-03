@@ -148,3 +148,20 @@ log(hid.caps.featureReportLength)
 hid:writeData({0x10,4,0xc6,0,0,0,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3})
 log(hid.errorString)
 hid:close()
+
+
+ftp = QFtp()
+ftp.stateChanged = function (state)
+    log(state)
+end
+ftp.listInfo = function (info)
+    log(info.name .. "     " .. info.owner)
+end
+
+
+url = QUrl("ftp://ftp.21ic.com")
+
+ftp:connectToHost(url.host, url:getPort(21))
+ftp:login("hotuser","250")
+ftp:list()
+ftp:close()

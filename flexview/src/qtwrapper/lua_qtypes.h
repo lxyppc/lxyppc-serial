@@ -18,5 +18,7 @@
 #include "lua_qprocess.h"
 #include "lua_qslider.h"
 #include "lua_qurl.h"
+#include "lua_qfile.h"
+#include "lua_qftp.h"
 #endif
 

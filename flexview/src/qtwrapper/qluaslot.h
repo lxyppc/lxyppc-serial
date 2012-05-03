@@ -66,6 +66,10 @@ public slots:
     void general_slot(QClipboard::Mode);
     void general_slot(const QHostInfo&);
     void general_slot(Qt::DropAction);
+    void general_slot(int,bool);
+    void general_slot(qint64,qint64);
+    void general_slot(const QUrlInfo &);
+    void general_slot(int,const QString&);
 #ifdef Q_OS_WIN
     void general_slot(const QUsbHidInfo&);
 #endif

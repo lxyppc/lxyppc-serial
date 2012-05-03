@@ -389,6 +389,15 @@ void register_classes(lua_State* L, char const* name = 0)
         lqdrag(),
         lqregexp(),
 
+        lqftp(),
+        lqurlinfo(),
+        lqtextcodec(),
+
+        lqfile(),
+        lqtemporaryfile(),
+        lqdir(),
+        lqfileinfo(),
+
         lqusbhidinfo(),
         lqusbhid(),
         lqhidattr(),
