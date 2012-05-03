@@ -177,8 +177,11 @@ qint64 QUsbHid::writeData(int reportID, const QByteArray& data)
     return writeData(data);
 }
 
-qint64 QUsbHid::writeData(const QByteArray& data)
+qint64 QUsbHid::writeData(const QByteArray& in_data)
 {
+    QByteArray buffer(hidCaps.OutputReportByteLength,0);
+    memcpy(buffer.data(), in_data.data(), buffer.length()>in_data.length() ? in_data.length(): buffer.length());
+    const QByteArray& data = buffer;
     QMutexLocker lock( mutex );
     DWORD retVal = 0;
     if (queryMode() == QUsbHid::EventDriven) {
