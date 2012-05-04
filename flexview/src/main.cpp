@@ -65,3 +65,14 @@ QString fromStdWString(const std::wstring& str)
     return QString::fromStdWString(str);
 }
 #endif
+QString stringFromLua(lua_State* L, int index)
+{
+    size_t len;
+    const char* str = lua_tolstring(L,index,&len);
+    return QString::fromLocal8Bit(str);
+}
+
+void stringToLua(lua_State* L, QString const& x)
+{
+    lua_pushstring(L, x.toLocal8Bit().data());
+}

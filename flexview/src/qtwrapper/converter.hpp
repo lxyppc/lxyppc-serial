@@ -16,6 +16,8 @@ template<typename T>bool is_class(const luabind::object& obj);
 QVariant var_from(lua_State* L, int index);
 void var_to(lua_State* L, QVariant const& v);
 std::string fromQString(const QString& str);
+QString stringFromLua(lua_State* L, int index);
+void stringToLua(lua_State* L, QString const& x);
 namespace luabind {
 
 template <>
@@ -29,15 +31,12 @@ struct default_converter<QString>
 
     QString from(lua_State* L, int index)
     {
-        size_t len;
-        const char* str = lua_tolstring(L,index,&len);
-        return QString::fromLocal8Bit(str);
+        return stringFromLua(L,index);
     }
 
     void to(lua_State* L, QString const& x)
     {
-        //lua_pushstring(L, x.toStdString().c_str());
-        lua_pushstring(L, fromQString(x).c_str());
+        stringToLua(L,x);
     }
 };
 
