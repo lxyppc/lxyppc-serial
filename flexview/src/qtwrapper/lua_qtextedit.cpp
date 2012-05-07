@@ -4,6 +4,7 @@
 
 static setter_map<QLabel> lqlabel_set_map;
 static setter_map<QTextEdit> lqtextedit_set_map;
+static setter_map<QPlainTextEdit> lqplaintextedit_set_map;
 static setter_map<QLineEdit> lqlineedit_set_map;
 
 SIGNAL_PROPERYT(lqtextedit, textChanged, QTextEdit, "()")
@@ -17,19 +18,14 @@ QLabel* lqlabel_init(QLabel* widget, const object& obj)
 QTextEdit* lqtextedit_init(QTextEdit* widget, const object& obj)
 {
     lqwidget_init(widget,obj);
-    //lq_general_init(widget, obj, lqtextedit_set_map);
-    if( type(obj) == LUA_TTABLE){
-        for (iterator i(obj), e; i != e; ++i){
-            if(type(i.key()) == LUA_TSTRING){
-                QString key = object_cast<QString>(i.key());
-                if(lqtextedit_set_map.find(key) != lqtextedit_set_map.end()){
-                    lqtextedit_set_map[key](widget,*i);
-                }else if(key.compare("textChanged", Qt::CaseInsensitive) == 0){
-                    lqtextedit_set_textChanged(widget, *i);
-                }
-            }
-        }
-    }
+    lq_general_init(widget, obj, lqtextedit_set_map);
+    return widget;
+}
+
+QPlainTextEdit* lqplaintextedit_init(QPlainTextEdit* widget, const object& obj)
+{
+    lqwidget_init(widget,obj);
+    lq_general_init(widget, obj, lqplaintextedit_set_map);
     return widget;
 }
 
@@ -49,6 +45,12 @@ template<>
 void table_init_general<QTextEdit>(const luabind::argument & arg, const object& obj)
 {
     lqtextedit_init(construct<QTextEdit>(arg), obj);
+}
+
+template<>
+void table_init_general<QPlainTextEdit>(const luabind::argument & arg, const object& obj)
+{
+    lqplaintextedit_init(construct<QPlainTextEdit>(arg), obj);
 }
 
 template<>
@@ -142,7 +144,9 @@ void look_text_corlor(QTextEdit* w, const object& fun)
 
 void QTextEdit_zoomIn(QTextEdit* w){ w->zoomIn(); }
 void QTextEdit_zoomOut(QTextEdit* w){ w->zoomOut(); }
-
+bool lqtextedit_find(QTextEdit* w, const QString& str) { return w->find(str);}
+ENUM_FILTER(QTextEdit, lineWrapMode, setLineWrapMode)
+ENUM_FILTER(QTextEdit, wordWrapMode, setWordWrapMode)
 LQTextEdit lqtextedit()
 {
     return
@@ -156,6 +160,8 @@ LQTextEdit lqtextedit()
     .def("append", &QTextEdit::append)
     .def("copy", &QTextEdit::copy)
     .def("cut", &QTextEdit::cut)
+    .def("find", &QTextEdit::find)
+    .def("find", lqtextedit_find)
     .def("insertHtml", &QTextEdit::insertHtml)
     .def("insertPlainText", &QTextEdit::insertPlainText)
     .def("paste", &QTextEdit::paste)
@@ -180,11 +186,20 @@ LQTextEdit lqtextedit()
     .def("zoomIn", &QTextEdit_zoomIn)
     .def("zoomOut", &QTextEdit_zoomOut)
     .def("lookColor", look_text_corlor)
+    .def("ensureCursorVisible", &QTextEdit::ensureCursorVisible)
 
     .property("text", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("plainText", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("html", &QTextEdit::toHtml, &QTextEdit::setHtml)
     .property("readOnly", &QTextEdit::isReadOnly, &QTextEdit::setReadOnly)
+    .property("undoRedoEnabled", &QTextEdit::isUndoRedoEnabled, &QTextEdit::setUndoRedoEnabled)
+    .property("lineWrapMode", QTextEdit_lineWrapMode, QTextEdit_setLineWrapMode)
+    .property("documentTitle", &QTextEdit::documentTitle ,&QTextEdit::setDocumentTitle)
+    .property("overwriteMode", &QTextEdit::overwriteMode, &QTextEdit::setOverwriteMode)
+    .property("cursorWidth", &QTextEdit::cursorWidth, &QTextEdit::setCursorWidth)
+    .property("tabChangesFocus", &QTextEdit::tabChangesFocus, &QTextEdit::setTabChangesFocus)
+    .property("tabStopWidth", &QTextEdit::tabStopWidth, &QTextEdit::setTabStopWidth)
+    .property("wordWrapMode", QTextEdit_wordWrapMode, QTextEdit_setWordWrapMode)
     //.property("verticalScrollBarPolicy", lqtextedit_v_scroll_bar, lqtextedit_set_v_scroll_bar)
     //.property("horizontalScrollBarPolicy", lqtextedit_h_scroll_bar, lqtextedit_set_h_scroll_bar)
     //.property("vScrollBarPolicy", lqtextedit_v_scroll_bar, lqtextedit_set_v_scroll_bar)
@@ -194,6 +209,56 @@ LQTextEdit lqtextedit()
     ;
 }
 
+ENUM_FILTER(QPlainTextEdit, lineWrapMode, setLineWrapMode)
+ENUM_FILTER(QPlainTextEdit, wordWrapMode, setWordWrapMode)
+bool lqplaintextedit_find(QPlainTextEdit* w, const QString& str) { return w->find(str);}
+SIGNAL_PROPERYT(lqplaintextedit, textChanged, QPlainTextEdit, "()")
+LQPlainTextEdit lqplaintextedit()
+{
+    return
+    myclass_<QPlainTextEdit,QAbstractScrollArea>("QPlainTextEdit",lqplaintextedit_set_map)
+    .def(constructor<>())
+    .def(constructor<const QString&>())
+    .def(constructor<const QString&,QWidget*>())
+    .def("__call", lqplaintextedit_init)
+    .def("__init", table_init_general<QPlainTextEdit>)
+    .def("createStandardContextMenu", &QPlainTextEdit::createStandardContextMenu)
+    .def("ensureCursorVisible", &QPlainTextEdit::ensureCursorVisible)
+    .def("appendHtml", &QPlainTextEdit::appendHtml)
+    .def("appendPlainText", &QPlainTextEdit::appendPlainText)
+    .def("append", &QPlainTextEdit::appendPlainText)
+    .def("centerCursor", &QPlainTextEdit::centerCursor)
+    .def("clear", &QPlainTextEdit::clear)
+    .def("copy", &QPlainTextEdit::copy)
+    .def("cut", &QPlainTextEdit::cut)
+    .def("insertPlainText", &QPlainTextEdit::insertPlainText)
+    .def("paste", &QPlainTextEdit::paste)
+    .def("redo", &QPlainTextEdit::redo)
+    .def("selectAll", &QPlainTextEdit::selectAll)
+    .def("setPlainText", &QPlainTextEdit::setPlainText)
+    .def("undo", &QPlainTextEdit::undo)
+
+
+    .property("backgroundVisible", &QPlainTextEdit::backgroundVisible, &QPlainTextEdit::setBackgroundVisible)
+    .property("blockCount", &QPlainTextEdit::blockCount)
+    .property("canPaste", &QPlainTextEdit::canPaste)
+    .property("centerOnScroll", &QPlainTextEdit::centerOnScroll, &QPlainTextEdit::setCenterOnScroll)
+    .property("documentTitle", &QPlainTextEdit::documentTitle ,&QPlainTextEdit::setDocumentTitle)
+    .property("readOnly", &QPlainTextEdit::isReadOnly, &QPlainTextEdit::setReadOnly)
+    .property("undoRedoEnabled", &QPlainTextEdit::isUndoRedoEnabled, &QPlainTextEdit::setUndoRedoEnabled)
+    .property("lineWrapMode", QPlainTextEdit_lineWrapMode, QPlainTextEdit_setLineWrapMode)
+    .property("maximumBlockCount", &QPlainTextEdit::maximumBlockCount, &QPlainTextEdit::setMaximumBlockCount)
+    .property("overwriteMode", &QPlainTextEdit::overwriteMode, &QPlainTextEdit::setOverwriteMode)
+    .property("cursorWidth", &QPlainTextEdit::cursorWidth, &QPlainTextEdit::setCursorWidth)
+    .property("tabChangesFocus", &QPlainTextEdit::tabChangesFocus, &QPlainTextEdit::setTabChangesFocus)
+    .property("tabStopWidth", &QPlainTextEdit::tabStopWidth, &QPlainTextEdit::setTabStopWidth)
+    .property("wordWrapMode", QPlainTextEdit_wordWrapMode, QPlainTextEdit_setWordWrapMode)
+    .property("plainText", &QPlainTextEdit::toPlainText, &QPlainTextEdit::setPlainText)
+    .sig_prop(lqplaintextedit,textChanged)
+    ;
+}
+
+ENUM_FILTER(QLineEdit, echoMode, setEchoMode)
 LQLineEdit lqlineedit()
 {
     return
@@ -218,6 +283,7 @@ LQLineEdit lqlineedit()
     .property("selectedText", &QLineEdit::selectedText)
     .property("modified", &QLineEdit::isModified, &QLineEdit::setModified)
     .property("readOnly", &QLineEdit::isReadOnly, &QLineEdit::setReadOnly)
+    .property("echoMode", QLineEdit_echoMode, QLineEdit_setEchoMode)
 #if (QT_VERSION >= 0x040700) || defined(Q_WS_MAEMO_5)
     .property("placeholderText", &QLineEdit::placeholderText, &QLineEdit::setPlaceholderText)
 #endif

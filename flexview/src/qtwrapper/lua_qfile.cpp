@@ -8,6 +8,7 @@ namespace luabind{
     QT_EMUN_CONVERTER(QDir::Filters)
     QT_EMUN_CONVERTER(QDir::SortFlag)
     QT_EMUN_CONVERTER(QDir::SortFlags)
+    QT_EMUN_CONVERTER(QIODevice::OpenMode)
 }
 
 bool lqfile_open(QFile* w)

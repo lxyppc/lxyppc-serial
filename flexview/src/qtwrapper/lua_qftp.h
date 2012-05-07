@@ -23,9 +23,13 @@ struct QTextCodec_wrap : public QTextCodec, wrap_base
 };
 
 typedef class_<QTextCodec,QTextCodec_wrap> LQTextCodec;
+typedef class_<QTextDecoder> LQTextDecoder;
+typedef class_<QTextEncoder> LQTextEncoder;
 
 LQFtp lqftp();
 LQUrlInfo lqurlinfo();
 LQTextCodec lqtextcodec();
+LQTextDecoder lqtextdecoder();
+LQTextEncoder lqtextencoder();
 
 #endif // LUA_QFTP_H

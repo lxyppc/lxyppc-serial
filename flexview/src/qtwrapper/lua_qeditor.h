@@ -4,7 +4,7 @@
 #include "hexeditor/qhexedit.h"
 #include "../qluaedit.h"
 typedef class_<QHexEdit,QWidget>                    LQHexEdit;
-typedef class_<QLuaEdit,QTextEdit>                  LQLuaEdit;
+typedef class_<QLuaEdit,QPlainTextEdit>             LQLuaEdit;
 
 LQHexEdit  lqhexedit();
 LQLuaEdit lqluaedit();

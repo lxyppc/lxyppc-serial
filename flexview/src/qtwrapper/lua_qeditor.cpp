@@ -43,10 +43,10 @@ void table_init_general<QHexEdit>(const luabind::argument & arg, const object& o
 }
 
 
-QTextEdit* lqtextedit_init(QTextEdit* widget, const object& obj);
+QPlainTextEdit* lqplaintextedit_init(QPlainTextEdit* widget, const object& obj);
 QLuaEdit* lqluaedit_init(QLuaEdit* widget, const object& obj)
 {
-    lqtextedit_init(widget,obj);
+    lqplaintextedit_init(widget,obj);
     if(type(obj) == LUA_TTABLE){
         for(iterator i(obj),e; i!=e; ++i){
             if(type(*i) == LUA_TTABLE){
@@ -104,7 +104,7 @@ LQHexEdit  lqhexedit()
 LQLuaEdit lqluaedit()
 {
     return
-    class_<QLuaEdit,QTextEdit>("QLuaEdit")
+    class_<QLuaEdit,QPlainTextEdit>("QLuaEdit")
     .def(constructor<>())
     .def(constructor<QWidget*>())
     .def("__call", lqluaedit_init)

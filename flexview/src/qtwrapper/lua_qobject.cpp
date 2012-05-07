@@ -498,7 +498,7 @@ void var_to(lua_State* L, QVariant const& v)
 {
     if(v.canConvert<QString>()){
         QString s = v.value<QString>();
-        lua_pushstring(L,s.toStdString().c_str());
+        lua_pushstring(L,s.toLocal8Bit().data());
         return;
     }else if(v.canConvert<int>()){
         int i = v.value<int>();

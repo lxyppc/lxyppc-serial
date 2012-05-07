@@ -130,23 +130,23 @@ bool sigslot_connect(QObject* sender, const char* signal, QObject* recv, const c
     //qDebug()<<(int)type(object(from_stack(__pL, 1)))<<(int)type(object(from_stack(__pL, 2)))
     //        <<(int)type(object(from_stack(__pL, 3)))<<(int)type(object(from_stack(__pL, 4)));
     if(iSig != -1 && iSlot != -1){
-        res = QObject::connect(sender, s.toStdString().c_str(), recv, m.toStdString().c_str());
+        res = QObject::connect(sender, s.toLocal8Bit().data(), recv, m.toLocal8Bit().data());
     }else if(iSig == -1 && iSlot == -1){
-        if(!checkMember(1, getName(signal).toStdString().c_str())) return false;
-        if(!checkMember(3, getName(member).toStdString().c_str())) return false;
+        if(!checkMember(1, getName(signal).toLocal8Bit().data())) return false;
+        if(!checkMember(3, getName(member).toLocal8Bit().data())) return false;
         QLuaSlot* p_signal = get_signal(sender, signal);
         QLuaSlot* p_slot = get_slot(recv, 3, member);
         res = QObject::connect(p_signal, p_signal->signal() , p_slot, p_slot->slot());
     }else if(iSig == -1){
         // no signal, has slot
-        if(!checkMember(1, getName(signal).toStdString().c_str())) return false;
+        if(!checkMember(1, getName(signal).toLocal8Bit().data())) return false;
         QLuaSlot* p_signal = get_signal(sender, signal);
-        res = QObject::connect(p_signal, p_signal->signal(), recv, m.toStdString().c_str());
+        res = QObject::connect(p_signal, p_signal->signal(), recv, m.toLocal8Bit().data());
     }else{
         // has signal, not slot
-        if(!checkMember(3, getName(member).toStdString().c_str())) return false;
+        if(!checkMember(3, getName(member).toLocal8Bit().data())) return false;
         QLuaSlot* p_slot = get_slot(recv, 3, member);
-        res = QObject::connect(sender, s.toStdString().c_str(), p_slot, p_slot->slot());
+        res = QObject::connect(sender, s.toLocal8Bit().data(), p_slot, p_slot->slot());
     }
     return res;
 }
@@ -159,14 +159,14 @@ bool sigfunc_connect(QObject* sender, const char* signal, object func)
     bool res = false;
     if(type(func) != LUA_TFUNCTION && type(func) != LUA_TTABLE) return false;
     if(iSig == -1 ){
-        if(!checkMember(1, getName(signal).toStdString().c_str())) return false;
+        if(!checkMember(1, getName(signal).toLocal8Bit().data())) return false;
         QLuaSlot* p_signal = get_signal(sender, signal);
         QLuaSlot* p_slot = set_slot(sender,func,signal);
         res = QObject::connect(p_signal, p_signal->signal() , p_slot, p_slot->slot());
     }else{
         // has signal, not slot
         QLuaSlot* p_slot = set_slot(sender,func,signal);
-        res = QObject::connect(sender, s.toStdString().c_str(), p_slot, p_slot->slot());
+        res = QObject::connect(sender, s.toLocal8Bit().data(), p_slot, p_slot->slot());
     }
     return res;
 }
@@ -309,6 +309,7 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqlabel(),
         lqtextedit(),
+        lqplaintextedit(),
         lqlineedit(),
 
         lqabstractbutton(),
@@ -392,6 +393,8 @@ void register_classes(lua_State* L, char const* name = 0)
         lqftp(),
         lqurlinfo(),
         lqtextcodec(),
+        lqtextdecoder(),
+        lqtextencoder(),
 
         lqfile(),
         lqtemporaryfile(),

@@ -1,6 +1,6 @@
 #include "lua_qftp.h"
 #include "qluaslot.h"
-
+#include <luabind/adopt_policy.hpp>
 namespace luabind{
     QT_EMUN_CONVERTER(QFtp::Command)
     QT_EMUN_CONVERTER(QFtp::Error)
@@ -60,8 +60,8 @@ LQFtp lqftp()
     .def("currentDevice", lqftp_currentDevice)
     .def("currentId", &QFtp::currentId)
     .def("get", lqftp_get1)
-    .def("get", lqftp_get2)
-    .def("get", lqftp_get3)
+    .def("get", lqftp_get2, adopt(_3))
+    .def("get", lqftp_get3, adopt(_3))
     .def("list", &QFtp::list)
     .def("list", lqftp_list1)
     .def("login", &QFtp::login)
@@ -221,8 +221,33 @@ LQTextCodec lqtextcodec()
     ;
 }
 
+QString lqtextdecoder_toUnicode(QTextDecoder* w, const QString& s)
+{
+    return w->toUnicode(s.toAscii());
+}
+LQTextDecoder lqtextdecoder()
+{
+    return
+    class_<QTextDecoder>("QTextDecoder")
+    .def("QTextDecoder", lqtextdecoder_toUnicode)
+    .property("hasFailure", &QTextDecoder::hasFailure)
+    ;
+}
 
+QString lqtextencoder_fromUnicode(QTextEncoder* w, const QString& s)
+{
+    QByteArray r = w->fromUnicode(s);
+    return QString::fromAscii(r.data());
+}
 
+LQTextEncoder lqtextencoder()
+{
+    return
+    class_<QTextEncoder>("QTextEncoder")
+    .def("fromUnicode", lqtextencoder_fromUnicode)
+    .property("hasFailure", &QTextEncoder::hasFailure)
+    ;
+}
 
 
 

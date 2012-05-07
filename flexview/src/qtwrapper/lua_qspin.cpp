@@ -153,6 +153,7 @@ LQDate lqdate()
     .def("toString", (QString (QDate::*)(const QString &) const)&QDate::toString)
     .def("toString", (QString (QDate::*)(Qt::DateFormat) const)&QDate::toString)
     .def("toString", tag_function<QString(QDate*)>(boost::bind((QString (QDate::*)(Qt::DateFormat) const)&QDate::toString, _1, Qt::TextDate)))
+    .def("__tostring", tag_function<QString(QDate*)>(boost::bind((QString (QDate::*)(Qt::DateFormat) const)&QDate::toString, _1, Qt::TextDate)))
     .scope[
         def("currentDate", &QDate::currentDate),
         def("isLeapYear", &QDate::isLeapYear),
@@ -198,7 +199,7 @@ LQTime lqtime()
     .def("toString", (QString(QTime::*)(const QString&)const)&QTime::toString)
     .def("toString", (QString(QTime::*)(Qt::DateFormat)const)&QTime::toString)
     .def("toString", tag_function<QString(QTime*)>(boost::bind((QString (QTime::*)(Qt::DateFormat) const)&QTime::toString, _1, Qt::TextDate)))
-
+    .def("__tostring", tag_function<QString(QTime*)>(boost::bind((QString (QTime::*)(Qt::DateFormat) const)&QTime::toString, _1, Qt::TextDate)))
     .scope[
         def("currentTime", &QTime::currentTime),
         def("isValid", (bool(*)(int,int,int,int))&QTime::isValid),
@@ -240,7 +241,8 @@ LQDateTime lqdatetime()
     .def("toUTC", &QDateTime::toUTC)
     .def("toString", ( QString (QDateTime::*)(const QString&) const)&QDateTime::toString)
     .def("toString", ( QString (QDateTime::*)(Qt::DateFormat) const)&QDateTime::toString)
-    .def("toString", tag_function<QString(QDateTime*,const QString&)>(boost::bind(( QString (QDateTime::*)(Qt::DateFormat) const)&QDateTime::toString, _1,Qt::TextDate)))
+    .def("toString", tag_function<QString(QDateTime*)>(boost::bind(( QString (QDateTime::*)(Qt::DateFormat) const)&QDateTime::toString, _1,Qt::TextDate)))
+    .def("__tostring", tag_function<QString(QDateTime*)>(boost::bind(( QString (QDateTime::*)(Qt::DateFormat) const)&QDateTime::toString, _1,Qt::TextDate)))
     .property("isNull", &QDateTime::isNull)
     .property("isValid", &QDateTime::isValid)
     .property("date", &QDateTime::date, &QDateTime::setDate)

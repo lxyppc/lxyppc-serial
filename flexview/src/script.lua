@@ -16,7 +16,7 @@ end
 function EditScript()
     dlg = LuaEditDlg(mainWindow)
     dlg.windowIcon = mainWindow.windowIcon
-    dlg:load("../src/clocktree.lua")
+    dlg:load("../src/ftp.lua")
     dlg:show()
 end
 

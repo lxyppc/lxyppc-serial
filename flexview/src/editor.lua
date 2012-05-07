@@ -47,7 +47,7 @@ function LuaEditDlg:load(name)
 end
 
 function LuaEditDlg:test()
-    loadstring(self.editor.plainText)()
+    assert(loadstring(self.editor.plainText))()
 end
 
 function LuaEditDlg:toTag()
@@ -72,6 +72,7 @@ function LuaEditDlg:__init()
    self.editor:addKeyWord("mainWindow")
    self.editor:addKeyWord("logEdit")
    self.editor:addKeyWord("qApp")
+
    self.layout = QHBoxLayout{
        QVBoxLayout{
            QPushButton("&New"){ clicked = {self, self.new}, QKeySequence("Ctrl+N"), toolTip = "Ctrl+N" },
