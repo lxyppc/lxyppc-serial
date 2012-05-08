@@ -1,4 +1,5 @@
 ftpdlg = QDialog(mainWindow)
+ftpdlg.windowTitle = "Lite FTP Viewer"
 ftpdlg.ftpAddr = QLineEdit("ftp.21ic.com", ftpdlg)
 ftpdlg.ftpPort = QLineEdit("21", ftpdlg){ inputMask = "99999", maxw = 40, minw = 40}
 ftpdlg.ftpUser = QLineEdit("hotuser", ftpdlg)
@@ -17,7 +18,12 @@ QHBoxLayout{
 },
 ftpdlg.list
 }
-
+QFtp.Unconnected = 0
+QFtp.HostLookup = 1
+QFtp.Connecting = 2
+QFtp.Connected = 3
+QFtp.LoggedIn = 4
+QFtp.Closing = 5
 ftpdlg.connectBtn.clicked = function ()
     log("ftp state:" .. ftpdlg.ftp.state)
     if ftpdlg.ftp.state == 0 then
@@ -33,21 +39,22 @@ ftpdlg.connectBtn.clicked = function ()
     end
 end
 
-statestr = {}
-statestr[0] = "Unconnected"
-statestr[1] = "HostLookup"
-statestr[2] = "Connecting"
-statestr[3] = "Connected"
-statestr[4] = "LoggedIn"
-statestr[5] = "Closing"
+statestr = {
+    [0] = "Unconnected",
+    [1] = "HostLookup",
+    [2] = "Connecting",
+    [3] = "Connected",
+    [4] = "LoggedIn",
+    [5] = "Closing",
+}
 
 ftpdlg.ftp.stateChanged = function (state)
     log(statestr[state])
-    if ftpdlg.ftp.state == 0 then
+    if ftpdlg.ftp.state == QFtp.Unconnected then
         ftpdlg.connectBtn.text = "Connect"
         ftpdlg.connectBtn.enabled = true
         ftpdlg.list.enabled = false
-    elseif ftpdlg.ftp.state == 4 then
+    elseif ftpdlg.ftp.state == QFtp.LoggedIn then
         ftpdlg.connectBtn.text = "Disconnect"
         ftpdlg.connectBtn.enabled = true
         ftpdlg.list.enabled = true
@@ -99,14 +106,17 @@ ftpdlg.list.itemDoubleClicked = function(item, col)
         --end
     end
 end
----[[
+
 ftpdlg.ftp.dataTransferProgress = function(done, total)
-    --log("dataTransferProgress ....")
     ftpdlg.progress.max = total
-    ftpdlg.progress.value = total
+    ftpdlg.progress.value = done
 end
---]]
----[[
+
+ftpdlg.progress.canceled = function ()
+    log("cancel donwload")
+    ftpdlg.ftp:abort()
+end
+
 ftpdlg.ftp.commandFinished = function(id, error)
     log(string.format("CMD: %d, Error:", ftpdlg.ftp:currentCommand()) .. tostring(error))
     if ftpdlg.ftp:currentCommand() == 8 then
@@ -122,5 +132,5 @@ ftpdlg.ftp.commandFinished = function(id, error)
         end
     end
 end
---]]
+
 ftpdlg:exec()

@@ -72,7 +72,8 @@ struct default_converter<QStringList>
     {
         object obj = luabind::newtable(L);
         for(int i=0;i<arr.length();i++){
-            obj[i+1] = arr.at(i).toLocal8Bit().data();
+            QByteArray xa = arr.at(i).toLocal8Bit();
+            obj[i+1] = (const char*)xa.constData();
         }
         obj.push(L);
     }

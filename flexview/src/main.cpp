@@ -74,5 +74,5 @@ QString stringFromLua(lua_State* L, int index)
 
 void stringToLua(lua_State* L, QString const& x)
 {
-    lua_pushstring(L, x.toLocal8Bit().data());
+    lua_pushstring(L, x.toLocal8Bit().constData());
 }

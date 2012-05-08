@@ -131,7 +131,7 @@ namespace luabind
     template<typename T>
     T __getValue(const T& t) {return(t);}
 
-    const char* __getValue(const QString& t) { return t.toLocal8Bit().data(); }
+    const char* __getValue(const QString& t) { return t.toLocal8Bit().constData(); }
 
 
     template <typename T1, typename T2>

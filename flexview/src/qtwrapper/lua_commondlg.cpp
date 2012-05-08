@@ -279,9 +279,9 @@ object getOpenFileNames2(object& selectedFilter, QWidget *parent = 0,
     object obj = luabind::newtable(__pL);
     QStringList r = QFileDialog::getOpenFileNames(parent,caption,dir,filter,&fit,options);
     for(int i=0;i<r.count(); i++){
-        obj[i+1] = r.at(i).toLocal8Bit().data();
+        obj[i+1] = r.at(i).toLocal8Bit().constData();
     }
-    obj["filter"] = fit.toLocal8Bit().data();
+    obj["filter"] = fit.toLocal8Bit().constData();
     selectedFilter = obj["filter"];
     obj["filter"] = nil;
     return obj;
@@ -348,7 +348,7 @@ QString getOpenFileName2(object& selectedFilter,
     QString fit;
     QString res;
     res = QFileDialog::getOpenFileName(parent,caption,dir,filter,&fit,options);
-    lua_pushstring(__pL, fit.toLocal8Bit().data());
+    lua_pushstring(__pL, fit.toLocal8Bit().constData());
     detail::stack_pop pop(__pL,1);
     selectedFilter = object(luabind::from_stack(__pL, -1));
     return res;
@@ -415,7 +415,7 @@ QString getSaveFileName2(object& selectedFilter,
     QString fit;
     QString res;
     res = QFileDialog::getSaveFileName(parent,caption,dir,filter,&fit,options);
-    lua_pushstring(__pL, fit.toLocal8Bit().data());
+    lua_pushstring(__pL, fit.toLocal8Bit().constData());
     detail::stack_pop pop(__pL,1);
     selectedFilter = object(luabind::from_stack(__pL, -1));
     return res;

@@ -8,15 +8,10 @@ mainWindow{
  w = 1000, h = 700
 }
 
-function LookColor(obj,text,color)
-    log(color)
-    log(text)
-end
-
 function EditScript()
     dlg = LuaEditDlg(mainWindow)
     dlg.windowIcon = mainWindow.windowIcon
-    dlg:load("../src/ftp.lua")
+    dlg:load("../src/clocktree.lua")
     dlg:show()
 end
 

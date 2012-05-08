@@ -78,7 +78,7 @@ void general_slot(const object& m_obj, const QString& m_method)
             }
         }
     }else{
-        call_member<void>(m_obj,m_method.toLocal8Bit().data());
+        call_member<void>(m_obj,m_method.toLocal8Bit().constData());
     }
 }
 
@@ -106,7 +106,7 @@ void general_slot(const object& m_obj, const QString& m_method, T t)
             }
         }
     }else{
-        call_member<void>(m_obj,m_method.toLocal8Bit().data(),t);
+        call_member<void>(m_obj,m_method.toLocal8Bit().constData(),t);
     }
 }
 
@@ -134,7 +134,7 @@ void general_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2)
             }
         }
     }else{
-        call_member<void>(m_obj,m_method.toLocal8Bit().data(),t1,t2);
+        call_member<void>(m_obj,m_method.toLocal8Bit().constData(),t1,t2);
     }
 }
 
@@ -162,7 +162,7 @@ void general_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2, T3
             }
         }
     }else{
-        call_member<void>(m_obj,m_method.toLocal8Bit().data(),t1,t2,t3);
+        call_member<void>(m_obj,m_method.toLocal8Bit().constData(),t1,t2,t3);
     }
 }
 
@@ -190,7 +190,7 @@ void general_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2, T3
             }
         }
     }else{
-        call_member<void>(m_obj,m_method.toLocal8Bit().data(),t1,t2,t3,t4);
+        call_member<void>(m_obj,m_method.toLocal8Bit().constData(),t1,t2,t3,t4);
     }
 }
 
@@ -274,7 +274,7 @@ void QLuaSlot::general_slot(bool param)
 
 void QLuaSlot::general_slot(const QString& param)
 {
-    ::gen_slot(m_obj,m_method,param.toLocal8Bit().data());
+    ::gen_slot(m_obj,m_method,param.toLocal8Bit().constData());
 }
 
 void QLuaSlot::general_slot(QListWidgetItem* param)
@@ -324,7 +324,7 @@ void QLuaSlot::general_slot(QTableWidgetItem* param1, QTableWidgetItem* param2)
 
 void QLuaSlot::general_slot(qint64 param1)
 {
-    ::gen_slot(m_obj,m_method,param1);
+    ::gen_slot(m_obj,m_method, (int)param1);
 }
 
 void QLuaSlot::general_slot(const QextPortInfo& param1)
@@ -419,7 +419,7 @@ void QLuaSlot::general_slot(int param1, bool param2)
 
 void QLuaSlot::general_slot(qint64 param1,qint64 param2)
 {
-    ::gen_slot(m_obj,m_method,param1,param2);
+    ::gen_slot(m_obj,m_method,(int)param1,(int)param2);
 }
 
 void QLuaSlot::general_slot(const QUrlInfo & param1)
@@ -429,7 +429,7 @@ void QLuaSlot::general_slot(const QUrlInfo & param1)
 
 void QLuaSlot::general_slot(int param1,const QString& param2)
 {
-    ::gen_slot(m_obj,m_method,param1,param2);
+    ::gen_slot(m_obj,m_method,param1,param2.toLocal8Bit().constData());
 }
 
 

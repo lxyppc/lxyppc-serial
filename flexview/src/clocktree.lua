@@ -24,11 +24,7 @@ RANGE_TYPE = 2
 bgEnable = "background-color:#00FF00"
 bgDisable = "background-color:lightgray"
 function updataBgColor(widget,val)
-    if val then
-        widget.styleSheet = bgEnable
-    else
-        widget.styleSheet = bgDisable
-    end
+    widget.styleSheet = val and bgEnable or bgDisable
 end
 
 function get_value(mem,reg,bstart,bend)
@@ -168,7 +164,7 @@ end
 function EnumItem:toMem(v)
     local d = self.combo:itemData(v)
     if d then
-        get_item_value(self,d.val)
+        set_item_value(self,d.val)
     end
     updataBgColor(self.label,self.combo:itemData(v).con:isValid())
 end
@@ -194,3 +190,11 @@ clockTree.HCLK = EnumItem(clockTree, "HCLK", 100, 210, "CLKSEL0", 0, 2, tb);
 
 clockTree:exec()
 log(string.format("%08X",clockTree.mem.PWRCON.cur))
+
+
+
+
+
+
+
+

@@ -18,6 +18,7 @@ function SerialView:__init()
         readonly = true,
         minw = 100,
     }
+
     self.serial.flowControl = QSerialPort.FLOW_OFF
     self.baudList.currentIndex = self.serial.baudRate
     self.parityList.currentIndex = self.serial.parity

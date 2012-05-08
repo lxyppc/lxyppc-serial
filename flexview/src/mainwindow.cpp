@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     menu->addSeparator();
     QAction* act = menu->addAction(tr("&About..."));
     connect(act,SIGNAL(triggered()),this,SLOT(my_about()));
-    this->setWindowTitle(QString::fromLocal8Bit("Tool Box"));
+    this->setWindowTitle(QString::fromLocal8Bit("X Toolbox"));
 }
 
 MainWindow::~MainWindow()
@@ -48,6 +48,6 @@ void MainWindow::addLog(const QString& log)
 void MainWindow::my_about()
 {
     QMessageBox::about(this,
-        "Toolbox",
-        QString::fromLocal8Bit("<p><b>Toolbox</b></p><p>by lxyppc</p><a href=\"mailto:lxyppc@163.com\">lxyppc@163.com</a>"));
+        "X Toolbox",
+        QString::fromLocal8Bit("<p><b>X Toolbox</b></p><p>by lxyppc</p><a href=\"mailto:lxyppc@163.com\">lxyppc@163.com</a>"));
 }

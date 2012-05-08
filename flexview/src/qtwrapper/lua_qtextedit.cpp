@@ -7,6 +7,10 @@ static setter_map<QTextEdit> lqtextedit_set_map;
 static setter_map<QPlainTextEdit> lqplaintextedit_set_map;
 static setter_map<QLineEdit> lqlineedit_set_map;
 
+namespace luabind{
+    QT_EMUN_CONVERTER(QTextDocument::FindFlags)
+}
+
 SIGNAL_PROPERYT(lqtextedit, textChanged, QTextEdit, "()")
 
 QLabel* lqlabel_init(QLabel* widget, const object& obj)
@@ -147,6 +151,10 @@ void QTextEdit_zoomOut(QTextEdit* w){ w->zoomOut(); }
 bool lqtextedit_find(QTextEdit* w, const QString& str) { return w->find(str);}
 ENUM_FILTER(QTextEdit, lineWrapMode, setLineWrapMode)
 ENUM_FILTER(QTextEdit, wordWrapMode, setWordWrapMode)
+QString lqtextedit_selected_text(QTextEdit* w)
+{
+    return w->textCursor().selectedText();
+}
 LQTextEdit lqtextedit()
 {
     return
@@ -188,6 +196,8 @@ LQTextEdit lqtextedit()
     .def("lookColor", look_text_corlor)
     .def("ensureCursorVisible", &QTextEdit::ensureCursorVisible)
 
+    .property("selectedText", lqtextedit_selected_text)
+
     .property("text", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("plainText", &QTextEdit::toPlainText, &QTextEdit::setPlainText)
     .property("html", &QTextEdit::toHtml, &QTextEdit::setHtml)
@@ -213,6 +223,11 @@ ENUM_FILTER(QPlainTextEdit, lineWrapMode, setLineWrapMode)
 ENUM_FILTER(QPlainTextEdit, wordWrapMode, setWordWrapMode)
 bool lqplaintextedit_find(QPlainTextEdit* w, const QString& str) { return w->find(str);}
 SIGNAL_PROPERYT(lqplaintextedit, textChanged, QPlainTextEdit, "()")
+
+QString lqplaintextedit_selected_text(QPlainTextEdit* w)
+{
+    return w->textCursor().selectedText();
+}
 LQPlainTextEdit lqplaintextedit()
 {
     return
@@ -237,7 +252,11 @@ LQPlainTextEdit lqplaintextedit()
     .def("selectAll", &QPlainTextEdit::selectAll)
     .def("setPlainText", &QPlainTextEdit::setPlainText)
     .def("undo", &QPlainTextEdit::undo)
+    .def("find", &QPlainTextEdit::find)
+    .def("find", lqplaintextedit_find)
 
+
+    .property("selectedText", lqplaintextedit_selected_text)
 
     .property("backgroundVisible", &QPlainTextEdit::backgroundVisible, &QPlainTextEdit::setBackgroundVisible)
     .property("blockCount", &QPlainTextEdit::blockCount)

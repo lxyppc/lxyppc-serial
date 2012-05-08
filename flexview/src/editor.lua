@@ -68,7 +68,7 @@ function LuaEditDlg:__init()
    self.windowTitle = "Lua Editor [*]"
    self.path = " "
    self {  minw = 800, minh = 400 }
-   self.editor = QLuaEdit()
+   self.editor = QLuaEdit(self)
    self.editor:addKeyWord("mainWindow")
    self.editor:addKeyWord("logEdit")
    self.editor:addKeyWord("qApp")
@@ -78,7 +78,7 @@ function LuaEditDlg:__init()
            QPushButton("&New"){ clicked = {self, self.new}, QKeySequence("Ctrl+N"), toolTip = "Ctrl+N" },
            QPushButton("&Open"){ clicked = {self, self.open}, QKeySequence("Ctrl+O"), toolTip = "Ctrl+O" },
            QPushButton("&Save"){ clicked = {self, self.save}, QKeySequence("Ctrl+S"), toolTip = "Ctrl+S" },
-           QPushButton("&Save as"){ clicked = {self, self.saveAs}, QKeySequence("Ctrl+Shift+S"), toolTip = "Ctrl+Shift+N" },
+           QPushButton("&Save as"){ clicked = {self, self.saveAs}, QKeySequence("Ctrl+Shift+S"), toolTip = "Ctrl+Shift+S" },
            QPushButton("to &BBS"){ clicked = {self, self.toTag}, QKeySequence("Ctrl+B"), toolTip = "Ctrl+B" },
            QLabel(),
            QPushButton("&Test"){ clicked = {self, self.test}, QKeySequence("Ctrl+T"), toolTip = "Ctrl+T"},
@@ -88,4 +88,31 @@ function LuaEditDlg:__init()
    }
    self.editor.textChanged = {self, self.changed}
    self.windowModified = false
+   self.findString = ""
+   self.editor.eventFilter = QKeyEvent.filter({self, self.keyEvent})
 end
+
+function LuaEditDlg:keyEvent(obj,evt)
+    local bFind = evt:matches(22)
+    local bFindNext = evt:matches(23)
+    local bFindPrev = evt:matches(24)
+    if evt.type == 7 then
+        return false
+    end
+    if bFind then
+        local str,res = QCommonDlg.getText("Find in editor","",0, self.editor.selectedText)
+        if res then
+            self.findString = str
+            self.editor:find(self.findString)
+        end
+        return true
+    elseif bFindNext then
+        self.editor:find(self.findString)
+        return true
+    elseif bFindPrev then
+            self.editor:find(self.findString,1)
+            return true
+    end
+    return false
+end
+
