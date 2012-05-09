@@ -29,6 +29,9 @@ int lqftp_put1(QFtp* w, QFile* dev, const QString& file){ return w->put(dev,file
 int lqftp_put2(QFtp* w, QFile* dev, const QString& file, QFtp::TransferType t){ return w->put(dev,file,t);}
 int lqftp_put3(QFtp* w, const QByteArray& data, const QString& file){ return w->put(data,file);}
 int lqftp_put4(QFtp* w, const QByteArray& data, const QString& file, QFtp::TransferType t){ return w->put(data,file,t);}
+
+
+
 QByteArray lqftp_read(QFtp* w, qint64 max)
 {
     QByteArray arr(max,0);
@@ -45,6 +48,38 @@ SIGNAL_PROPERYT(lqftp, listInfo, QFtp, "(const QUrlInfo &)")
 SIGNAL_PROPERYT(lqftp, rawCommandReply, QFtp, "(int,const QString&)")
 SIGNAL_PROPERYT(lqftp, readyRead, QFtp, "()")
 SIGNAL_PROPERYT(lqftp, stateChanged, QFtp, "(int)")
+
+// raw version
+int lqftp_cd(QFtp* w, const QByteArray& dir)
+{
+    return w->cd(QString::fromLatin1(dir));
+}
+
+int lqftp_connectToHost1(QFtp* w, const QByteArray & host, quint16 port){ return w->connectToHost(QString::fromLatin1(host),port); }
+int lqftp_connectToHost2(QFtp* w, const QByteArray & host){ return w->connectToHost(QString::fromLatin1(host)); }
+
+int lqftp_get4(QFtp* w, const QByteArray & file){ return w->get(QString::fromLatin1(file)); }
+int lqftp_get5(QFtp* w, const QByteArray & file, QFile* f){ return w->get(QString::fromLatin1(file),f); }
+int lqftp_get6(QFtp* w, const QByteArray & file, QFile* f, QFtp::TransferType t){ return w->get(QString::fromLatin1(file),f,t); }
+int lqftp_list2(QFtp* w, const QByteArray & dir){ return w->list(QString::fromLatin1(dir)); }
+
+int lqftp_login3(QFtp* w, const QByteArray& user){ return w->login(QString::fromLatin1(user)); }
+int lqftp_login4(QFtp* w, const QByteArray& user, const QByteArray& pwd){ return w->login(QString::fromLatin1(user),QString::fromLatin1(pwd)); }
+
+int lqftp_mkdir(QFtp* w, const QByteArray & dir){ return w->mkdir(QString::fromLatin1(dir)); }
+
+int lqftp_put5(QFtp* w, QFile* dev, const QByteArray& file){ return w->put(dev,QString::fromLatin1(file));}
+int lqftp_put6(QFtp* w, QFile* dev, const QByteArray& file, QFtp::TransferType t){ return w->put(dev,QString::fromLatin1(file),t);}
+int lqftp_put7(QFtp* w, const QByteArray& data, const QByteArray& file){ return w->put(data,QString::fromLatin1(file));}
+int lqftp_put8(QFtp* w, const QByteArray& data, const QByteArray& file, QFtp::TransferType t){ return w->put(data,QString::fromLatin1(file),t);}
+
+int lqftp_rawcommand(QFtp* w, const QByteArray& cmd){ return w->rawCommand(QString::fromLatin1(cmd)); }
+
+int lqftp_remove(QFtp* w, const QByteArray& file){ return w->remove(QString::fromLatin1(file)); }
+int lqftp_rename(QFtp* w, const QByteArray& oldname, const QByteArray& newname){ return w->rename(QString::fromLatin1(oldname),QString::fromLatin1(newname)); }
+int lqftp_rmdir(QFtp* w, const QByteArray& dir){ return w->rmdir(QString::fromLatin1(dir)); }
+int lqftp_setProxy(QFtp* w, const QByteArray & host, quint16 port){ return w->setProxy(QString::fromLatin1(host),port); }
+
 LQFtp lqftp()
 {
     return
@@ -52,33 +87,52 @@ LQFtp lqftp()
     .def(constructor<QObject*>())
     .def(constructor<>())
     .def("cd", &QFtp::cd)
+    .def("cd", lqftp_cd)        // raw
     .def("clearPendingCommands", &QFtp::clearPendingCommands)
     .def("close", &QFtp::close)
     .def("connectToHost", &QFtp::connectToHost)
     .def("connectToHost", lqftp_connectToHost)
+    .def("connectToHost", lqftp_connectToHost1) // raw
+    .def("connectToHost", lqftp_connectToHost2) // raw
     .def("currentCommand", &QFtp::currentCommand)
     .def("currentDevice", lqftp_currentDevice)
     .def("currentId", &QFtp::currentId)
     .def("get", lqftp_get1)
     .def("get", lqftp_get2, adopt(_3))
     .def("get", lqftp_get3, adopt(_3))
+    .def("get", lqftp_get4)                     // raw
+    .def("get", lqftp_get5, adopt(_3))          // raw
+    .def("get", lqftp_get6, adopt(_3))          // raw
     .def("list", &QFtp::list)
     .def("list", lqftp_list1)
+    .def("list", lqftp_list2)                   // raw
     .def("login", &QFtp::login)
     .def("login", lqftp_login1)
     .def("login", lqftp_login2)
+    .def("login", lqftp_login3)                 // raw
+    .def("login", lqftp_login4)                 // raw
     .def("mkdir", &QFtp::mkdir)
-    .def("put", lqftp_put1)
-    .def("put", lqftp_put2)
+    .def("mkdir", lqftp_mkdir)                  // raw
+    .def("put", lqftp_put1, adopt(_2))
+    .def("put", lqftp_put2, adopt(_2))
     .def("put", lqftp_put3)
     .def("put", lqftp_put4)
+    .def("put", lqftp_put5, adopt(_2))          // raw
+    .def("put", lqftp_put6, adopt(_2))          // raw
+    .def("put", lqftp_put7)                     // raw
+    .def("put", lqftp_put8)                     // raw
     .def("rawCommand", &QFtp::rawCommand)
+    .def("rawCommand", lqftp_rawcommand)        // raw
     .def("read", lqftp_read)
     .def("readAll", &QFtp::readAll)
     .def("remove", &QFtp::remove)
+    .def("remove", lqftp_remove)                // raw
     .def("rename", &QFtp::rename)
+    .def("rename", lqftp_rename)                // raw
     .def("rmdir", &QFtp::rmdir)
+    .def("rmdir", lqftp_rmdir)                  // raw
     .def("setProxy", &QFtp::setProxy)
+    .def("setProxy", lqftp_setProxy)            // raw
     .def("setTransferMode", &QFtp::setTransferMode)
     .def("abort", &QFtp::abort)
 
@@ -98,6 +152,11 @@ LQFtp lqftp()
     .sig_prop(lqftp, stateChanged)
     ;
 }
+
+QByteArray lqurlinfo_name(QUrlInfo* w){ return w->name().toLatin1();}
+void lqurlinfo_setName(QUrlInfo* w, const QByteArray& name){ return w->setName(QString::fromLatin1(name)); }
+QByteArray lqurlinfo_owner(QUrlInfo* w){ return w->owner().toLatin1();}
+void lqurlinfo_setOwner(QUrlInfo* w, const QByteArray& owner){ return w->setOwner(QString::fromLatin1(owner)); }
 
 LQUrlInfo lqurlinfo()
 {
@@ -128,6 +187,8 @@ LQUrlInfo lqurlinfo()
     .property("owner", &QUrlInfo::owner, &QUrlInfo::setOwner)
     .property("permissions", &QUrlInfo::permissions, &QUrlInfo::setPermissions)
     .property("size", &QUrlInfo::size, &QUrlInfo::setSize)
+    .property("rawName", lqurlinfo_name, lqurlinfo_setName)
+    .property("rawOwner", lqurlinfo_owner, lqurlinfo_setOwner)
     ;
 }
 
@@ -147,9 +208,19 @@ QString lqtextcodec_fromUnicode(QTextCodec* w, const QString& s)
     return QString::fromAscii(r.data());
 }
 
+QByteArray lqtextcodec_fromUnicode1(QTextCodec* w, const QString& s)
+{
+    return w->fromUnicode(s);
+}
+
 QString lqtextcodec_toUnicode(QTextCodec* w, const QString& s)
 {
     return w->toUnicode(s.toAscii());
+}
+
+QString lqtextcodec_toUnicode1(QTextCodec* w, const QByteArray& s)
+{
+    return w->toUnicode(s);
 }
 
 QString lqtextcodec_name(QTextCodec* w)
@@ -197,8 +268,9 @@ LQTextCodec lqtextcodec()
     return
     class_<QTextCodec,QTextCodec_wrap>("QTextCodec")
     .def("canEncode", (bool(QTextCodec::*)(const QString&)const)&QTextCodec::canEncode)
-    .def("fromUnicode", lqtextcodec_fromUnicode)
+    .def("fromUnicode", lqtextcodec_fromUnicode1)
     .def("toUnicode", lqtextcodec_toUnicode)
+    .def("toUnicode", lqtextcodec_toUnicode1)
     .property("aliases", lqtextcodec_aliases)
     .def("name", lqtextcodec_name, lqtextcodec_defname)
     .def("mibEnum", &QTextCodec::mibEnum, &QTextCodec_wrap::def_mibEnum)

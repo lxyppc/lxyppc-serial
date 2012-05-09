@@ -2,6 +2,14 @@
 #include <QMutex>
 #include "mainwindow.h"
 #include "lua.hpp"
+#include <QtPlugin>
+
+#ifdef Q_OS_WIN
+Q_IMPORT_PLUGIN(qcncodecs)
+Q_IMPORT_PLUGIN(qjpcodecs)
+Q_IMPORT_PLUGIN(qkrcodecs)
+Q_IMPORT_PLUGIN(qtwcodecs)
+#endif
 
 void run_script_init(MainWindow* mainwindow);
 void register_classes(lua_State* L, char const* name = 0);

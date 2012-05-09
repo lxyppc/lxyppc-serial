@@ -63,7 +63,7 @@ end
 
 ftpdlg.ftp.listInfo = function (info)
     codec = QTextCodec.codecForName("GBK")
-    local str = codec:toUnicode(info.name)
+    local str = codec:toUnicode(info.rawName)
     --log( str .. "     " .. info.owner)
     local content = {
         str,
@@ -73,7 +73,7 @@ ftpdlg.ftp.listInfo = function (info)
     }
     local item = QTreeItem(content)
     item:setData(0,30, info.isDir)
-    item:setData(0,31, info.name)
+    item:setData(0,31, info.rawName)
     ftpdlg.list:addTopLevelItem(item)
 end
 
@@ -85,9 +85,10 @@ ftpdlg.list.itemDoubleClicked = function(item, col)
     s = s .. ":" .. col
     log(s)
     if dir then
-        ftpdlg.curPath = ftpdlg.curPath .. "/" .. name
+        codec = QTextCodec.codecForName("GBK")
+        ftpdlg.curPath = ftpdlg.curPath .. "/" .. item:text(0)
         log(ftpdlg.curPath)
-        ftpdlg.ftp:cd(ftpdlg.curPath)
+        ftpdlg.ftp:cd( codec:fromUnicode(ftpdlg.curPath) )
         ftpdlg.list:clear()
         ftpdlg.ftp:list()
     else
@@ -97,11 +98,11 @@ ftpdlg.list.itemDoubleClicked = function(item, col)
             ftpdlg.file = QFile(path)
             if ftpdlg.file:open(2) then
                 ftpdlg.ftp:get(name, ftpdlg.file)
-                log("Downloading data to \"" .. item:text(0) .. "\" ...")
+                log("Downloading data to \"" .. path .. "\" ...")
                 ftpdlg.progress.labelText = "downloading " .. item:text(0)
                 ftpdlg.progress:exec();
             else
-                log("open file \"" .. item:text(0) .. "\" fail")
+                log("open file \"" .. path .. "\" fail")
             end
         --end
     end
