@@ -4,6 +4,10 @@
 TARGET = flexview
 TEMPLATE = app
 QT += network
+win32:QTPLUGIN += qcncodecs \
+    qjpcodecs \
+    qkrcodecs \
+    qtwcodecs
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \
@@ -157,5 +161,7 @@ OTHER_FILES += src/script.lua \
     src/serialview.lua \
     src/tcpview.lua \
     src/editor.lua \
-    src/udpview.lua
+    src/udpview.lua \
+    src/ftp.lua \
+    src/clocktree.lua
 RESOURCES += res.qrc
