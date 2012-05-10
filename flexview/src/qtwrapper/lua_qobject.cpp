@@ -60,6 +60,16 @@ void installEventFilter_x(QObject* o, QObject* f)
     o->installEventFilter(f);
 }
 
+QStringList lqobject_dynamicPropertyNames(QObject* w)
+{
+    QList<QByteArray> arr = w->dynamicPropertyNames();
+    QStringList list;
+    for(int i=0;i<arr.length();i++){
+        list.append(arr.at(i));
+    }
+    return list;
+}
+
 LQObject lqobject()
 {
     return
@@ -76,6 +86,7 @@ LQObject lqobject()
             .property("objectName", &QObject::objectName, &QObject::setObjectName)
             .property("eventFilter", lqobject_get_filter, lqobject_set_filter)
             .property("parent", &QObject::parent, &QObject::setParent)
+            .property("dynamicPropertyNames", lqobject_dynamicPropertyNames)
    ;
 }
 
@@ -179,6 +190,7 @@ LQWidget lqwidget()
 
             .def("setGeometry", (void (QWidget::*)(int, int, int, int))&QWidget::setGeometry)
             .def("addAction", &QWidget::addAction)
+            .def("addActions", &QWidget::addActions)
             .def("__call", &lqwidget_init)
             .def("actionCount", lqwidget_actionCount)
             .def("action",lqwidget_action)

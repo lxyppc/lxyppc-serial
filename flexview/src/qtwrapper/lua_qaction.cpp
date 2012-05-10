@@ -127,6 +127,9 @@ QMenuBar* lqmenubar_init(QMenuBar* widget, const object& table)
                 if(q_cast(*i, (void(QMenuBar::*)( QAction*))&QMenuBar::addAction, widget)){
                     QAction* act = object_cast<QAction*>(*i);
                     act->setParent(widget);
+                }else if(q_cast(*i, (QAction* (QMenuBar::*)( QMenu*))&QMenuBar::addMenu, widget)){
+                    //QMenu* act = object_cast<QMenu*>(*i);
+                    //act->setParent(widget);
                 }
             }else if(type(*i)== LUA_TSTRING){
                 if(q_cast(*i, (QMenu*(QMenuBar::*)(const QString&))&QMenuBar::addMenu, widget)){
@@ -188,6 +191,9 @@ QMenu* lqmenu_init(QMenu* widget, const object& table)
                 if(q_cast(*i, (void(QMenu::*)( QAction*))&QMenu::addAction, widget)){
                     QAction* act = object_cast<QAction*>(*i);
                     act->setParent(widget);
+                }else if(q_cast(*i, (QAction* (QMenu::*)( QMenu*))&QMenu::addMenu, widget)){
+                    //QMenu* act = object_cast<QMenu*>(*i);
+                    //act->setParent(widget);
                 }
             }else if(type(*i)== LUA_TSTRING){
                 if(q_cast(*i, (QAction*(QMenu::*)(const QString&))&QMenu::addAction, widget)){

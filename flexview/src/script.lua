@@ -164,3 +164,17 @@ ftp:login("hotuser","250")
 ftp:list()
 ftp:close()
 --]]
+-- test
+
+menubar{
+    "menu1",
+    "menu2",
+    QMenu("menu3"){
+        QAction("act1"),
+        QAction("act2"),
+        QMenu("menu4"){
+            "act3",
+            "act4",
+        },
+    },
+}
