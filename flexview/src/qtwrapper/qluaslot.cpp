@@ -6,14 +6,14 @@
 #endif
 #include <QFtp>
 
-QLuaSlot::QLuaSlot(const QString& signature) :
-    QObject(0),m_signature(signature)
+QLuaSlot::QLuaSlot(const QString& signature, bool autoDelete) :
+    QObject(0),m_signature(signature),m_delete_when_done(autoDelete)
 {
     //qDebug()<<"QLua Slot create: "<<this;;
 }
 
-QLuaSlot::QLuaSlot(const object& obj, const QString& signature) :
-        QObject(0), m_obj(obj),m_signature(signature)
+QLuaSlot::QLuaSlot(const object& obj, const QString& signature, bool autoDelete) :
+        QObject(0), m_obj(obj),m_signature(signature),m_delete_when_done(autoDelete)
 {
     m_method = signature.left( signature.indexOf(QChar('('),0));
     //qDebug()<<"QLua Slot create by obj: "<<this;;
@@ -245,191 +245,229 @@ inline void gen_slot(const object& m_obj, const QString& m_method, T1 t1, T2 t2,
 void QLuaSlot::general_slot()
 {
     ::gen_slot(m_obj,m_method);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(char param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(short param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(int param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(double param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(bool param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QString& param)
 {
     ::gen_slot(m_obj,m_method,param.toLocal8Bit().constData());
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QListWidgetItem* param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QListWidgetItem* param1,QListWidgetItem* param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QTreeWidgetItem* param)
 {
     ::gen_slot(m_obj,m_method,param);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QTreeWidgetItem* param1,QTreeWidgetItem* param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QTreeWidgetItem* param1,int param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(int param1, int param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(int param1, int param2, int param3, int param4)
 {
     ::gen_slot(m_obj,m_method,param1,param2,param3,param4);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QTableWidgetItem* param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QTableWidgetItem* param1, QTableWidgetItem* param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(qint64 param1)
 {
     ::gen_slot(m_obj,m_method, (int)param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QextPortInfo& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QMdiSubWindow* param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QSystemTrayIcon::ActivationReason param1)
 {
     ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QDate& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QTime& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QDateTime& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QAction* param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QProcess::ProcessError param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QProcess::ExitStatus param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QProcess::ProcessState param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QWidget* param1, QWidget* param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QWidget* param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QAbstractSocket::SocketError param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QAbstractSocket::SocketState param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(QClipboard::Mode param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QHostInfo& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(Qt::DropAction param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(int param1, bool param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(qint64 param1,qint64 param2)
 {
     ::gen_slot(m_obj,m_method,(int)param1,(int)param2);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(const QUrlInfo & param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 
 void QLuaSlot::general_slot(int param1,const QString& param2)
 {
     ::gen_slot(m_obj,m_method,param1,param2.toLocal8Bit().constData());
+    if(m_delete_when_done)this->deleteLater();
 }
 
 
@@ -437,5 +475,6 @@ void QLuaSlot::general_slot(int param1,const QString& param2)
 void QLuaSlot::general_slot(const QUsbHidInfo& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
 }
 #endif

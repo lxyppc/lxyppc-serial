@@ -13,8 +13,8 @@ class QLuaSlot : public QObject
 {
 Q_OBJECT
 public:
-    explicit QLuaSlot(const QString& signature);
-    QLuaSlot(const object& obj, const QString& signature);
+    explicit QLuaSlot(const QString& signature, bool autoDelete = false);
+    QLuaSlot(const object& obj, const QString& signature, bool autoDelete = false);
     void emit_gen_signal();
     void emit_gen_signal(QString);
     void emit_gen_signal(int);
@@ -77,6 +77,7 @@ private:
     object m_obj;
     QString m_method;
     QString m_signature;
+    bool    m_delete_when_done;
 };
 //typedef boost::shared_ptr<QLuaSlot> auto_slot;
 

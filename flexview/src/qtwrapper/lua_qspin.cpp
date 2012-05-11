@@ -387,3 +387,43 @@ LQTimeEdit lqtimeedit()
     .def("__call", lqtimeedit_init)
     ;
 }
+
+static setter_map<QTimer> lqtimer_set_map;
+QTimer* lqtimer_init(QTimer* widget, const object& obj)
+{
+    return lq_general_init(widget, obj, lqtimer_set_map);
+}
+template<>
+void table_init_general<QTimer>(const luabind::argument & arg, const object& obj)
+{
+    lqtimer_init(construct<QTimer>(arg), obj);
+}
+
+SIGNAL_PROPERYT(lqtimer, timeout , QTimer,"()")
+void lqtimer_singleShot(int msec, const object& obj)
+{
+    QLuaSlot *s = new QLuaSlot(obj, "lqtimer_singleShot", true);
+    QTimer::singleShot(msec, s, SLOT(general_slot()));
+}
+
+LQTimer lqtimer()
+{
+    return
+    myclass_<QTimer,QObject>("QTimer",lqtimer_set_map)
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    .def("start", (void(QTimer::*)(int))&QTimer::start)
+    .def("start", (void(QTimer::*)())&QTimer::start)
+    .def("stop", &QTimer::stop)
+    .def(constructor<QObject*>())
+    .def(constructor<QObject*>())
+    .property("interval", &QTimer::interval, &QTimer::setInterval)
+    .property("isActive", &QTimer::isActive)
+    .property("isSingleShot", &QTimer::isSingleShot, &QTimer::setSingleShot)
+    .property("timerId", &QTimer::timerId)
+    .sig_prop(lqtimer, timeout)
+    .scope[
+        def("singleShot", lqtimer_singleShot)
+    ]
+    ;
+}

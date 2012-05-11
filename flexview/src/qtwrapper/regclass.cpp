@@ -352,6 +352,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqdatetimeedit(),
         lqdateedit(),
         lqtimeedit(),
+        lqtimer(),
 
         lqpainter(),
         lqimage(),

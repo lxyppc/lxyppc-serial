@@ -13,6 +13,7 @@ typedef class_<QDateTime> LQDateTime;
 typedef class_<QDateTimeEdit, QAbstractSpinBox> LQDateTimeEdit;
 typedef class_<QDateEdit,QDateTimeEdit> LQDateEdit;
 typedef class_<QTimeEdit,QDateTimeEdit> LQTimeEdit;
+typedef class_<QTimer,QObject> LQTimer;
 
 
 LQAbstractSpinBox lqabstractspinbox();
@@ -25,4 +26,5 @@ LQDateTime lqdatetime();
 LQDateTimeEdit lqdatetimeedit();
 LQDateEdit lqdateedit();
 LQTimeEdit lqtimeedit();
+LQTimer lqtimer();
 #endif // LUA_QSPIN_H
