@@ -1,13 +1,16 @@
 # -------------------------------------------------
 # Project created by QtCreator 2012-03-22T13:33:06
 # -------------------------------------------------
-TARGET = flexview
+TARGET = XToolbox
 TEMPLATE = app
 QT += network
-win32:QTPLUGIN += qcncodecs \
+TRANSLATIONS = chs.ts
+
+win32{ QTPLUGIN += qcncodecs \
     qjpcodecs \
     qkrcodecs \
     qtwcodecs
+}
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \
@@ -163,5 +166,7 @@ OTHER_FILES += src/script.lua \
     src/editor.lua \
     src/udpview.lua \
     src/ftp.lua \
-    src/clocktree.lua
+    src/clocktree.lua \
+    res/app.rc \
+    src/hid.lua
 RESOURCES += res.qrc

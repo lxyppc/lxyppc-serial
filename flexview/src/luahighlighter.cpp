@@ -54,13 +54,13 @@ LuaHighlighter::LuaHighlighter(QTextDocument *parent)
 
     QString s = "";
     for(int i=0;i<LONG_QUOTA_LEVEL;i++){
-        quotationStart = QRegExp(tr("\\[%1\\[").arg(s));
-        quotationEnd = QRegExp(tr("\\]%1\\]").arg(s));
+        quotationStart = QRegExp(QString("\\[%1\\[").arg(s));
+        quotationEnd = QRegExp(QString("\\]%1\\]").arg(s));
 
         rule.pattern = quotationStart;
         rule.endPattern = quotationEnd;
         rule.blockState = (BlockState)(BS_LongQuota+i);
-        rule.name = tr("long quotation %1").arg(i);
+        rule.name = QString("long quotation %1").arg(i);
         highlightingRules.append(rule);
         s+="=";
     }

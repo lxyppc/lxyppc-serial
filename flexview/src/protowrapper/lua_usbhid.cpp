@@ -48,6 +48,7 @@ LQHidCaps lqhidcaps()
 
 SIGNAL_PROPERYT(lqusbhid,connected, QUsbHid, "(const QUsbHidInfo &)")
 SIGNAL_PROPERYT(lqusbhid,disconnected, QUsbHid, "(const QUsbHidInfo &)")
+SIGNAL_PROPERYT(lqusbhid,readyRead, QUsbHid, "()")
 
 LQUsbHid lqusbhid()
 {
@@ -101,6 +102,7 @@ LQUsbHid lqusbhid()
 
     .sig_prop(lqusbhid,connected)
     .sig_prop(lqusbhid,disconnected)
+    .sig_prop(lqusbhid,readyRead)
 
     .scope[
         def("enumDevices", (QList<QUsbHidInfo>(*)(int,int))&QUsbHid::enumDevices),

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>res/123.png</file>
+        <file>chs.qm</file>
     </qresource>
 </RCC>

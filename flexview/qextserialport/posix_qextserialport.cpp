@@ -26,7 +26,7 @@ QString QextSerialPort::fullPortNameUnix(const QString & name)
     if(fullName.contains(rx)) {
         return fullName;
     }
-    fullName = tr("/dev/%1").arg(fullName);
+    fullName = QString("/dev/%1").arg(fullName);
     fullName.remove("//");
     return fullName;
 }

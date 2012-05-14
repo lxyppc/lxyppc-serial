@@ -21,6 +21,7 @@ public slots:
     void my_about();
     void devconnect(const QUsbHidInfo& info);
     void devdisconnect(const QUsbHidInfo& info);
+    void readyReadData();
 private:
     QMdiArea* mdi;
     QTextEdit* logText;

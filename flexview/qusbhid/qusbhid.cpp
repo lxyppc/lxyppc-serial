@@ -174,7 +174,7 @@ qint64 QUsbHid::writeData(int reportID, const QByteArray& data)
     QByteArray arr;
     arr.append(char(reportID));
     arr.append(data);
-    return writeData(data);
+    return writeData(arr);
 }
 
 qint64 QUsbHid::writeData(const QByteArray& in_data)

@@ -4,6 +4,7 @@
 #include "lua.hpp"
 #include <QtPlugin>
 
+
 #ifdef Q_OS_WIN
 Q_IMPORT_PLUGIN(qcncodecs)
 Q_IMPORT_PLUGIN(qjpcodecs)
@@ -16,6 +17,12 @@ void register_classes(lua_State* L, char const* name = 0);
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    qApp->setApplicationName( QObject::tr("X Toolbox"));
+    QTranslator * translator = new QTranslator();
+    translator->load(":chs.qm");
+    if(QLocale::system().language() == QLocale::Chinese)
+    QApplication::instance()->installTranslator(translator);
+
     int ret = 0;
     lua_State* L = lua_open();
     luaL_openlibs(L);

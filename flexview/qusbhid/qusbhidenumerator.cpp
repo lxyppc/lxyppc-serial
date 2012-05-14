@@ -103,11 +103,11 @@ bool QUsbHidEnumerator::matchAndDispatchChangedDevice(const QString & deviceID, 
     HDEVINFO devInfo;
     QString s;
     if(m_vid && m_pid){
-        s = tr("VID_%1&PID_%2").arg((ulong)m_vid,4,16,QChar('0')).arg((ulong)m_pid,4,16,QChar('0'));
+        s = QString("VID_%1&PID_%2").arg((ulong)m_vid,4,16,QChar('0')).arg((ulong)m_pid,4,16,QChar('0'));
     }else if(m_vid){
-        s = tr("VID_%1").arg((ulong)m_vid,4,16,QChar('0'));
+        s = QString("VID_%1").arg((ulong)m_vid,4,16,QChar('0'));
     }else if(m_pid){
-        s = tr("PID_%1").arg((ulong)m_pid,4,16,QChar('0'));
+        s = QString("PID_%1").arg((ulong)m_pid,4,16,QChar('0'));
     }
     QRegExp idRx(s.toUpper());
     if( (devInfo = SetupDiGetClassDevs(&guid,NULL,NULL,dwFlag)) != INVALID_HANDLE_VALUE )
@@ -165,11 +165,11 @@ void QUsbHidEnumerator::enumerateDevicesWin( const GUID & guid, QList<QUsbHidInf
     HDEVINFO devInfo;
     QString s;
     if(vid && pid){
-        s = tr("VID_%1&PID_%2").arg((ulong)vid,4,16,QChar('0')).arg((ulong)pid,4,16,QChar('0'));
+        s = QString("VID_%1&PID_%2").arg((ulong)vid,4,16,QChar('0')).arg((ulong)pid,4,16,QChar('0'));
     }else if(vid){
-        s = tr("VID_%1").arg((ulong)vid,4,16,QChar('0'));
+        s = QString("VID_%1").arg((ulong)vid,4,16,QChar('0'));
     }else if(pid){
-        s = tr("PID_%1").arg((ulong)vid,4,16,QChar('0'));
+        s = QString("PID_%1").arg((ulong)vid,4,16,QChar('0'));
     }
     QRegExp idRx(s.toUpper());
     if( (devInfo = SetupDiGetClassDevs(&guid, NULL, NULL, DIGCF_PRESENT | DIGCF_INTERFACEDEVICE)) != INVALID_HANDLE_VALUE)

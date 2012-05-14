@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "qusbhidenumerator.h"
+#include "qusbhid.h"
 
 QUsbHidEnumerator* hidenum = 0;
+QUsbHid* hid = 0;
+QString hidpath;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -18,8 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
     if(hidenum == 0){
         hidenum = new QUsbHidEnumerator();
     }
+    if(hid == 0){
+        hid = new QUsbHid(this);
+    }
     connect(hidenum, SIGNAL(deviceDiscovered(QUsbHidInfo)), this, SLOT(devconnect(QUsbHidInfo)));
     connect(hidenum, SIGNAL(deviceRemoved(QUsbHidInfo)), this, SLOT(devdisconnect(QUsbHidInfo)));
+    connect(hid, SIGNAL(readyRead()), this, SLOT(readyReadData()));
     hidenum->setUpNotifications(0x051A,0x511B);
 
     QMenu* menu = 0;
@@ -52,7 +59,35 @@ void MainWindow::addLog(const QString& log)
 
 void MainWindow::my_about()
 {
-    QMessageBox::about(this, "Toolbox", QString::fromLocal8Bit("<p><b>Toolbox</b></p><p>by lxyppc</p>lxyppc@163.com"));
+    //QMessageBox::about(this, "Toolbox", QString::fromLocal8Bit("<p><b>Toolbox</b></p><p>by lxyppc</p>lxyppc@163.com"));
+    if(hid->isOpen()){
+        hid->close();
+        qDebug()<<"close device";
+    }else{
+        if(hidpath != ""){
+            hid->setPath(hidpath);
+            hid->open(QUsbHid::ReadWrite);
+            qDebug()<<"open device";
+        }
+    }
+}
+
+void dbg_arr(const QByteArray& arr)
+{
+    QString s;
+    for(int i=0; i< arr.size(); i++){
+        s += QString("%1,").arg((uint)arr.at(i)&0xff,2,16,QChar('0'));
+        if( (i&15) == 15) {
+            qDebug()<<s;
+            s = "";
+        }
+    }
+    if(!s.isEmpty()) qDebug()<<s;
+}
+void MainWindow::readyReadData()
+{
+    dbg_arr(hid->readAll());
+    //qDebug()<<hid->readAll().length();
 }
 
 void MainWindow::devconnect(const QUsbHidInfo& info)
@@ -64,6 +99,7 @@ void MainWindow::devconnect(const QUsbHidInfo& info)
     qDebug()<<info.path;
     qDebug()<<info.productID;
     qDebug()<<info.vendorID;
+    hidpath = info.path;
 }
 
 void MainWindow::devdisconnect(const QUsbHidInfo& info)
@@ -75,6 +111,7 @@ void MainWindow::devdisconnect(const QUsbHidInfo& info)
     qDebug()<<info.path;
     qDebug()<<info.productID;
     qDebug()<<info.vendorID;
+    hidpath = "";
 }
 
 

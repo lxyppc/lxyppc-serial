@@ -119,6 +119,7 @@ frm2.eventFilter = QDropEvent.filter(onDrop)
 frm2.eventFilter = QDragEnterEvent.filter(onDragEnter)
 mdiArea:addSubWindow(frm2){minw=160,minh=160}
 
+--[[
 hid = QUsbHid(frm2)
 hid:monitor(0x051a,0x511b)
 hid.connected = function(v)
@@ -142,10 +143,10 @@ log(hid.caps.featureReportLength)
 --hid:writeData({0,1,4,0xc6,0,0,0,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3})
 --hid:writeData({0x03,4,0xc6,0,0,0,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3})
 --hid:writeData({0x03,4,0xb6,0,0,0,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9})
-len = hid:writeData({0x03,4,0xc6,0,0,0,})
+len = hid:writeData({0x03,4,0xb6,0,0,0,})
 log(len .. "|||" .. hid.errorString)
 hid:close()
-
+--]]
 --[[
 ftp = QFtp()
 ftp.stateChanged = function (state)
@@ -164,17 +165,9 @@ ftp:login("hotuser","250")
 ftp:list()
 ftp:close()
 --]]
--- test
-
-menubar{
-    "menu1",
-    "menu2",
-    QMenu("menu3"){
-        QAction("act1"),
-        QAction("act2"),
-        QMenu("menu4"){
-            "act3",
-            "act4",
-        },
-    },
-}
+--[[
+list = QTextCodec.availableCodecs()
+for k,v in pairs(list) do
+    log(v)
+end
+--]]
