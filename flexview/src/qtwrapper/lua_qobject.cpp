@@ -165,6 +165,7 @@ bool lqwidget_eq(QWidget* l, QWidget* r)
 }
 namespace luabind{
     QT_EMUN_CONVERTER(Qt::ContextMenuPolicy)
+    QT_EMUN_CONVERTER(Qt::WidgetAttribute)
 }
 ENUM_FILTER(QWidget, contextMenuPolicy, setContextMenuPolicy)
 LQWidget lqwidget()
@@ -172,6 +173,8 @@ LQWidget lqwidget()
     return
     myclass_<QWidget, QObject>("QWidget",lqwidget_set_map)
             .def(constructor<>())
+            .def(constructor<QWidget*>())
+            .def(constructor<QWidget*,Qt::WindowFlags>())
             .def("show",&QWidget::show)
             .def("showMaximized",&QWidget::showMaximized)
             .def("showFullScreen",&QWidget::showFullScreen)

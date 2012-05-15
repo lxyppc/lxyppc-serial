@@ -83,6 +83,8 @@ LQMainWindow lqmainwindow()
     return
     class_<QMainWindow, QWidget>("QMainWindow")
         .def(constructor<>())
+        .def(constructor<QWidget*>())
+        .def(constructor<QWidget*,Qt::WindowFlags>())
         .def("addToolBar", (QToolBar *(QMainWindow::*)(const QString &))&QMainWindow::addToolBar)
         .def("addToolBar", (void (QMainWindow::*)(Qt::ToolBarArea, QToolBar *))&QMainWindow::addToolBar)
         .def("addToolBar", (void (QMainWindow::*)(QToolBar *))&QMainWindow::addToolBar)
