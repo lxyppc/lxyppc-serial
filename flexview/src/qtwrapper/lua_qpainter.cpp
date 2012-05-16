@@ -17,7 +17,7 @@ struct default_converter<QPolygon>
         QPolygon arr;
         for(iterator i(obj),e; i!=e; ++i){
             QPoint v;
-            if(type(*i) == LUA_TSTRING){
+            if(is_class<QPoint>(*i)){
                 v = object_cast<QPoint>(*i);
                 arr.append(v);
             }

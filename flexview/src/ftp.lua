@@ -5,6 +5,8 @@ ftpdlg.ftpPort = QLineEdit("21", ftpdlg){ inputMask = "99999", maxw = 40, minw =
 ftpdlg.ftpUser = QLineEdit("hotuser", ftpdlg)
 ftpdlg.ftpPwd = QLineEdit("250", ftpdlg){echoMode = 2}
 ftpdlg.connectBtn = QPushButton("connect", ftpdlg)
+ftpdlg.downloadBtn = QPushButton("download ..", ftpdlg)
+ftpdlg.uploadBtn = QPushButton("upload ..", ftpdlg)
 ftpdlg.list = QTreeWidget(ftpdlg)
 ftpdlg.list.header = {"Dir","owner", "lastModified", "size"}
 ftpdlg.ftp = QFtp(ftpdlg)
@@ -16,7 +18,8 @@ QHBoxLayout{
     QLabel("Username:"),ftpdlg.ftpUser,QLabel("Password:"),ftpdlg.ftpPwd,
     ftpdlg.connectBtn
 },
-ftpdlg.list
+ftpdlg.list,
+QHBoxLayout{ftpdlg.downloadBtn,ftpdlg.uploadBtn,QLabel(), strech="0,0,1"}
 }
 QFtp.Unconnected = 0
 QFtp.HostLookup = 1
@@ -77,16 +80,58 @@ ftpdlg.ftp.listInfo = function (info)
     ftpdlg.list:addTopLevelItem(item)
 end
 
-ftpdlg.list.itemDoubleClicked = function(item, col)
+function split(s,ch)
+    local p = 1
+    local p1,p2 = string.find(s,ch,p)
+    local len = string.len(s)
+    local res = {}
+    while p1 and p2 do
+        --log(p1)
+        --log(p2)
+        local str = string.sub(s,p,p1-1)
+        --log(str)
+        res[#res+1] = str
+        p2 = p2 + 1
+        p = p2
+        p1,p2 = string.find(s,ch,p)
+    end
+    local str = string.sub(s,p,len)
+    --log(str)
+    res[#res+1] = str
+    return res
+end
+
+function solve_path(s)
+    local t = split(s,"/")
+    local t2 = {}
+    for i = 1, #t do
+        if t[i] == ".." then
+            if #t2 >= 1 then
+                t2[#t2] = nil
+            end
+        elseif t[i] == "." then
+        else
+            t2[#t2+1] = t[i]
+        end
+    end
+    local s = ""
+    for i = 1,#t2 do
+        s = s .. t2[i]
+        s = s .. (i < #t2 and "/" or "")
+    end
+    return s
+end
+
+function download(item)
     local s = "";
     local dir = item:data(0,30)
     local name = item:data(0,31)
     s = s .. tostring(dir)
-    s = s .. ":" .. col
     log(s)
     if dir then
         codec = QTextCodec.codecForName("GBK")
         ftpdlg.curPath = ftpdlg.curPath .. "/" .. item:text(0)
+        ftpdlg.curPath = solve_path(ftpdlg.curPath)
         log(ftpdlg.curPath)
         ftpdlg.ftp:cd( codec:fromUnicode(ftpdlg.curPath) )
         ftpdlg.list:clear()
@@ -108,7 +153,44 @@ ftpdlg.list.itemDoubleClicked = function(item, col)
     end
 end
 
+ftpdlg.downloadBtn.clicked = function()
+    --log("download click")
+    local item = ftpdlg.list.currentItem
+    if item then download(item) end
+end
+
+function rfind(str, ch)
+    for i = string.len(str),1,-1 do
+        if string.sub(str,i,i) == ch then return i end
+    end
+    return nil
+end
+
+ftpdlg.uploadBtn.clicked = function()
+    log("upload click")
+    local path = QCommonDlg.getOpenFileName("")
+    ftpdlg.file = QFile(path)
+    codec = QTextCodec.codecForName("GBK")
+    path = string.sub(path, rfind(path,"/")+1)
+    local name = codec:fromUnicode(path)
+---[[
+    if ftpdlg.file:open(1) then -- open readonly
+        ftpdlg.ftp:put(ftpdlg.file, name)
+        log("Uploading data to \"" .. path .. "\" ...")
+        ftpdlg.progress.labelText = "uploading " .. path
+        ftpdlg.progress:exec();
+    else
+        log("open file \"" .. path .. "\" fail")
+    end
+--]]
+end
+
+ftpdlg.list.itemDoubleClicked = function(item, col)
+    download(item)
+end
+
 ftpdlg.ftp.dataTransferProgress = function(done, total)
+    log("progress")
     ftpdlg.progress.max = total
     ftpdlg.progress.value = done
 end
@@ -128,6 +210,17 @@ ftpdlg.ftp.commandFinished = function(id, error)
             ftpdlg.file:remove()
         else
             log("download success!")
+            ftpdlg.file:close()
+            ftpdlg.file = nil
+        end
+    elseif ftpdlg.ftp:currentCommand() == 9 then
+        ftpdlg.progress:hide()
+        if error then
+            log("upload error!")
+            ftpdlg.file:close()
+            ftpdlg.file = nil
+        else
+            log("upload success!")
             ftpdlg.file:close()
             ftpdlg.file = nil
         end

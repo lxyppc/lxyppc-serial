@@ -3,9 +3,13 @@ dofile("../src/serialview.lua")
 dofile("../src/tcpview.lua")
 dofile("../src/udpview.lua")
 
+quickScript = QLuaEdit(mainWindow)
 mainWindow{
  x = 50, y = 50,
- w = 1000, h = 700
+ w = 1000, h = 700,
+ QDockWidget("Quick Script"){
+    quickScript
+ }
 }
 
 function EditScript()
@@ -53,9 +57,14 @@ actEdit = editMenu:addAction("&Edit script...")
 actEdit.statusTip = "Edit the default script file"
 actClear = editMenu:addAction("&Clear Log")
 actClear.statusTip = "Clear scrip execute log"
+actRun = editMenu:addAction("&Run script")
+actRun.shortcut = QKeySequence("Ctrl+R")
 
 actEdit.triggered = EditScript
 actClear.triggered = {logEdit,logEdit.clear}
+actRun.triggered = function()
+    assert(loadstring(quickScript.plainText))()
+end
 
 function log(v)
     logEdit:append(tostring(v))
@@ -170,4 +179,47 @@ list = QTextCodec.availableCodecs()
 for k,v in pairs(list) do
     log(v)
 end
+--]]
+
+--[[
+frm = QFrame{
+    minW = 300, minH = 200,
+    title = "Test",
+    styleSheet = "QFrame{background-color:black}"
+}
+
+step = 3.1415926/50
+start = 0
+
+function timer_frm(obj,evt)
+    start = start + step
+    frm:update()
+    return true
+end
+
+function paint_frm(obj,evt)
+    local margin = 10
+    local pt = QPainter()
+    pt:begin(frm)
+    pt:setBrush(QBrush(QColor("black")))
+   -- pt:drawRect(0,0,frm.w,frm.h)
+    pt:setPen(QColor("#00ff00"))
+    pt:drawLine(margin,0,margin,frm.h)
+    pt:drawLine(0,frm.h-margin,frm.w,frm.h-margin)
+    pt:setPen(QColor("#ff83ff"))
+    local scale = frm.h/3
+    local st = start
+    for i=1,frm.w do
+        pt:drawPoint(i, frm.h - margin - (math.sin(st) * scale + scale) )
+        st = st + step
+    end
+    pt:done()
+    return true
+end
+
+frm.eventFilter = QPaintEvent.filter(paint_frm)
+frm.eventFilter = QTimerEvent.filter(timer_frm)
+frm:startTimer(1000/20)
+
+mdiArea:addSubWindow(frm):show()
 --]]
