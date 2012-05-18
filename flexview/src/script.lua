@@ -223,3 +223,55 @@ frm:startTimer(1000/20)
 
 mdiArea:addSubWindow(frm):show()
 --]]
+
+
+--[[  -- about dialog
+dlg = QDialog()
+dlg.windowFlags = dlg.windowFlags + 0x00000800
+dlg:setAttribute(55,true)  -- delete on close
+dlg.windowIcon = mainWindow.windowIcon
+function on_paint(obj,evt)
+    local pt = QPainter()
+    pt:begin(dlg)
+    local px = mainWindow.windowIcon:pixmap(512,512)
+    dlg:setMask(px.mask)
+    mainWindow.windowIcon:paint(pt,0,0,px.size.w,px.size.h)
+    pt:done()
+    return true
+end
+function on_mouse(obj,evt)
+    local p = dlg:mapToGlobal(QPoint(evt.x,evt.y))
+    if evt.type == 2 then -- mouse down
+        dlg.mouseDown = true
+        dlg.dx = dlg.pos.x - p.x
+        dlg.dy = dlg.pos.y - p.y
+    elseif evt.type == 3 then  -- mouse up
+        dlg.mouseDown = false
+    elseif evt.type == 5 and dlg.mouseDown then -- mouse move
+        local pos = QPoint(p.x + dlg.dx, p.y+dlg.dy)
+        dlg:move(pos)
+    end
+    return true
+end
+dlg:resize(512,440)
+QLabel("<b>Toolbox</b> (beta)",dlg){
+    x = 130, y = 70, w = 200
+}
+QLabel("by <b>lxyppc</b>",dlg){
+    x = 350, y = 270
+}
+QLabel([=[<a href="mailto:lxyppc@163.com">lxyppc@163.com</a>]=],dlg){
+    x = 350, y = 290, w = 200
+}
+--QPushButton("OK",dlg){
+--    x = 380, y = 350, w = 80,
+--    clicked = {dlg,dlg.accept},
+--}
+QPushButton("X",dlg){
+    x = 110, y = 76, w = 20, h = 20,
+    clicked = {dlg,dlg.reject}, flat = true,
+}
+dlg.eventFilter = QPaintEvent.filter(on_paint)
+dlg.eventFilter = QMouseEvent.filter(on_mouse)
+dlg:show()
+--]]

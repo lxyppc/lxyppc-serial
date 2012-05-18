@@ -62,7 +62,6 @@ namespace luabind{
     QT_EMUN_CONVERTER(Qt::PenStyle)
     QT_EMUN_CONVERTER(QPainter::RenderHint)
     QT_EMUN_CONVERTER(QPainter::RenderHints)
-    QT_EMUN_CONVERTER(Qt::FillRule)
     QT_EMUN_CONVERTER(Qt::SizeMode)
     QT_EMUN_CONVERTER(Qt::GlobalColor)
     QT_EMUN_CONVERTER(Qt::ImageConversionFlags)
@@ -485,7 +484,7 @@ LQPixmap lqpixmap()
     .property("isQBitmap", &QPixmap::isQBitmap)
     .property("mask", &QPixmap::mask, &QPixmap::setMask)
     .property("rect", &QPixmap::rect)
-    .property("depth", &QPixmap::size)
+    .property("size", &QPixmap::size)
     .scope[
             def("defaultDepth", &QPixmap::defaultDepth),
             def("fromImage", &QPixmap::fromImage),

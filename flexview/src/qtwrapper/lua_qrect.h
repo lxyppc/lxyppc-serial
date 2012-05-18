@@ -13,6 +13,7 @@ typedef class_<QColor>                      LQColor;
 typedef class_<QBrush>                      LQBrush;
 typedef class_<QPen>                        LQPen;
 typedef class_<QFont>                       LQFont;
+typedef class_<QRegion>                     LQRegion;
 
 LQPoint lqpoint();
 LQLine lqline();
@@ -25,5 +26,6 @@ LQColor lqcolor();
 LQBrush  lqbrush();
 LQPen lqpen();
 LQFont lqfont();
+LQRegion lqregion();
 
 #endif

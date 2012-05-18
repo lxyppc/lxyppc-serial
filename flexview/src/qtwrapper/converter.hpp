@@ -282,6 +282,7 @@ QT_EMUN_CONVERTER(QFileDialog::Options)
 QT_EMUN_CONVERTER(Qt::MatchFlags)
 QT_EMUN_CONVERTER(qint64)
 QT_EMUN_CONVERTER(Qt::CaseSensitivity)
+QT_EMUN_CONVERTER(Qt::FillRule)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

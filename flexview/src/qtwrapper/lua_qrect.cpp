@@ -1,4 +1,5 @@
 #include "lua_qrect.h"
+#include "luabind/operator.hpp"
 static setter_map<QPoint> lqpoint_set_map;
 static setter_map<QLine> lqline_set_map;
 static setter_map<QRect> lqrect_set_map;
@@ -253,6 +254,59 @@ LQMargins lqmargins()
     .property("right", &QMargins::right, &QMargins::setRight)
     .property("top", &QMargins::top, &QMargins::setTop)
     .property("bottom", &QMargins::bottom, &QMargins::setBottom)
+    ;
+}
+namespace luabind{
+    QT_EMUN_CONVERTER(QRegion::RegionType)
+}
+
+void lqregion_setRects(QRegion* w, const QVector<QRect>& rects)
+{
+    QRect* rs = new QRect[rects.count()];
+    for(int i=0;i<rects.count();++i){
+        rs[i] = rects[i];
+    }
+    w->setRects(rs, rects.count());
+    delete [] rs;
+}
+
+LQRegion lqregion()
+{
+    return
+    class_<QRegion>("QRegion")
+    .def(constructor<int,int,int,int>())
+    .def(constructor<int,int,int,int,QRegion::RegionType>())
+    .def(constructor<const QPolygon&>())
+    .def(constructor<const QPolygon&, Qt::FillRule>())
+    .def(constructor<const QRegion&>())
+    .def(constructor<const QBitmap&>())
+    .def(constructor<const QRect&>())
+    .def(constructor<const QRect&,QRegion::RegionType>())
+
+    .property("boundingRect", &QRegion::boundingRect)
+    .def("contains", (bool(QRegion::*)(const QPoint&)const)&QRegion::contains)
+    .def("contains", (bool(QRegion::*)(const QRect&)const)&QRegion::contains)
+    .def("intersected", (QRegion(QRegion::*)(const QRegion&)const)&QRegion::intersected)
+    .def("intersected", (QRegion(QRegion::*)(const QRect&)const)&QRegion::intersected)
+    .def("intersects", (bool(QRegion::*)(const QRegion&)const)&QRegion::intersects)
+    .def("intersects", (bool(QRegion::*)(const QRect&)const)&QRegion::intersects)
+    .def("isEmpty", &QRegion::isEmpty)
+    .property("rectCount", &QRegion::rectCount)
+    .property("rects", &QRegion::rects)
+    .def("setRects", lqregion_setRects)
+    .def("subtracted", &QRegion::subtracted)
+    .def("translate", (void(QRegion::*)(int,int))&QRegion::translate)
+    .def("translate", (void(QRegion::*)(const QPoint&))&QRegion::translate)
+    .def("translated", (QRegion(QRegion::*)(int,int)const)&QRegion::translated)
+    .def("translated", (QRegion(QRegion::*)(const QPoint&)const)&QRegion::translated)
+    .def("united", (QRegion(QRegion::*)(const QRect&)const)&QRegion::united)
+    .def("united", (QRegion(QRegion::*)(const QRegion&)const)&QRegion::united)
+    .def("xored", &QRegion::xored)
+    .def(const_self == const_self)
+    .def(self + const_self)
+    .def(self - const_self)
+    .def(self + other<const QRect&>())
+    .def(self - other<const QRect&>())
     ;
 }
 

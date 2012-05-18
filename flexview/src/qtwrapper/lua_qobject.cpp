@@ -163,11 +163,42 @@ bool lqwidget_eq(QWidget* l, QWidget* r)
 {
     return l == r;
 }
+
+int lqwidget_grab_shortcut(QWidget* l, const QKeySequence& key)
+{
+    return l->grabShortcut(key);
+}
+
+void lqwidget_render1(QWidget* l, QPainter* p){ l->render(p);}
+void lqwidget_render2(QWidget* l, QPainter* p, const QPoint& pt){ l->render(p,pt);}
+void lqwidget_render3(QWidget* l, QPainter* p, const QPoint& pt, const QRegion& r){ l->render(p,pt,r);}
+void lqwidget_render4(QWidget* l, QPainter* p, const QPoint& pt, const QRegion& r, int f){ l->render(p,pt,r,QWidget::RenderFlags(f));}
+void lqwidget_render5(QWidget* l, QPixmap* p){ l->render(p);}
+void lqwidget_render6(QWidget* l, QPixmap* p, const QPoint& pt){ l->render(p,pt);}
+void lqwidget_render7(QWidget* l, QPixmap* p, const QPoint& pt, const QRegion& r){ l->render(p,pt,r);}
+void lqwidget_render8(QWidget* l, QPixmap* p, const QPoint& pt, const QRegion& r, int f){ l->render(p,pt,r,QWidget::RenderFlags(f));}
+void lqwidget_render9(QWidget* l, QImage* p){ l->render(p);}
+void lqwidget_render10(QWidget* l, QImage* p, const QPoint& pt){ l->render(p,pt);}
+void lqwidget_render11(QWidget* l, QImage* p, const QPoint& pt, const QRegion& r){ l->render(p,pt,r);}
+void lqwidget_render12(QWidget* l, QImage* p, const QPoint& pt, const QRegion& r, int f){ l->render(p,pt,r,QWidget::RenderFlags(f));}
+void lqwidget_render13(QWidget* l, QWidget* p){ l->render(p);}
+void lqwidget_render14(QWidget* l, QWidget* p, const QPoint& pt){ l->render(p,pt);}
+void lqwidget_render15(QWidget* l, QWidget* p, const QPoint& pt, const QRegion& r){ l->render(p,pt,r);}
+void lqwidget_render16(QWidget* l, QWidget* p, const QPoint& pt, const QRegion& r, int f){ l->render(p,pt,r,QWidget::RenderFlags(f));}
+
+
 namespace luabind{
     QT_EMUN_CONVERTER(Qt::ContextMenuPolicy)
     QT_EMUN_CONVERTER(Qt::WidgetAttribute)
 }
 ENUM_FILTER(QWidget, contextMenuPolicy, setContextMenuPolicy)
+ENUM_FILTER(QWidget, windowFlags, setWindowFlags)
+ENUM_FILTER(QWidget, windowModality, setWindowModality)
+ENUM_FILTER(QWidget, backgroundRole, setBackgroundRole)
+ENUM_FILTER(QWidget, foregroundRole, setForegroundRole)
+ENUM_FILTER(QWidget, focusPolicy, setFocusPolicy)
+ENUM_FILTER(QWidget, layoutDirection, setLayoutDirection)
+ENUM_FILTER(QWidget, windowState, setWindowState)
 LQWidget lqwidget()
 {
     return
@@ -189,11 +220,17 @@ LQWidget lqwidget()
             .def("__eq", lqwidget_eq)
             .def("setFocus",(void (QWidget::*)(Qt::FocusReason))&QWidget::setFocus)
             .def("setFocus",(void (QWidget::*)())&QWidget::setFocus)
+            .def("setMask",(void (QWidget::*)(const QBitmap&))&QWidget::setMask)
+            .def("clearFocus",&QWidget::clearFocus)
+            .def("clearMask",&QWidget::clearMask)
 
 
             .def("setGeometry", (void (QWidget::*)(int, int, int, int))&QWidget::setGeometry)
             .def("addAction", &QWidget::addAction)
             .def("addActions", &QWidget::addActions)
+            .def("insertAction", &QWidget::insertAction)
+            .def("insertActions", &QWidget::insertActions)
+            .def("removeAction", &QWidget::removeAction)
             .def("__call", &lqwidget_init)
             .def("actionCount", lqwidget_actionCount)
             .def("action",lqwidget_action)
@@ -201,11 +238,90 @@ LQWidget lqwidget()
             .def("restoreGeometry", &QWidget::restoreGeometry)
             .def("setAttribute", &QWidget::setAttribute)
             .def("testAttribute", &QWidget::testAttribute)
+            .def("activateWindow", &QWidget::activateWindow)
+            .def("adjustSize", &QWidget::adjustSize)
+            .def("setBaseSize", (void(QWidget::*)(int,int))&QWidget::setBaseSize)
+            .def("childAt", (QWidget*(QWidget::*)(int,int)const)&QWidget::childAt)
+            .def("childAt", (QWidget*(QWidget::*)(const QPoint&)const)&QWidget::childAt)
+            .def("childrenRect", &QWidget::childrenRect)
+            .def("childrenRegion", &QWidget::childrenRegion)
+            .property("contentsMargins", &QWidget::contentsMargins)
+            .property("contentsRect", &QWidget::contentsRect)
+            .property("focusWidget", &QWidget::focusWidget)
+            .def("grabKeyboard", &QWidget::grabKeyboard)
+            .def("releaseKeyboard", &QWidget::releaseKeyboard)
+            .def("grabMouse", (void(QWidget::*)())&QWidget::grabMouse)
+            .def("grabMouse", (void(QWidget::*)(const QCursor&))&QWidget::grabMouse)
+            .def("releaseMouse", &QWidget::releaseMouse)
+            .def("grabShortcut", &QWidget::grabShortcut)
+            .def("grabShortcut", lqwidget_grab_shortcut)
+            .def("releaseShortcut", &QWidget::releaseShortcut)
+            .property("isActiveWindow", &QWidget::isActiveWindow)
+            .def("isAncestorOf", &QWidget::isAncestorOf)
+            .def("isEnabledTo", &QWidget::isEnabledTo)
+            .property("isFullScreen", &QWidget::isFullScreen)
+            .property("isMaximized", &QWidget::isMaximized)
+            .property("isMinimized", &QWidget::isMinimized)
+            .property("isModal", &QWidget::isModal)
+            .def("isVisible", &QWidget::isVisibleTo)
+            .property("isWindow", &QWidget::isWindow)
+            .def("unsetLayoutDirection", &QWidget::unsetLayoutDirection)
+            .def("unsetLocale", &QWidget::unsetLocale)
+            .def("unsetCursor", &QWidget::unsetCursor)
+            .def("mapFrom", &QWidget::mapFrom)
+            .def("mapFromGlobal", &QWidget::mapFromGlobal)
+            .def("mapFromParent", &QWidget::mapFromParent)
+            .def("mapTo", &QWidget::mapTo)
+            .def("mapToGlobal", &QWidget::mapToGlobal)
+            .def("mapToParent", &QWidget::mapToParent)
+            .def("move", (void(QWidget::*)(const QPoint&))&QWidget::move)
+            .def("move", (void(QWidget::*)(int,int))&QWidget::move)
+            .property("nativeParentWidget", &QWidget::nativeParentWidget)
+            .property("nextInFocusChain", &QWidget::nextInFocusChain)
+            .property("previousInFocusChain", &QWidget::previousInFocusChain)
+            .property("parentWidget", &QWidget::parentWidget)
+            .def("render", lqwidget_render1)
+            .def("render", lqwidget_render2)
+            .def("render", lqwidget_render3)
+            .def("render", lqwidget_render4)
+            .def("render", lqwidget_render5)
+            .def("render", lqwidget_render6)
+            .def("render", lqwidget_render7)
+            .def("render", lqwidget_render8)
+            .def("render", lqwidget_render9)
+            .def("render", lqwidget_render10)
+            .def("render", lqwidget_render11)
+            .def("render", lqwidget_render12)
+            .def("render", lqwidget_render13)
+            .def("render", lqwidget_render14)
+            .def("render", lqwidget_render15)
+            .def("render", lqwidget_render16)
+            .def("repaint", (void(QWidget::*)(int,int,int,int))&QWidget::repaint)
+            .def("repaint", (void(QWidget::*)(const QRect&))&QWidget::repaint)
+            .def("repaint", (void(QWidget::*)(const QRegion&))&QWidget::repaint)
+            .def("resize", (void(QWidget::*)(int,int))&QWidget::resize)
+            .def("resize", (void(QWidget::*)(const QSize&))&QWidget::resize)
+            .def("restoreGeometry", &QWidget::restoreGeometry)
+            .def("saveGeometry", &QWidget::saveGeometry)
+            .def("scroll", (void(QWidget::*)(int,int))&QWidget::scroll)
+            .def("scroll", (void(QWidget::*)(int,int,const QRect&))&QWidget::scroll)
+            .def("setSizeIncrement", (void(QWidget::*)(int,int))&QWidget::setSizeIncrement)
+            .def("setSizePolicy", (void(QWidget::*)(QSizePolicy::Policy,QSizePolicy::Policy))&QWidget::setSizePolicy)
+            .def("update", (void(QWidget::*)(int,int,int,int))&QWidget::update)
+            .def("update", (void(QWidget::*)(const QRect&))&QWidget::update)
+            .def("update", (void(QWidget::*)(const QRegion&))&QWidget::update)
+            .property("underMouse", &QWidget::underMouse)
+            .def("updateGeometry", &QWidget::updateGeometry)
+            .property("visibleRegion", &QWidget::visibleRegion)
+            .property("window", &QWidget::window)
 
             .property("windowTitle", &QWidget::windowTitle, &QWidget::setWindowTitle)
             .property("windowIcon", &QWidget::windowIcon, &QWidget::setWindowIcon)
             .property("windowIconText", &QWidget::windowIconText, &QWidget::setWindowIconText)
             .property("windowFilePath", &QWidget::windowFilePath, &QWidget::setWindowFilePath)
+            .property("windowFlags", QWidget_windowFlags, QWidget_setWindowFlags)
+            .property("windowModality", QWidget_windowModality, QWidget_setWindowModality)
+            .property("windowOpacity", &QWidget::windowOpacity, &QWidget::setWindowOpacity)
             .property("title", &QWidget::windowTitle, &QWidget::setWindowTitle)
             .property("styleSheet", &QWidget::styleSheet, &QWidget::setStyleSheet)
             .property("enabled", &QWidget::isEnabled, &QWidget::setEnabled)
@@ -220,6 +336,22 @@ LQWidget lqwidget()
             .property("font", &QWidget::font, &QWidget::setFont)
             .property("focus", &QWidget::hasFocus)
             .property("contextMenuPolicy", QWidget_contextMenuPolicy, QWidget_setContextMenuPolicy)
+
+            .property("accessibleDescription", &QWidget::accessibleDescription, &QWidget::setAccessibleDescription)
+            .property("accessibleName", &QWidget::accessibleName, &QWidget::setAccessibleName)
+            .property("autoFillBackground", &QWidget::autoFillBackground, &QWidget::setAutoFillBackground)
+            .property("backgroundRole", QWidget_backgroundRole, QWidget_setBackgroundRole)
+            .property("foregroundRole", QWidget_foregroundRole, QWidget_setForegroundRole)
+            .property("baseSize", &QWidget::baseSize, (void(QWidget::*)(const QSize&))&QWidget::setBaseSize)
+            .property("focusPolicy", QWidget_focusPolicy, QWidget_setFocusPolicy)
+#ifdef QT_KEYPAD_NAVIGATION
+            .property("editFocus", &QWidget::hasEditFocus, &QWidget::setEditFocus)
+#endif
+            .property("layoutDirection", QWidget_layoutDirection, QWidget_setLayoutDirection)
+            .property("updatesEnabled", &QWidget::updatesEnabled, &QWidget::setUpdatesEnabled)
+            .property("windowRole", &QWidget::windowRole, &QWidget::setWindowRole)
+            .property("windowState", QWidget_windowState, QWidget_setWindowState)
+            .property("windowType", &QWidget::windowType)
 
             .property("x", &QWidget::x, lqwidget_set_x)
             .property("y", &QWidget::y, lqwidget_set_y)
@@ -243,11 +375,22 @@ LQWidget lqwidget()
             .property("minW", &QWidget::minimumWidth, &QWidget::setMinimumWidth)
 
             .property("geometry", &QWidget::geometry, (void(QWidget::*)(const QRect&))&QWidget::setGeometry)
+            .property("frameGeometry", &QWidget::frameGeometry)
+            .property("frameSize", &QWidget::frameSize)
 
             .property("layout", &QWidget::layout, &QWidget::setLayout)
             .property("acceptDrops", &QWidget::acceptDrops, &QWidget::setAcceptDrops)
 
             .class_<QWidget, QObject>::property("cursor", &QWidget::cursor, &QWidget::setCursor)
+            .property("focusProxy", &QWidget::focusProxy, &QWidget::setFocusProxy)
+            .property("locale", &QWidget::locale, &QWidget::setLocale)
+            .property("mask", &QWidget::mask, (void(QWidget::*)(const QRegion&))&QWidget::setMask)
+            .property("pos", &QWidget::pos, (void(QWidget::*)(const QPoint&))&QWidget::move)
+            .property("rect", &QWidget::rect)
+            .property("size", &QWidget::size)
+            .property("sizeHint", &QWidget::sizeHint)
+            .property("sizeIncrement", &QWidget::sizeIncrement, (void(QWidget::*)(const QSize&))&QWidget::setSizeIncrement)
+            .property("sizePolicy", &QWidget::sizePolicy, (void (QWidget::*)(QSizePolicy))&QWidget::setSizePolicy)
 
             .scope[
                def("setTabOrder", &QWidget::setTabOrder)
