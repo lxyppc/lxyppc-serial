@@ -2,7 +2,7 @@
 #define LUA_QFILE_H
 #include "lua_qt_wrapper.hpp"
 
-typedef class_<QFile> LQFile;
+typedef class_<QFile,QObject> LQFile;
 typedef class_<QTemporaryFile, QFile> LQTemporaryFile;
 typedef class_<QDir> LQDir;
 typedef class_<QFileInfo> LQFileInfo;

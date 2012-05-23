@@ -24,7 +24,7 @@ QByteArray lqfile_readLine(QFile* w)
 LQFile lqfile()
 {
     return
-    class_<QFile>("QFile")
+    class_<QFile,QObject>("QFile")
     .def(constructor<const QString&>())
     .def(constructor<QObject*>())
     .def(constructor<const QString&,QObject*>())

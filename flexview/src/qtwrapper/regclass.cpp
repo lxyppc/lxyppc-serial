@@ -464,6 +464,9 @@ void run_script_init(MainWindow* mainwindow)
     if(!file.exists()){
         file.setFileName("../src/script.lua");
     }
+    if(!file.exists()){
+        file.setFileName("script/script.lua");
+    }
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";
         mainwindow->addLog(QString::fromLocal8Bit("Script file missing. Require \"Script.lua\""));

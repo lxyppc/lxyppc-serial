@@ -6,11 +6,11 @@ TEMPLATE = app
 QT += network
 TRANSLATIONS = chs.ts
 
-win32{ QTPLUGIN += qcncodecs \
-    qjpcodecs \
-    qkrcodecs \
-    qtwcodecs
-}
+#win32{ QTPLUGIN += qcncodecs \
+#    qjpcodecs \
+#    qkrcodecs \
+#    qtwcodecs
+#}
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \

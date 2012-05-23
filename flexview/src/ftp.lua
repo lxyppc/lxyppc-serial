@@ -140,7 +140,7 @@ function download(item)
         local path = QCommonDlg.getSaveFileName("",item:text(0))
         --if res then
             --log(path)
-            ftpdlg.file = QFile(path)
+            ftpdlg.file = QFile(path, ftpdlg)
             if ftpdlg.file:open(2) then
                 ftpdlg.ftp:get(name, ftpdlg.file)
                 log("Downloading data to \"" .. path .. "\" ...")
@@ -190,7 +190,7 @@ ftpdlg.list.itemDoubleClicked = function(item, col)
 end
 
 ftpdlg.ftp.dataTransferProgress = function(done, total)
-    log("progress")
+    --log("progress")
     ftpdlg.progress.max = total
     ftpdlg.progress.value = done
 end
@@ -208,21 +208,24 @@ ftpdlg.ftp.commandFinished = function(id, error)
             log("download error!")
             ftpdlg.file:close()
             ftpdlg.file:remove()
+            --ftpdlg.file = nil
         else
             log("download success!")
-            ftpdlg.file:close()
-            ftpdlg.file = nil
+            log(ftpdlg.file.errorString)
+            ftpdlg.file:close(2)
+            --ftpdlg.file = nil
         end
     elseif ftpdlg.ftp:currentCommand() == 9 then
         ftpdlg.progress:hide()
         if error then
             log("upload error!")
             ftpdlg.file:close()
-            ftpdlg.file = nil
+            ftpdlg.file:remove()
+            --ftpdlg.file = nil
         else
             log("upload success!")
             ftpdlg.file:close()
-            ftpdlg.file = nil
+            --ftpdlg.file = nil
         end
     end
 end

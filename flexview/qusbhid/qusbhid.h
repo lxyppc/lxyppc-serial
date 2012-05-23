@@ -76,7 +76,7 @@ public:
     qint64 bytesToWrite() const;
     QByteArray readAll();
     QByteArray readData(qint64 len);
-    QByteArray readData(int reportID, qint64 len);
+    QByteArray readData();
     qint64 writeData(const QByteArray& data);
     qint64 writeData(int reportID, const QByteArray& data);
 
@@ -97,9 +97,11 @@ public:
     QString errorString()const;
 
     QHidAttr GetAttributes(bool* r);
+    QByteArray getFeature(bool* r);
     QByteArray getFeature(int maxLen, bool* r);
     QByteArray getFeature(int reportID, int maxLen,bool* r);
 
+    QByteArray getInputReport(bool* r);
     QByteArray getInputReport(int maxLen,bool* r);
     QByteArray getInputReport(int reportID, int maxLen,bool* r);
 
