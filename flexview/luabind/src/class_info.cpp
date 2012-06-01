@@ -27,6 +27,7 @@
 #include <luabind/luabind.hpp>
 #include <luabind/class_info.hpp>
 #include <luabind/detail/class_registry.hpp>
+#include <luabind/detail/class_rep.hpp>
 
 namespace luabind
 {
@@ -44,6 +45,66 @@ namespace luabind
             lua_pop(L, 1);
             result.methods = newtable(L);
             result.attributes = newtable(L);
+            result.static_methods = newtable(L);
+            result.constants = newtable(L);
+            result.bases = newtable(L);
+            if(detail::is_class_rep(L,-1)){
+                detail::class_rep* crep = static_cast<detail::class_rep*>(lua_touserdata(L, -1));
+                crep->get_table(L);
+                object table(from_stack(L, -1));
+                lua_pop(L, 1);
+
+                result.name = crep->name();
+
+                std::size_t index = 1;
+
+                for (iterator i(table), e; i != e; ++i)
+                {
+                    if (type(*i) != LUA_TFUNCTION)
+                        continue;
+
+                    // We have to create a temporary `object` here, otherwise the proxy
+                    // returned by operator->() will mess up the stack. This is a known
+                    // problem that probably doesn't show up in real code very often.
+                    object member(*i);
+                    member.push(L);
+                    detail::stack_pop pop(L, 1);
+
+                    if (lua_tocfunction(L, -1) == &detail::property_tag)
+                    {
+                        result.attributes[index++] = i.key();
+                    }
+                    else
+                    {
+                        result.methods[i.key()] = *i;
+                    }
+                }
+
+                const std::map<const char*, int, detail::ltstr>& constants = crep->static_constants();
+                std::map<const char*, int, detail::ltstr>::const_iterator it = constants.begin();
+                index = 1;
+                for(; it != constants.end(); it++){
+                    result.constants[it->first] = it->second;
+                }
+                crep->get_default_table(L);
+                object def_table(from_stack(L, -1));
+                lua_pop(L, 1);
+                for (iterator i(def_table), e; i != e; ++i){
+
+                    object member(*i);
+                    member.push(L);
+                    detail::stack_pop pop(L, 1);
+
+                    result.static_methods[i.key()] = *i;
+                }
+                index = 1;
+                const std::vector<detail::class_rep::base_info>& bases = crep->bases();
+                std::vector<detail::class_rep::base_info>::const_iterator i2 = bases.begin();
+                std::string names("base classes: ");
+                for(; i2 != bases.end(); i2++){
+                    result.bases[index++] = i2->base->name();
+                }
+            }
             return result;
         }
 
@@ -57,6 +118,9 @@ namespace luabind
         result.name = obj->crep()->name();
         result.methods = newtable(L);
         result.attributes = newtable(L);
+        result.static_methods = newtable(L);
+        result.constants = newtable(L);
+        result.bases = newtable(L);
 
         std::size_t index = 1;
 
@@ -80,6 +144,30 @@ namespace luabind
             {
                 result.methods[i.key()] = *i;
             }
+        }
+
+        obj->crep()->get_default_table(L);
+        object def_table(from_stack(L, -1));
+        lua_pop(L, 1);
+        for (iterator i(def_table), e; i != e; ++i){
+            object member(*i);
+            member.push(L);
+            detail::stack_pop pop(L, 1);
+            result.static_methods[i.key()] = *i;
+        }
+
+        const std::map<const char*, int, detail::ltstr>& constants = obj->crep()->static_constants();
+        std::map<const char*, int, detail::ltstr>::const_iterator it = constants.begin();
+        index = 1;
+        for(; it != constants.end(); it++){
+            result.constants[it->first] = it->second;
+        }
+
+        index = 1;
+        const std::vector<detail::class_rep::base_info>& bases = obj->crep()->bases();
+        std::vector<detail::class_rep::base_info>::const_iterator i2 = bases.begin();
+        for(; i2 != bases.end(); i2++){
+            result.bases[index++] = i2->base->name();
         }
 
         return result;
@@ -110,7 +198,10 @@ namespace luabind
 			class_<class_info>("class_info_data")
 				.def_readonly("name", &class_info::name)
 				.def_readonly("methods", &class_info::methods)
-				.def_readonly("attributes", &class_info::attributes),
+                                .def_readonly("attributes", &class_info::attributes)
+                                .def_readonly("constants", &class_info::constants)
+                                .def_readonly("static_methods", &class_info::static_methods)
+                                .def_readonly("bases", &class_info::bases),
 		
             def("class_info", &get_class_info),
             def("class_names", &get_class_names)

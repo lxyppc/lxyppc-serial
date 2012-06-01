@@ -129,6 +129,8 @@ namespace luabind { namespace detail
 
 		void add_static_constant(const char* name, int val);
 
+                const std::map<const char*, int, ltstr>& static_constants() const{ return m_static_constants;}
+
 		static int super_callback(lua_State* L);
 
 		static int lua_settable_dispatcher(lua_State* L);

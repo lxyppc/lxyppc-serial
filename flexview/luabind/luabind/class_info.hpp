@@ -36,6 +36,9 @@ namespace luabind
 		std::string name;
 		object methods;
 		object attributes;
+                object constants;
+                object static_methods;
+                object bases;
 	};
 
     LUABIND_API class_info get_class_info(argument const&);
