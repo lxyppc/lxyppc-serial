@@ -470,6 +470,47 @@ void QLuaSlot::general_slot(int param1,const QString& param2)
     if(m_delete_when_done)this->deleteLater();
 }
 
+void QLuaSlot::general_slot(Qt::DockWidgetAreas param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(Qt::DockWidgetArea param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(QDockWidget::DockWidgetFeatures param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(const QSize& param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(Qt::ToolButtonStyle param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(Qt::Orientation param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(Qt::ToolBarAreas param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
 
 #ifdef Q_OS_WIN
 void QLuaSlot::general_slot(const QUsbHidInfo& param1)

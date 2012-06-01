@@ -70,6 +70,13 @@ public slots:
     void general_slot(qint64,qint64);
     void general_slot(const QUrlInfo &);
     void general_slot(int,const QString&);
+    void general_slot(Qt::DockWidgetAreas);
+    void general_slot(Qt::DockWidgetArea);
+    void general_slot(QDockWidget::DockWidgetFeatures);
+    void general_slot(const QSize&);
+    void general_slot(Qt::ToolButtonStyle);
+    void general_slot(Qt::Orientation);
+    void general_slot(Qt::ToolBarAreas);
 #ifdef Q_OS_WIN
     void general_slot(const QUsbHidInfo&);
 #endif

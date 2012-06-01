@@ -283,6 +283,8 @@ QT_EMUN_CONVERTER(Qt::MatchFlags)
 QT_EMUN_CONVERTER(qint64)
 QT_EMUN_CONVERTER(Qt::CaseSensitivity)
 QT_EMUN_CONVERTER(Qt::FillRule)
+QT_EMUN_CONVERTER(QTabWidget::TabShape)
+QT_EMUN_CONVERTER(QTabWidget::TabPosition)
 
 
 struct QMainWindow_wrap : QMainWindow, wrap_base

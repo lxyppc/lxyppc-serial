@@ -212,7 +212,7 @@ ftpdlg.ftp.commandFinished = function(id, error)
         else
             log("download success!")
             log(ftpdlg.file.errorString)
-            ftpdlg.file:close(2)
+            ftpdlg.file:close()
             --ftpdlg.file = nil
         end
     elseif ftpdlg.ftp:currentCommand() == 9 then

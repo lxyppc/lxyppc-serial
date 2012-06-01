@@ -265,7 +265,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqmainwindow(),
         lqdockwidget(),
         lqstatusbar(),
-        lqtesttype(),
+        //lqtesttype(),
 
         lqdialog(),
         lqframe(),

@@ -247,7 +247,7 @@ LQListWidgetItem lqlistwidgetitem()
     (void)self;
     (void)const_self;
     return
-     myclass_<QListWidgetItem,QListWidgetItem_wrap>("QListItem",lqlistwidgetitem_set_map)
+     myclass_<QListWidgetItem,QListWidgetItem_wrap>("QListWidgetItem",lqlistwidgetitem_set_map)
     .def(constructor<>())
     .def(constructor<const QListWidgetItem&>())
     .def(constructor<QListWidget*>())
@@ -505,7 +505,7 @@ int test_func(Getter f){
 LQTreeWidgetItem lqtreewidgetitem()
 {
     return
-     myclass_<QTreeWidgetItem,QTreeWidgetItem_wrap>("QTreeItem",lqtreewidgetitem_set_map)
+     myclass_<QTreeWidgetItem,QTreeWidgetItem_wrap>("QTreeWidgetItem",lqtreewidgetitem_set_map)
     .def(constructor<>())
     .def(constructor<int>())
     .def(constructor<const QStringList&>())
@@ -703,7 +703,7 @@ void lqtablewidgetitem_setFlags(QTableWidgetItem* i, int s)
 LQTableWidgetItem lqtablewidgetitem()
 {
     return
-     myclass_<QTableWidgetItem,QTableWidgetItem_wrap>("QTableItem",lqtablewidgetitem_set_map)
+     myclass_<QTableWidgetItem,QTableWidgetItem_wrap>("QTableWidgetItem",lqtablewidgetitem_set_map)
     .def(constructor<>())
     .def(constructor<int>())
     .def(constructor<const QString&>())

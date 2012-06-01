@@ -107,6 +107,14 @@ static setter_map<QSplitter> lqsplitter_set_map;
 QSplitter* lqsplitter_init(QSplitter* widget, const object& obj)
 {
     lqwidget_init(widget, obj);
+    if(type(obj) == LUA_TTABLE){
+        for (iterator i(obj), e; i != e; ++i){
+            if(type(*i) == LUA_TUSERDATA){
+                if(q_cast(*i, &QSplitter::addWidget, widget)){
+                }
+            }
+        }
+    }
     return lq_general_init(widget, obj, lqsplitter_set_map);
 }
 

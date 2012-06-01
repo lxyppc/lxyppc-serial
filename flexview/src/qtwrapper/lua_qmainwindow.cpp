@@ -52,7 +52,7 @@ QMainWindow* lqmainwindow_init(QMainWindow* widget, const object& init_table)
                 }else if(q_cast(*i, (QAction*(QMenuBar::*)(QMenu*))&QMenuBar::addMenu, widget->menuBar())){
                 }else if(q_cast(*i, (void(QMenuBar::*)(QAction*))&QMenuBar::addAction, widget->menuBar())){
                 }else if(q_cast(*i, (void (QMainWindow::*)(QStatusBar *))&QMainWindow::setStatusBar,widget)){
-                    widget->addDockWidget(Qt::TopDockWidgetArea, new QDockWidget("123"));
+                    //widget->addDockWidget(Qt::TopDockWidgetArea, new QDockWidget("123"));
                 }else{
                     q_cast(*i, &QMainWindow::setCentralWidget, widget);
                 }
@@ -77,7 +77,19 @@ void set_state(QMainWindow* w, const QByteArray& arr)
 {
     w->restoreState(arr);
 }
+namespace luabind{
+    QT_EMUN_CONVERTER(Qt::DockWidgetArea)
+    QT_EMUN_CONVERTER(Qt::ToolBarArea)
+    QT_EMUN_CONVERTER(Qt::Corner)
+    QT_EMUN_CONVERTER(QMainWindow::DockOption)
+    QT_EMUN_CONVERTER(QMainWindow::DockOptions)
+    QT_EMUN_CONVERTER(Qt::ToolButtonStyle)
+}
 
+void lqmainwindow_addToolBarBreak(QMainWindow* w) { w->addToolBarBreak();}
+
+SIGNAL_PROPERYT(lqmainwindow, iconSizeChanged, QMainWindow, "(const QSize&)")
+SIGNAL_PROPERYT(lqmainwindow, toolButtonStyleChanged , QMainWindow, "(Qt::ToolButtonStyle)")
 LQMainWindow lqmainwindow()
 {
     return
@@ -85,16 +97,45 @@ LQMainWindow lqmainwindow()
         .def(constructor<>())
         .def(constructor<QWidget*>())
         .def(constructor<QWidget*,Qt::WindowFlags>())
+        .def("__call", &lqmainwindow_init)
+        .def("__init", &table_init_qmainwindow)
+
         .def("addToolBar", (QToolBar *(QMainWindow::*)(const QString &))&QMainWindow::addToolBar)
         .def("addToolBar", (void (QMainWindow::*)(Qt::ToolBarArea, QToolBar *))&QMainWindow::addToolBar)
         .def("addToolBar", (void (QMainWindow::*)(QToolBar *))&QMainWindow::addToolBar)
+        .def("insertToolBar", &QMainWindow::insertToolBar)
         .def("removeToolBar", &QMainWindow::removeToolBar)
-        .def("__call", &lqmainwindow_init)
-        .def("__init", &table_init_qmainwindow)
+        .def("removeToolBarBreak", &QMainWindow::removeToolBarBreak)
+        .def("addDockWidget", (void(QMainWindow::*)(Qt::DockWidgetArea, QDockWidget*,Qt::Orientation))&QMainWindow::addDockWidget)
+        .def("addDockWidget", (void(QMainWindow::*)(Qt::DockWidgetArea, QDockWidget*))&QMainWindow::addDockWidget)
+        .def("splitDockWidget", &QMainWindow::splitDockWidget)
+        .def("tabifyDockWidget", &QMainWindow::tabifyDockWidget)
+        .def("tabifiedDockWidgets", &QMainWindow::tabifiedDockWidgets)
+        .def("removeDockWidget", &QMainWindow::removeDockWidget)
+        .def("restoreDockWidget", &QMainWindow::restoreDockWidget)
+
+        .def("addToolBarBreak", &QMainWindow::addToolBarBreak)
+        .def("addToolBarBreak", lqmainwindow_addToolBarBreak)
+        .def("insertToolBarBreak", &QMainWindow::insertToolBarBreak)
+        .def("corner", &QMainWindow::corner)
+        .def("setCorner", &QMainWindow::setCorner)
+        .def("tabPosition", &QMainWindow::tabPosition)
+        .def("setTabPosition", &QMainWindow::setTabPosition)
+
         .property("menuBar", &QMainWindow::menuBar, &QMainWindow::setMenuBar)
         .property("centralWidget", &QMainWindow::centralWidget, &QMainWindow::setCentralWidget)
         .property("state", get_state, set_state)
         .property("statusBar", &QMainWindow::statusBar, &QMainWindow::setStatusBar)
+        .property("dockOptions", &QMainWindow::dockOptions, &QMainWindow::setDockOptions)
+        .property("iconSize", &QMainWindow::iconSize, &QMainWindow::setIconSize)
+        .property("documentMode", &QMainWindow::documentMode, &QMainWindow::setDocumentMode)
+        .property("menuWidget", &QMainWindow::menuWidget, &QMainWindow::setMenuWidget)
+        .property("animated", &QMainWindow::isAnimated, &QMainWindow::setAnimated)
+        .property("dockNestingEnabled", &QMainWindow::isDockNestingEnabled, &QMainWindow::setDockNestingEnabled)
+        .property("toolButtonStyle", &QMainWindow::toolButtonStyle, &QMainWindow::setToolButtonStyle)
+        .property("tabShape", &QMainWindow::tabShape, &QMainWindow::setTabShape)
+        .sig_prop(lqmainwindow, iconSizeChanged)
+        .sig_prop(lqmainwindow, toolButtonStyleChanged)
         ;
 }
 
@@ -125,6 +166,12 @@ void table_init_qdockwidget(const luabind::argument & arg, const object& obj)
     lqdockwidget_init(construct<QDockWidget>(arg), obj);
 }
 
+SIGNAL_PROPERYT(lqdockwidget, allowedAreasChanged, QDockWidget, "(Qt::DockWidgetAreas)")
+SIGNAL_PROPERYT(lqdockwidget, dockLocationChanged, QDockWidget, "(Qt::DockWidgetArea)")
+SIGNAL_PROPERYT(lqdockwidget, featuresChanged, QDockWidget, "(QDockWidget::DockWidgetFeatures)")
+SIGNAL_PROPERYT(lqdockwidget, topLevelChanged, QDockWidget, "(bool)")
+SIGNAL_PROPERYT(lqdockwidget, visibilityChanged , QDockWidget, "(bool)")
+
 LQDockWidget lqdockwidget()
 {
     return
@@ -133,8 +180,6 @@ LQDockWidget lqdockwidget()
         .def(constructor<QWidget*>())
         .def(constructor<const QString& >())
         .def(constructor<const QString&, QWidget*>())
-        .def("toggleViewAction", &QDockWidget::toggleViewAction)
-
         .def("__call", &lqdockwidget_init)
         .def("__init", &table_init_qdockwidget)
 
@@ -144,8 +189,21 @@ LQDockWidget lqdockwidget()
         .property("titleBarWidget", &QDockWidget::titleBarWidget, &QDockWidget::setTitleBarWidget)
         .property("allowedAreas", &QDockWidget::allowedAreas, &QDockWidget::setAllowedAreas)
         .property("features", &QDockWidget::features, &QDockWidget::setFeatures)
+        .property("toggleViewAction", &QDockWidget::toggleViewAction)
+        .sig_prop(lqdockwidget, allowedAreasChanged)
+        .sig_prop(lqdockwidget, dockLocationChanged)
+        .sig_prop(lqdockwidget, featuresChanged)
+        .sig_prop(lqdockwidget, topLevelChanged)
+        .sig_prop(lqdockwidget, visibilityChanged)
         ;
 }
+
+void lqstatusbar_showMessage(QStatusBar* w, const QString& msg){ w->showMessage(msg);}
+void lqstatusbar_addPermanentWidget(QStatusBar* w, QWidget* c){ w->addPermanentWidget(c);}
+void lqstatusbar_addWidget(QStatusBar* w, QWidget* c){ w->addWidget(c);}
+void lqstatusbar_insertPermanentWidget(QStatusBar* w, int idx, QWidget* c){ w->insertPermanentWidget(idx,c);}
+void lqstatusbar_insertWidget(QStatusBar* w, int idx, QWidget* c){ w->insertWidget(idx,c);}
+SIGNAL_PROPERYT(lqstatusbar, messageChanged , QStatusBar, "(const QString&)")
 
 LQStatusBar lqstatusbar()
 {
@@ -154,13 +212,28 @@ LQStatusBar lqstatusbar()
          .def(constructor<>())
          .def(constructor<QWidget*>())
          .def("addWidget", &QStatusBar::addWidget)
+         .def("addWidget", lqstatusbar_addWidget)
+         .def("addPermanentWidget", &QStatusBar::addPermanentWidget)
+         .def("addPermanentWidget", lqstatusbar_addPermanentWidget)
+         .def("insertPermanentWidget", &QStatusBar::insertPermanentWidget)
+         .def("insertPermanentWidget", lqstatusbar_insertPermanentWidget)
+         .def("insertWidget", &QStatusBar::insertWidget)
+         .def("insertWidget", lqstatusbar_insertWidget)
+         .def("removeWidget", &QStatusBar::removeWidget)
+         .def("clearMessage", &QStatusBar::clearMessage)
+         .def("showMessage", &QStatusBar::showMessage)
+         .def("showMessage", lqstatusbar_showMessage)
+
+         .property("sizeGripEnabled", &QStatusBar::isSizeGripEnabled, &QStatusBar::setSizeGripEnabled)
+         .property("currentMessage", &QStatusBar::currentMessage)
+         .sig_prop(lqstatusbar, messageChanged)
          ;
 }
 
 LQAbstractScrollArea lqabstractscrollarea()
 {
     return
-    class_<QAbstractScrollArea,QFrame>("LQAbstractScrollArea")
+    class_<QAbstractScrollArea,QFrame>("QAbstractScrollArea")
     .def(constructor<>())
     .def(constructor<QWidget*>())
     .def("addScrollBarWidget", &QAbstractScrollArea::addScrollBarWidget)

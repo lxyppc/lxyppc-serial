@@ -284,6 +284,14 @@ void table_toolbar_init(const argument& arg, const object& table)
     lqtoolbar_init(construct<QToolBar>(arg), table);
 }
 
+SIGNAL_PROPERYT(lqtoolbar, actionTriggered, QToolBar, "(QAction*)")
+SIGNAL_PROPERYT(lqtoolbar, allowedAreasChanged, QToolBar, "(Qt::ToolBarAreas)")
+SIGNAL_PROPERYT(lqtoolbar, iconSizeChanged, QToolBar, "(const QSize&)")
+SIGNAL_PROPERYT(lqtoolbar, movableChanged, QToolBar, "(bool)")
+SIGNAL_PROPERYT(lqtoolbar, orientationChanged, QToolBar, "(Qt::Orientation)")
+SIGNAL_PROPERYT(lqtoolbar, toolButtonStyleChanged, QToolBar, "(Qt::ToolButtonStyle)")
+SIGNAL_PROPERYT(lqtoolbar, topLevelChanged, QToolBar, "(bool)")
+
 LQToolBar lqtoolbar()
 {
     return
@@ -309,6 +317,14 @@ LQToolBar lqtoolbar()
          .property("orientation", &QToolBar::orientation, &QToolBar::setOrientation)
          .property("toolButtonStyle", &QToolBar::toolButtonStyle, &QToolBar::setToolButtonStyle)
          .property("iconSize", &QToolBar::iconSize, &QToolBar::setIconSize)
+
+         .sig_prop(lqtoolbar, actionTriggered)
+         .sig_prop(lqtoolbar, allowedAreasChanged)
+         .sig_prop(lqtoolbar, iconSizeChanged)
+         .sig_prop(lqtoolbar, movableChanged)
+         .sig_prop(lqtoolbar, orientationChanged)
+         .sig_prop(lqtoolbar, toolButtonStyleChanged)
+         .sig_prop(lqtoolbar, topLevelChanged)
          ;
 }
 

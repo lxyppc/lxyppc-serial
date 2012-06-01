@@ -11,8 +11,6 @@ namespace luabind{
     QT_EMUN_CONVERTER(QTextDocument::FindFlags)
 }
 
-SIGNAL_PROPERYT(lqtextedit, textChanged, QTextEdit, "()")
-
 QLabel* lqlabel_init(QLabel* widget, const object& obj)
 {
     lqwidget_init(widget,obj);
@@ -72,6 +70,9 @@ void lqlabel_setTextFormat(QLabel* l, int format)
     l->setTextFormat(Qt::TextFormat(format));
 }
 
+SIGNAL_PROPERYT(lqlabel, linkActivated, QLabel, "(const QString&)")
+SIGNAL_PROPERYT(lqlabel, linkHovered, QLabel, "(const QString&)")
+
 LQLabel lqlabel()
 {
     return
@@ -81,6 +82,10 @@ LQLabel lqlabel()
     .def(constructor<const QString&,QWidget*>())
     .def("__call", lqlabel_init)
     .def("__init", table_init_general<QLabel>)
+    .def("setText", &QLabel::setText)
+    .def("clear", &QLabel::clear)
+    .def("setPixmap", &QLabel::setPixmap)
+    .def("setNum", (void(QLabel::*)(double))&QLabel::setNum)
 
     .property("text", &QLabel::text, &QLabel::setText)
     .property("indent", &QLabel::indent, &QLabel::setIndent)
@@ -88,8 +93,12 @@ LQLabel lqlabel()
     .property("textFormat", lqlabel_textFormat, lqlabel_setTextFormat)
     .property("scaledContents", &QLabel::hasScaledContents, &QLabel::setScaledContents)
     .property("wordWrap", &QLabel::wordWrap, &QLabel::setWordWrap)
+    .property("openExternalLinks", &QLabel::openExternalLinks, &QLabel::setOpenExternalLinks)
+    .sig_prop(lqlabel, linkActivated)
+    .sig_prop(lqlabel, linkHovered)
 
     .class_<QLabel,QFrame>::property("buddy", &QLabel::buddy, &QLabel::setBuddy)
+    .property("pixmap", &QLabel::pixmap, &QLabel::setPixmap)
     ;
 }
 
@@ -151,6 +160,14 @@ void QTextEdit_zoomOut(QTextEdit* w){ w->zoomOut(); }
 bool lqtextedit_find(QTextEdit* w, const QString& str) { return w->find(str);}
 ENUM_FILTER(QTextEdit, lineWrapMode, setLineWrapMode)
 ENUM_FILTER(QTextEdit, wordWrapMode, setWordWrapMode)
+
+SIGNAL_PROPERYT(lqtextedit, textChanged, QTextEdit, "()")
+SIGNAL_PROPERYT(lqtextedit, copyAvailable, QTextEdit, "(bool)")
+SIGNAL_PROPERYT(lqtextedit, cursorPositionChanged, QTextEdit, "()")
+SIGNAL_PROPERYT(lqtextedit, redoAvailable, QTextEdit, "(bool)")
+SIGNAL_PROPERYT(lqtextedit, undoAvailable, QTextEdit, "(bool)")
+SIGNAL_PROPERYT(lqtextedit, selectionChanged, QTextEdit, "()")
+
 QString lqtextedit_selected_text(QTextEdit* w)
 {
     return w->textCursor().selectedText();
@@ -216,6 +233,11 @@ LQTextEdit lqtextedit()
     //.property("hScrollBarPolicy", lqtextedit_h_scroll_bar, lqtextedit_set_h_scroll_bar)
     //.property("lineWrapMode", lqtextedit_lineWrapMode, lqtextedit_set_lineWrapMode)
     .sig_prop(lqtextedit,textChanged)
+    .sig_prop(lqtextedit, copyAvailable)
+    .sig_prop(lqtextedit, cursorPositionChanged)
+    .sig_prop(lqtextedit, redoAvailable)
+    .sig_prop(lqtextedit, undoAvailable)
+    .sig_prop(lqtextedit, selectionChanged)
     ;
 }
 
@@ -223,6 +245,12 @@ ENUM_FILTER(QPlainTextEdit, lineWrapMode, setLineWrapMode)
 ENUM_FILTER(QPlainTextEdit, wordWrapMode, setWordWrapMode)
 bool lqplaintextedit_find(QPlainTextEdit* w, const QString& str) { return w->find(str);}
 SIGNAL_PROPERYT(lqplaintextedit, textChanged, QPlainTextEdit, "()")
+SIGNAL_PROPERYT(lqplaintextedit, copyAvailable, QPlainTextEdit, "(bool)")
+SIGNAL_PROPERYT(lqplaintextedit, cursorPositionChanged, QPlainTextEdit, "()")
+SIGNAL_PROPERYT(lqplaintextedit, redoAvailable, QPlainTextEdit, "(bool)")
+SIGNAL_PROPERYT(lqplaintextedit, undoAvailable, QPlainTextEdit, "(bool)")
+SIGNAL_PROPERYT(lqplaintextedit, selectionChanged, QPlainTextEdit, "()")
+SIGNAL_PROPERYT(lqplaintextedit, blockCountChanged, QPlainTextEdit, "(int)")
 
 QString lqplaintextedit_selected_text(QPlainTextEdit* w)
 {
@@ -274,10 +302,23 @@ LQPlainTextEdit lqplaintextedit()
     .property("wordWrapMode", QPlainTextEdit_wordWrapMode, QPlainTextEdit_setWordWrapMode)
     .property("plainText", &QPlainTextEdit::toPlainText, &QPlainTextEdit::setPlainText)
     .sig_prop(lqplaintextedit,textChanged)
+    .sig_prop(lqplaintextedit, copyAvailable)
+    .sig_prop(lqplaintextedit, cursorPositionChanged)
+    .sig_prop(lqplaintextedit, redoAvailable)
+    .sig_prop(lqplaintextedit, undoAvailable)
+    .sig_prop(lqplaintextedit, selectionChanged)
+    .sig_prop(lqplaintextedit, blockCountChanged)
     ;
 }
 
 ENUM_FILTER(QLineEdit, echoMode, setEchoMode)
+SIGNAL_PROPERYT(lqlineedit, textChanged, QLineEdit, "(const QString&)")
+SIGNAL_PROPERYT(lqlineedit, textEdited, QLineEdit, "(const QString&)")
+SIGNAL_PROPERYT(lqlineedit, cursorPositionChanged, QLineEdit, "(int,int)")
+SIGNAL_PROPERYT(lqlineedit, editingFinished, QLineEdit, "()")
+SIGNAL_PROPERYT(lqlineedit, returnPressed, QLineEdit, "()")
+SIGNAL_PROPERYT(lqlineedit, selectionChanged, QLineEdit, "()")
+
 LQLineEdit lqlineedit()
 {
     return
@@ -306,6 +347,12 @@ LQLineEdit lqlineedit()
 #if (QT_VERSION >= 0x040700) || defined(Q_WS_MAEMO_5)
     .property("placeholderText", &QLineEdit::placeholderText, &QLineEdit::setPlaceholderText)
 #endif
+    .sig_prop(lqlineedit, textChanged)
+    .sig_prop(lqlineedit, textEdited)
+    .sig_prop(lqlineedit, cursorPositionChanged)
+    .sig_prop(lqlineedit, editingFinished)
+    .sig_prop(lqlineedit, returnPressed)
+    .sig_prop(lqlineedit, selectionChanged)
     ;
 }
 
