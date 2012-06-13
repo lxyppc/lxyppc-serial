@@ -38,6 +38,7 @@ typedef class_<QFormLayout, QLayout>        LQFormLayout;
 typedef class_<QBoxLayout, QLayout>         LQBoxLayout;
 typedef class_<QVBoxLayout, QBoxLayout>     LQVBoxLayout;
 typedef class_<QHBoxLayout, QBoxLayout, lite_ptr<QHBoxLayout> >     LQHBoxLayout;
+typedef class_<QSpacerItem> LQSpacerItem;
 
 inline QHBoxLayout* get_pointer(lite_ptr<QHBoxLayout>& l)
 {
@@ -51,5 +52,6 @@ LQFormLayout lqformlayout();
 LQBoxLayout  lqboxlayout();
 LQVBoxLayout lqvboxlayout();
 LQHBoxLayout lqhboxlayout();
+LQSpacerItem lqspaceritem();
 
 #endif

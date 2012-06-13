@@ -306,6 +306,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqboxlayout(),
         lqvboxlayout(),
         lqhboxlayout(),
+        lqspaceritem(),
 
         lqlabel(),
         lqtextedit(),

@@ -426,3 +426,20 @@ LQHBoxLayout lqhboxlayout()
     ;
 }
 
+void lqspaceritem_changeSize1(QSpacerItem* o, int w, int h){ o->changeSize(w,h); }
+void lqspaceritem_changeSize2(QSpacerItem* o, int w, int h, int hPolicy){ o->changeSize(w,h,QSizePolicy::Policy(hPolicy)); }
+void lqspaceritem_changeSize3(QSpacerItem* o, int w, int h, int hPolicy, int vPolicy){ o->changeSize(w,h,QSizePolicy::Policy(hPolicy),QSizePolicy::Policy(vPolicy)); }
+
+LQSpacerItem lqspaceritem()
+{
+    return
+    class_<QSpacerItem >("QSpacerItem")
+        .def(constructor<int,int>())
+        .def(constructor<int,int,QSizePolicy::Policy>())
+        .def(constructor<int,int,QSizePolicy::Policy,QSizePolicy::Policy>())
+        .def("changeSize",lqspaceritem_changeSize1)
+        .def("changeSize",lqspaceritem_changeSize2)
+        .def("changeSize",lqspaceritem_changeSize3)
+
+    ;
+}
