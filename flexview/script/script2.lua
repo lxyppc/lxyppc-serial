@@ -1,0 +1,2 @@
+dlg = QDialog()
+dlg:show()
