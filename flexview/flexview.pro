@@ -4,13 +4,15 @@
 TARGET = XToolbox
 TEMPLATE = app
 QT += network
+QT *= xml \
+    opengl
 TRANSLATIONS = chs.ts
 
-#win32{ QTPLUGIN += qcncodecs \
-#    qjpcodecs \
-#    qkrcodecs \
-#    qtwcodecs
-#}
+# win32{ QTPLUGIN += qcncodecs \
+# qjpcodecs \
+# qkrcodecs \
+# qtwcodecs
+# }
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \
@@ -41,7 +43,8 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qurl.cpp \
     src/protowrapper/lua_usbhid.cpp \
     src/qtwrapper/lua_qfile.cpp \
-    src/qtwrapper/lua_qftp.cpp
+    src/qtwrapper/lua_qftp.cpp \
+    src/protowrapper/lua_qglviewer.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -59,7 +62,8 @@ HEADERS += ./src/mainwindow.h \
     src/qtwrapper/lua_qurl.h \
     src/protowrapper/lua_usbhid.h \
     src/qtwrapper/lua_qfile.h \
-    src/qtwrapper/lua_qftp.h
+    src/qtwrapper/lua_qftp.h \
+    src/protowrapper/lua_qglviewer.h
 HEADERS += ./qextserialport/qextserialenumerator.h \
     ./qextserialport/qextserialport.h
 
@@ -155,6 +159,87 @@ win32 {
         -lhid
     RC_FILE = ./res/app.rc
 }
+
+# sources for QGLViewer
+HEADERS += QGLViewer/vec.h \
+    QGLViewer/ui_VRenderInterface.Qt4.h \
+    QGLViewer/ui_ImageInterface.Qt4.h \
+    QGLViewer/quaternion.h \
+    QGLViewer/qglviewer.h \
+    QGLViewer/mouseGrabber.h \
+    QGLViewer/manipulatedFrame.h \
+    QGLViewer/manipulatedCameraFrame.h \
+    QGLViewer/keyFrameInterpolator.h \
+    QGLViewer/frame.h \
+    QGLViewer/domUtils.h \
+    QGLViewer/constraint.h \
+    QGLViewer/config.h \
+    QGLViewer/camera.h
+SOURCES += QGLViewer/vec.cpp \
+    QGLViewer/saveSnapshot.cpp \
+    QGLViewer/quaternion.cpp \
+    QGLViewer/qglviewer.cpp \
+    QGLViewer/mouseGrabber.cpp \
+    QGLViewer/manipulatedFrame.cpp \
+    QGLViewer/manipulatedCameraFrame.cpp \
+    QGLViewer/keyFrameInterpolator.cpp \
+    QGLViewer/frame.cpp \
+    QGLViewer/constraint.cpp \
+    QGLViewer/camera.cpp
+QT_VERSION = $$[QT_VERSION]
+contains( QT_VERSION, "^4.*" ):FORMS *= QGLViewer/ImageInterface.Qt4.ui
+else:FORMS *= QGLViewer/ImageInterface.Qt3.ui
+contains( DEFINES, NO_VECTORIAL_RENDER ):message( Vectorial rendering disabled )
+else { 
+    contains( QT_VERSION, "^4.*" ):FORMS *= QGLViewer/VRenderInterface.Qt4.ui
+    else:FORMS *= QGLViewer/VRenderInterface.Qt3.ui
+    SOURCES *= QGLViewer/VRender/BackFaceCullingOptimizer.cpp \
+        QGLViewer/VRender/BSPSortMethod.cpp \
+        QGLViewer/VRender/EPSExporter.cpp \
+        QGLViewer/VRender/Exporter.cpp \
+        QGLViewer/VRender/FIGExporter.cpp \
+        QGLViewer/VRender/gpc.cpp \
+        QGLViewer/VRender/ParserGL.cpp \
+        QGLViewer/VRender/Primitive.cpp \
+        QGLViewer/VRender/PrimitivePositioning.cpp \
+        QGLViewer/VRender/TopologicalSortMethod.cpp \
+        QGLViewer/VRender/VisibilityOptimizer.cpp \
+        QGLViewer/VRender/Vector2.cpp \
+        QGLViewer/VRender/Vector3.cpp \
+        QGLViewer/VRender/NVector3.cpp \
+        QGLViewer/VRender/VRender.cpp
+    VRENDER_HEADERS = QGLViewer/VRender/AxisAlignedBox.h \
+        QGLViewer/VRender/Exporter.h \
+        QGLViewer/VRender/gpc.h \
+        QGLViewer/VRender/NVector3.h \
+        QGLViewer/VRender/Optimizer.h \
+        QGLViewer/VRender/ParserGL.h \
+        QGLViewer/VRender/Primitive.h \
+        QGLViewer/VRender/PrimitivePositioning.h \
+        QGLViewer/VRender/SortMethod.h \
+        QGLViewer/VRender/Types.h \
+        QGLViewer/VRender/Vector2.h \
+        QGLViewer/VRender/Vector3.h \
+        QGLViewer/VRender/VRender.h
+    HEADERS *= $${VRENDER_HEADERS}
+}
+
+# QGLView source end
+
+# lua gl source
+
+INCLUDEPATH += luagl/include
+SOURCES *= \
+    luagl/src/luagl_util.c \
+    luagl/src/luagl.c \
+    luagl/src/luaglu.c \
+    luagl/src/luagl_const.c
+
+HEADERS *= \
+    luagl/include/luagl.h \
+    luagl/include/luaglu.h
+# lua gl source end
+
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers \
