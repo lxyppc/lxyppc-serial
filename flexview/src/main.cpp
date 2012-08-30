@@ -6,7 +6,7 @@
 #include "luagl.h"
 #include "luaglu.h"
 
-/*
+//*
 #ifdef Q_OS_WIN
 Q_IMPORT_PLUGIN(qcncodecs)
 Q_IMPORT_PLUGIN(qjpcodecs)

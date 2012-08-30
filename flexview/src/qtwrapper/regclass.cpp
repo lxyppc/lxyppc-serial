@@ -475,7 +475,7 @@ void run_script_init(MainWindow* mainwindow)
     }
     if(!file.open(QFile::ReadOnly|QFile::Text)){
         qDebug()<<"script file missing";
-        mainwindow->addLog(QString::fromLocal8Bit("Script file missing. Require \"Script.lua\""));
+        mainwindow->addLog(QObject::tr("Script file missing. Require \"script.lua\""));
         return;
     }
     try{
@@ -489,7 +489,7 @@ void run_script_init(MainWindow* mainwindow)
             std::string err(lua_tostring(__pL, -1));
             lua_pop(__pL, 2);
             qDebug()<<"Script load fail:"<<err.c_str();
-            mainwindow->addLog(QString::fromLocal8Bit("Script load fail:"));
+            mainwindow->addLog(QObject::tr("Script load fail:"));
             mainwindow->addLog(QString::fromLocal8Bit(err.c_str()));
         }else{
             if (lua_pcall(__pL, 0, 0, -2))
