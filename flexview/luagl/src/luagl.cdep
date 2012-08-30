@@ -1,0 +1,5 @@
+$(OBJDIR)/luagl.o: luagl.c /cygdrive/d/tecgraf/lua5.1/include/lua.h \
+ /cygdrive/d/tecgraf/lua5.1/include/luaconf.h \
+ /cygdrive/d/tecgraf/lua5.1/include/lauxlib.h \
+ /cygdrive/d/tecgraf/lua5.1/include/lua.h ../include/luagl.h luagl_util.h \
+ luagl_const.h
