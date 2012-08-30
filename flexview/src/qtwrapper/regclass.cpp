@@ -7,6 +7,7 @@
 #include "../protowrapper/lua_serial.h"
 #include "../protowrapper/lua_socket.h"
 #include "../protowrapper/lua_usbhid.h"
+#include "../protowrapper/lua_qglviewer.h"
 #include <luabind/out_value_policy.hpp>
 #include "../mainwindow.h"
 using namespace luabind;
@@ -407,6 +408,10 @@ void register_classes(lua_State* L, char const* name = 0)
         lqusbhid(),
         lqhidattr(),
         lqhidcaps(),
+
+        lqglwidget(),
+        lqglviewer(),
+        lqglvec(),
 
 
         class_<QVariant_wrapper>("QVariant_wrapper")

@@ -3,6 +3,8 @@
 #include "mainwindow.h"
 #include "lua.hpp"
 #include <QtPlugin>
+#include "luagl.h"
+#include "luaglu.h"
 
 /*
 #ifdef Q_OS_WIN
@@ -26,6 +28,8 @@ int main(int argc, char *argv[])
     int ret = 0;
     lua_State* L = lua_open();
     luaL_openlibs(L);
+    luaopen_luagl(L);
+    luaopen_luaglu(L);
 
     register_classes(L);
 
