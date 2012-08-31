@@ -412,6 +412,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqglwidget(),
         lqglviewer(),
         lqglvec(),
+        lquaternion(),
+        lqcamera(),
+        lqobject3ds(),
 
 
         class_<QVariant_wrapper>("QVariant_wrapper")

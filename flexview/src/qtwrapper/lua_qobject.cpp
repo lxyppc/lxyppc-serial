@@ -539,6 +539,10 @@ template<>bool is_class<double>(const object& obj){
     return type(obj) == LUA_TNUMBER;
 }
 
+template<>bool is_class<float>(const object& obj){
+    return type(obj) == LUA_TNUMBER;
+}
+
 template<>bool is_class<QRgb>(const object& obj){
     return type(obj) == LUA_TNUMBER;
 }

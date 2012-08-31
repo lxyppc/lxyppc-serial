@@ -19,7 +19,7 @@ end
 
 function Particle:animate()
   self.speed.z = self.speed.z - 0.05;
-  self.pos = self.pos + self.speed * 0.1;
+  self.pos = self.pos + 0.1 * self.speed;
 
   if self.pos.z < 0.0 then
       self.speed.z = -0.8*self.speed.z;
@@ -64,6 +64,7 @@ function draw1()
       gl.Vertex(r2*c, alt+0.05, r2*s);
    end
   gl.End();
+  --log(viewer.camera.position.z)
 end
 function draw2()
     gl.Begin("POINTS")
@@ -76,5 +77,7 @@ ss = QGLVec(1,1,1)
 ss = ss * 2
 
 viewer.drawNeeded = draw2
+viewer.camera.position = QGLVec(0.0,-3.0,2.0)
+viewer.camera:lookAt(QGLVec(viewer.sceneCenter) )
 viewer:startAnimation()
 mdiArea:addSubWindow(viewer):show()
