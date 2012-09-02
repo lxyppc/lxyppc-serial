@@ -186,6 +186,10 @@ SOURCES += QGLViewer/vec.cpp \
     QGLViewer/frame.cpp \
     QGLViewer/constraint.cpp \
     QGLViewer/camera.cpp
+
+win32{
+DEFINES += QGLVIEWER_STATIC GL_GLEXT_PROTOTYPES GL_GLEXT_LEGACY
+}
 QT_VERSION = $$[QT_VERSION]
 contains( QT_VERSION, "^4.*" ):FORMS *= QGLViewer/ImageInterface.Qt4.ui
 else:FORMS *= QGLViewer/ImageInterface.Qt3.ui

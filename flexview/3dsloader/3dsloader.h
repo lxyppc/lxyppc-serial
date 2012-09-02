@@ -424,8 +424,9 @@ void Object3ds::render(float * position, float scale, int ShadeModel, int model,
 	else glDisable(GL_TEXTURE_2D);
 
     glDisable(GL_TEXTURE_2D);
-	glActiveTexture(GL_TEXTURE0);
-
+#ifndef Q_OS_WIN
+        glActiveTexture(GL_TEXTURE0);
+#endif
 	glPushMatrix();
 	glTranslatef(position[0],position[1],position[2]);
 	glScalef(scale,scale,scale);

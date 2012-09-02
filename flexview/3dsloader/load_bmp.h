@@ -14,11 +14,13 @@
 #include <stdio.h>
 #include <QImage>
 #include <QGLWidget>
-//#include <windows.h>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include "GL/glext.h"
+#endif
 
 
-
-
+//extern PFNGLACTIVETEXTUREARBPROC glActiveTexture = 0;
 
 /**********************************************************
  *
@@ -118,9 +120,9 @@ int LoadBMP(char *p_filename)
     gluBuild2DMipmaps(GL_TEXTURE_2D, 4, img.width(), img.height(), GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
 
     //free(l_texture); // Free the memory we used to load the texture
-
-	glActiveTexture(GL_TEXTURE0+num_texture);
-
+#ifndef Q_OS_WIN
+     glActiveTexture(GL_TEXTURE0+num_texture);
+#endif
 
     return (num_texture); // Returns the current texture OpenGL ID
 }
