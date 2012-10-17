@@ -292,6 +292,7 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqpoint(),
         lqline(),
+        lqpen(),
         //lqpolygon(),
         lqrect(),
         lqsize(),
