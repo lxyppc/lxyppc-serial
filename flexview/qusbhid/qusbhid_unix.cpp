@@ -494,6 +494,7 @@ int QUsbHid::getNumInputBuffers(bool* r)
     //bool res = HidD_GetNumInputBuffers(Win_Handle, &num);
     //libusb_control_transfer
     if(r) *r = false;
+    lastErr = LIBUSB_ERROR_NOT_SUPPORTED;
     return num;
 }
 
@@ -503,6 +504,7 @@ QByteArray QUsbHid::getPhysicalDescriptor(int maxLen, bool* r)
     ret.resize(maxLen);
     //bool res = HidD_GetPhysicalDescriptor(Win_Handle, (char*)ret.data(), ret.length());
     //libusb_control_transfer
+    lastErr = LIBUSB_ERROR_NOT_SUPPORTED;
     if(r) *r = false;
     return ret;
 }
@@ -585,6 +587,7 @@ bool QUsbHid::setNumInputBuffers(int num)
     //lastErr = GetLastError();
     //return res;
     (void)num;
+    lastErr = LIBUSB_ERROR_NOT_SUPPORTED;
     return false;
 }
 

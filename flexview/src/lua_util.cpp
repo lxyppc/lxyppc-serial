@@ -127,7 +127,7 @@ static QByteArray fromTE2(const QByteArray& arr, T v, int from, bool bigEndian){
 static QString show_bytes(const QByteArray& arr, int base, int bytes_per_line, QString delimer, QString newline)
 {
     QString res;
-    int cnt;
+    int cnt = 0;
     for(int i=0;i<arr.size();i++){
         res += QString("%1%2").arg(arr.at(i),2 ,base,QChar('0')).arg(delimer);
         cnt++;
