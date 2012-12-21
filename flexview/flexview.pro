@@ -138,6 +138,23 @@ SOURCES += luabind/src/wrapper_base.cpp \
 # sources for qextserialport
 # -------------------------------------------------
 SOURCES += ./qextserialport/qextserialport.cpp
+
+unix {
+    SOURCES += ./usb/usbdevice_unix.cpp \
+        ./libusb/core.c \
+        ./libusb/descriptor.c \
+        ./libusb/io.c \
+        ./libusb/sync.c \
+        ./qusbhid/qusbhid_unix.cpp \
+        ./qusbhid/qusbhidenumerator_unix.cpp
+    HEADERS += ./qusbhid/qusbhidenumerator.h \
+        ./qusbhid/qusbhid.h
+    INCLUDEPATH += ./libusb ./qusbhid
+}
+
+unix:!macx: SOURCES += ./libusb/os/linux_usbfs.c
+macx: SOURCES += ./libusb/os/darwin_usb.c
+
 unix:SOURCES += ./qextserialport/posix_qextserialport.cpp
 unix:!macx:SOURCES += ./qextserialport/qextserialenumerator_unix.cpp
 macx { 
@@ -147,6 +164,7 @@ macx {
         -framework \
         CoreFoundation
 }
+
 win32 { 
     SOURCES += ./qextserialport/win_qextserialport.cpp \
         ./qextserialport/qextserialenumerator_win.cpp \
