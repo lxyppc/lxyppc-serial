@@ -12,16 +12,25 @@
     #include <dbt.h>
     #include "qwineventnotifier_p.h"
     #include "./inc/hidsdi++.h"
+#else
+#include "libusb.h"
 #endif /*Q_OS_WIN*/
 #include "qusbhidenumerator.h"
 
 struct QHidAttr
 {
     QHidAttr(){ memset(this,0,sizeof(QHidAttr)); }
+#ifdef Q_OS_WIN
     QHidAttr(const HIDD_ATTRIBUTES& attr){
         vendorID = attr.VendorID;
         productID = attr.ProductID;
         version = attr.VersionNumber;
+    }
+#endif
+    QHidAttr(unsigned short vid, unsigned short pid, unsigned short ver){
+        vendorID = vid;
+        productID = pid;
+        version = ver;
     }
     int vendorID;
     int productID;
@@ -31,6 +40,7 @@ struct QHidAttr
 struct QHidCaps
 {
     QHidCaps(){ memset(this,0,sizeof(QHidCaps));}
+#ifdef Q_OS_WIN
     QHidCaps(const HIDP_CAPS& cap){
         usage = cap.Usage;
         uasgePage = cap.UsagePage;
@@ -38,12 +48,24 @@ struct QHidCaps
         outputReportLength = cap.OutputReportByteLength;
         featureReportLength = cap.FeatureReportByteLength;
     }
+#endif
+    QHidCaps(int usage, int page, int inputLen, int outputLen, int featureLen){
+        this->usage = usage;
+        uasgePage = page;
+        inputReportLength = inputLen;
+        outputReportLength = outputLen;
+        featureReportLength = featureLen;
+    }
     int usage;
     int uasgePage;
     int inputReportLength;
     int outputReportLength;
     int featureReportLength;
 };
+
+#ifdef Q_OS_UNIX
+class QHidWorker;
+#endif
 
 class QUsbHid : public QIODevice
 {
@@ -84,13 +106,13 @@ public:
     virtual qint64 writeData(const char *data, qint64 len);
 
 
-    QHidCaps  caps() const { return QHidCaps(hidCaps); }
+    QHidCaps  caps() const;
 
     static QList<QUsbHidInfo> enumDevices(int vid, int pid);
     static QList<QUsbHidInfo> enumDevices(int vid){ return enumDevices(vid,0); }
     static QList<QUsbHidInfo> enumDevices(){ return enumDevices(0,0); }
 
-    void monitor(int vid, int pid){ if(enumerator) enumerator->setUpNotifications((WORD)vid,(WORD)pid);}
+    void monitor(int vid, int pid){ if(enumerator) enumerator->setUpNotifications((unsigned short)vid,(unsigned short)pid);}
     void monitor(int vid){ monitor(vid,0); }
     void monitor(){ monitor(0,0); }
 
@@ -127,6 +149,9 @@ public slots:
 #ifdef Q_OS_WIN
     private slots:
         void onWinEvent(HANDLE h);
+#else
+    public slots:
+        void onHidData(void* p, int len);
 #endif
 protected:
     void initial();
@@ -152,8 +177,31 @@ protected:
         char   rawData[128];
         DWORD lastErr;
 #endif
+#if (defined Q_OS_UNIX)
+    libusb_device_handle*  handle;
+    libusb_device* device;
+    libusb_device_descriptor device_desc;
+    int epForRead;
+    int epForWrite;
+    int interface;
+
+    unsigned long eventMask;
+    QReadWriteLock* bytesToWriteLock;
+    qint64 _bytesToWrite;
+    QReadWriteLock* readBufferLock;
+    QByteArray  readBuffer;
+    char   rawData[128];
+    int lastErr;
+    QHidCaps hidCaps;
+    QString permissionError;
+
+    friend class QHidWorker;
+
+    QHidWorker* worker;
+#endif
     private:
         QUsbHidEnumerator *enumerator;
+        bool m_isOpen;
 };
 
 #endif // QUSBHID_H

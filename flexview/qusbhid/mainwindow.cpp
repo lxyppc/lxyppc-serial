@@ -5,6 +5,8 @@
 QUsbHidEnumerator* hidenum = 0;
 QUsbHid* hid = 0;
 QString hidpath;
+void test_hid_devices(MainWindow* mainWindow);
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -19,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     dock->setWidget(logText);
     this->addDockWidget(Qt::BottomDockWidgetArea, dock);
     if(hidenum == 0){
-        hidenum = new QUsbHidEnumerator();
+        hidenum = new QUsbHidEnumerator(this);
     }
     if(hid == 0){
         hid = new QUsbHid(this);
@@ -27,8 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(hidenum, SIGNAL(deviceDiscovered(QUsbHidInfo)), this, SLOT(devconnect(QUsbHidInfo)));
     connect(hidenum, SIGNAL(deviceRemoved(QUsbHidInfo)), this, SLOT(devdisconnect(QUsbHidInfo)));
     connect(hid, SIGNAL(readyRead()), this, SLOT(readyReadData()));
-    hidenum->setUpNotifications(0x051A,0x511B);
+    hidenum->setUpNotifications(0x250,0x250);
 
+    QList<QUsbHidInfo> devs = QUsbHid::enumDevices(0x250,0x250);
+    if(devs.size()){
+        hidpath = devs.at(0).path;
+    }
     QMenu* menu = 0;
     QList<QAction*> list = menuBar()->actions();
     foreach(QAction* act, list){
@@ -44,7 +50,11 @@ MainWindow::MainWindow(QWidget *parent)
     menu->addSeparator();
     QAction* act = menu->addAction(tr("&About..."));
     connect(act,SIGNAL(triggered()),this,SLOT(my_about()));
+    act = menu->addAction(tr("Send"));
+    connect(act,SIGNAL(triggered()),this,SLOT(my_send()));
     this->setWindowTitle(QString::fromLocal8Bit("Tool Box"));
+
+    //test_hid_devices(this);
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +65,14 @@ MainWindow::~MainWindow()
 void MainWindow::addLog(const QString& log)
 {
     logText->append(log);
+}
+
+void MainWindow::my_send()
+{
+    hid->writeData("123123",16);
+    qDebug()<<hid->getManufacturerString(0);
+    qDebug()<<hid->getProductString(0);
+    qDebug()<<hid->getSerialNumberString(0);
 }
 
 void MainWindow::my_about()
@@ -115,7 +133,26 @@ void MainWindow::devdisconnect(const QUsbHidInfo& info)
 }
 
 
+void test_hid_devices(MainWindow* mainWindow)
+{
+    QList<QUsbHidInfo> devs = QUsbHid::enumDevices(0x250,0x250);
+    if(devs.size()){
+        qDebug()<<"find "<<devs.size()<<"devices";
+        foreach(const QUsbHidInfo& info , devs){
+            QString str("vid:%1 pid:%2");
+            str = str.arg(info.vendorID,4,16,QChar('0')).arg(info.productID,4,16,QChar('0'));
+            qDebug()<<info.path<<str;
+        }
 
+        const QUsbHidInfo& info = devs.at(0);
+        QUsbHid* hid = new QUsbHid(mainWindow);
+        hid->setPath(info.path);
+        bool res = hid->open(QIODevice::ReadWrite);
+        qDebug()<<"open "<<info.path<<"="<<res;
+        if(!res)
+            qDebug()<<hid->errorString();
+    }
+}
 
 
 

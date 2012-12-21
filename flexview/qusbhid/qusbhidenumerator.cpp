@@ -53,10 +53,10 @@ QUsbHidEnumerator::~QUsbHidEnumerator()
 
 QString QUsbHidEnumerator::getRegKeyValue(HKEY key, LPCTSTR property)
 {
-    DWORD size = 0;
-    DWORD type;
+    unsigned long size = 0;
+    unsigned long type;
     RegQueryValueEx(key, property, NULL, NULL, NULL, & size);
-    BYTE* buff = new BYTE[size];
+    unsigned char* buff = new BYTE[size];
     QString result;
     if( RegQueryValueEx(key, property, NULL, &type, buff, & size) == ERROR_SUCCESS )
         result = TCHARToQString(buff);
@@ -151,7 +151,7 @@ bool QUsbHidEnumerator::matchAndDispatchChangedDevice(const QString & deviceID, 
     return rv;
 }
 
-QList<QUsbHidInfo> QUsbHidEnumerator::getPorts(WORD vid, WORD pid)
+QList<QUsbHidInfo> QUsbHidEnumerator::getPorts(unsigned short vid, unsigned short pid)
 {
     QList<QUsbHidInfo> ports;
     GUID guid;
@@ -160,7 +160,7 @@ QList<QUsbHidInfo> QUsbHidEnumerator::getPorts(WORD vid, WORD pid)
     return ports;
 }
 
-void QUsbHidEnumerator::enumerateDevicesWin( const GUID & guid, QList<QUsbHidInfo>* infoList , WORD vid, WORD pid)
+void QUsbHidEnumerator::enumerateDevicesWin( const GUID & guid, QList<QUsbHidInfo>* infoList , unsigned short vid, unsigned short pid)
 {
     HDEVINFO devInfo;
     QString s;
@@ -217,7 +217,7 @@ void QUsbHidEnumerator::enumerateDevicesWin( const GUID & guid, QList<QUsbHidInf
 }
 
 
-void QUsbHidEnumerator::setUpNotifications(WORD vid, WORD pid)
+void QUsbHidEnumerator::setUpNotifications(unsigned short vid, unsigned short pid)
 {
     m_vid = vid;
     m_pid = pid;

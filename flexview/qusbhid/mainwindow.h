@@ -19,6 +19,7 @@ public:
 
 public slots:
     void my_about();
+    void my_send();
     void devconnect(const QUsbHidInfo& info);
     void devdisconnect(const QUsbHidInfo& info);
     void readyReadData();

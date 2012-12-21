@@ -12,6 +12,11 @@
     #include <IOKit/usb/IOUSBLib.h>
 #endif
 
+#ifdef Q_OS_UNIX
+#include "libusb.h"
+#include <QMutex>
+#endif
+
 class QUsbHidEnumerator;
 
 struct QUsbHidInfo {
@@ -44,6 +49,7 @@ class QUsbHidRegistrationWidget : public QWidget
 #endif // QT_GUI_LIB
 #endif // Q_OS_WIN
 
+class QHidMonitor;
 class QUsbHidEnumerator : public QObject
 {
     Q_OBJECT
@@ -67,19 +73,25 @@ private:
 
 
 public:
+#ifdef Q_OS_UNIX
+    static  libusb_device* get_device(QString path);
+    static QMutex*  mutex;
+    QHidMonitor* worker;
+    friend class QHidMonitor;
+#endif
     /*!
       Get list of ports.
       \return list of ports currently available in the system.
     */
     static QList<QUsbHidInfo> getPorts(){ return getPorts(0,0); }
-    static QList<QUsbHidInfo> getPorts(WORD vid){ return getPorts(vid,0); }
-    static QList<QUsbHidInfo> getPorts(WORD vid, WORD pid);
+    static QList<QUsbHidInfo> getPorts(unsigned short vid){ return getPorts(vid,0); }
+    static QList<QUsbHidInfo> getPorts(unsigned short vid, unsigned short pid);
     /*!
       Enable event-driven notifications of board discovery/removal.
     */
     void setUpNotifications(){ setUpNotifications(0,0); }
-    void setUpNotifications(WORD vid){ setUpNotifications(vid,0); }
-    void setUpNotifications(WORD vid, WORD pid);
+    void setUpNotifications(unsigned short vid){ setUpNotifications(vid,0); }
+    void setUpNotifications(unsigned short vid, unsigned short pid);
 
 
 signals:
@@ -87,8 +99,8 @@ signals:
     void deviceRemoved( const QUsbHidInfo & info );
 public slots:
 protected:
-    WORD m_vid;
-    WORD m_pid;
+    unsigned short m_vid;
+    unsigned short m_pid;
 };
 
 #endif // QUSBHIDENUMERATOR_H

@@ -12,6 +12,7 @@ QUsbHid::QUsbHid(const QString& path, QObject *parent,QueryMode mode) :
      m_queryMode(mode),
     m_path(path)
 {
+    m_isOpen = false;
     initial();
 }
 
@@ -51,9 +52,7 @@ void QUsbHid::deinitial()
     CloseHandle(overlap.hEvent);
     delete bytesToWriteLock;
     delete readBufferLock;
-    if (isOpen()) {
-        close();
-    }
+    close();
     delete mutex;
 }
 
@@ -84,13 +83,14 @@ bool QUsbHid::open(OpenMode mode)
         return false;
     }
     lastErr = GetLastError();
+    m_isOpen = isOpen();
     return isOpen();
 }
 
 void QUsbHid::close()
 {
     QMutexLocker lock(mutex);
-    if (isOpen()) {
+    if (m_isOpen) {
         flush();
         QIODevice::close(); // mark ourselves as closed
         CancelIo(Win_Handle);
@@ -108,6 +108,7 @@ void QUsbHid::close()
         pendingWrites.clear();
         memset(&hidCaps, 0, sizeof(hidCaps));
     }
+    m_isOpen = false;
     lastErr = GetLastError();
 }
 
@@ -438,4 +439,9 @@ bool QUsbHid::setNumInputBuffers(int num)
     bool res = HidD_SetNumInputBuffers(Win_Handle,(ULONG)num);
     lastErr = GetLastError();
     return res;
+}
+
+QHidCaps  QUsbHid::caps() const
+{
+    return QHidCaps(hidCaps);
 }
