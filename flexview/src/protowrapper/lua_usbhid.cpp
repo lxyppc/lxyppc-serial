@@ -1,5 +1,5 @@
 #include "lua_usbhid.h"
-#ifdef Q_OS_WIN
+#if (defined Q_OS_WIN) || (defined Q_OS_UNIX)
 #include "luabind/tag_function.hpp"
 #include "../qtwrapper/qluaslot.h"
 #include "luabind/out_value_policy.hpp"

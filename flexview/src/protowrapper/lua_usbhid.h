@@ -1,7 +1,7 @@
 #ifndef LUA_USBHID_H
 #define LUA_USBHID_H
 #include "../qtwrapper/lua_qt_wrapper.hpp"
-#ifdef Q_OS_WIN
+#if (defined Q_OS_WIN) || (defined Q_OS_UNIX)
 #include "../../qusbhid/qusbhid.h"
 #else
 struct QUsbHid{};

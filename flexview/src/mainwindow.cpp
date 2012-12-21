@@ -24,15 +24,15 @@ MainWindow::MainWindow(QWidget *parent)
             menu = act->menu();
         }
     }
-
+/*
     if(menu == 0){
         menu = menuBar()->addMenu(tr("&Help"));
     }
     menu->addAction(dock->toggleViewAction());
     menu->addSeparator();
     QAction* act = menu->addAction(tr("&About..."));
-    connect(act,SIGNAL(triggered()),this,SLOT(my_about()));
-    this->setWindowTitle(tr("X Toolbox (Beta)"));
+    connect(act,SIGNAL(triggered()),this,SLOT(my_about()));*/
+    this->setWindowTitle(tr("script test"));
 }
 
 MainWindow::~MainWindow()

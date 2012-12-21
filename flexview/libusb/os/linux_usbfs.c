@@ -143,6 +143,11 @@ static void __get_usbfs_path(struct libusb_device *dev, char *path)
 		dev->device_address);
 }
 
+void get_usbfs_path(struct libusb_device *dev, char *path)
+{
+    __get_usbfs_path(dev, path);
+}
+
 static struct linux_device_priv *__device_priv(struct libusb_device *dev)
 {
 	return (struct linux_device_priv *) dev->os_priv;
