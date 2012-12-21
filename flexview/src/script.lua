@@ -275,3 +275,6 @@ dlg.eventFilter = QPaintEvent.filter(on_paint)
 dlg.eventFilter = QMouseEvent.filter(on_mouse)
 dlg:show()
 --]]
+dofile("../src/util.lua")
+dofile("../src/hidviewer.lua")
+mdiArea:addSubWindow( HidViewer()  ):show()

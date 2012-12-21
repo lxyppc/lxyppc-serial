@@ -7,12 +7,10 @@ QT += network
 QT *= xml \
     opengl
 TRANSLATIONS = chs.ts
-
- win32{ QTPLUGIN += qcncodecs \
- qjpcodecs \
- qkrcodecs \
- qtwcodecs
- }
+win32:QTPLUGIN += qcncodecs \
+    qjpcodecs \
+    qkrcodecs \
+    qtwcodecs
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \
@@ -44,7 +42,8 @@ SOURCES += ./src/main.cpp \
     src/protowrapper/lua_usbhid.cpp \
     src/qtwrapper/lua_qfile.cpp \
     src/qtwrapper/lua_qftp.cpp \
-    src/protowrapper/lua_qglviewer.cpp
+    src/protowrapper/lua_qglviewer.cpp \
+    src/lua_util.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -138,8 +137,7 @@ SOURCES += luabind/src/wrapper_base.cpp \
 # sources for qextserialport
 # -------------------------------------------------
 SOURCES += ./qextserialport/qextserialport.cpp
-
-unix {
+unix { 
     SOURCES += ./usb/usbdevice_unix.cpp \
         ./libusb/core.c \
         ./libusb/descriptor.c \
@@ -149,12 +147,11 @@ unix {
         ./qusbhid/qusbhidenumerator_unix.cpp
     HEADERS += ./qusbhid/qusbhidenumerator.h \
         ./qusbhid/qusbhid.h
-    INCLUDEPATH += ./libusb ./qusbhid
+    INCLUDEPATH += ./libusb \
+        ./qusbhid
 }
-
-unix:!macx: SOURCES += ./libusb/os/linux_usbfs.c
-macx: SOURCES += ./libusb/os/darwin_usb.c
-
+unix:!macx:SOURCES += ./libusb/os/linux_usbfs.c
+macx:SOURCES += ./libusb/os/darwin_usb.c
 unix:SOURCES += ./qextserialport/posix_qextserialport.cpp
 unix:!macx:SOURCES += ./qextserialport/qextserialenumerator_unix.cpp
 macx { 
@@ -164,7 +161,6 @@ macx {
         -framework \
         CoreFoundation
 }
-
 win32 { 
     SOURCES += ./qextserialport/win_qextserialport.cpp \
         ./qextserialport/qextserialenumerator_win.cpp \
@@ -204,10 +200,9 @@ SOURCES += QGLViewer/vec.cpp \
     QGLViewer/frame.cpp \
     QGLViewer/constraint.cpp \
     QGLViewer/camera.cpp
-
-win32{
-DEFINES += QGLVIEWER_STATIC GL_GLEXT_PROTOTYPES GL_GLEXT_LEGACY
-}
+win32:DEFINES += QGLVIEWER_STATIC \
+    GL_GLEXT_PROTOTYPES \
+    GL_GLEXT_LEGACY
 QT_VERSION = $$[QT_VERSION]
 contains( QT_VERSION, "^4.*" ):FORMS *= QGLViewer/ImageInterface.Qt4.ui
 else:FORMS *= QGLViewer/ImageInterface.Qt3.ui
@@ -247,21 +242,16 @@ else {
 }
 
 # QGLView source end
-
 # lua gl source
-
 INCLUDEPATH += luagl/include
-SOURCES *= \
-    luagl/src/luagl_util.c \
+SOURCES *= luagl/src/luagl_util.c \
     luagl/src/luagl.c \
     luagl/src/luaglu.c \
     luagl/src/luagl_const.c
-
-HEADERS *= \
-    luagl/include/luagl.h \
+HEADERS *= luagl/include/luagl.h \
     luagl/include/luaglu.h
-# lua gl source end
 
+# lua gl source end
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers \

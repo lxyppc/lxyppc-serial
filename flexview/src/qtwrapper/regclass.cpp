@@ -8,6 +8,7 @@
 #include "../protowrapper/lua_socket.h"
 #include "../protowrapper/lua_usbhid.h"
 #include "../protowrapper/lua_qglviewer.h"
+#include "../lua_util.h"
 #include <luabind/out_value_policy.hpp>
 #include "../mainwindow.h"
 using namespace luabind;
@@ -231,9 +232,9 @@ QFont createFont()
     return QFont();
 }
 
-int my_and(int x, int y) { return x & y;}
-int my_or(int x, int y) { return x | y;}
-int my_xor(int x, int y) { return x ^ y;}
+static int my_and(int x, int y) { return x & y;}
+static int my_or(int x, int y) { return x | y;}
+static int my_xor(int x, int y) { return x ^ y;}
 
 class_<QComboBox, QWidget> lqcombobox();
 void register_classes(lua_State* L, char const* name = 0)
@@ -417,6 +418,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqcamera(),
         lqobject3ds(),
 
+        lqutil(),
 
         class_<QVariant_wrapper>("QVariant_wrapper")
         .def(constructor<>()),
