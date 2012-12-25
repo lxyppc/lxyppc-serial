@@ -275,17 +275,22 @@ qint64 QUsbHid::writeData(const QByteArray& in_data)
 {
     //QByteArray buffer(hidCaps.OutputReportByteLength,0);
     //memcpy(buffer.data(), in_data.data(), buffer.length()>in_data.length() ? in_data.length(): buffer.length());
-    QByteArray data = resize_array(in_data, hidCaps.outputReportLength);
+    QByteArray data = resize_array(in_data, hidCaps.outputReportLength + 1);
     QMutexLocker lock( mutex );
     int retVal = 0;
     if(handle){
         int actLen = 0;
         int timeout = DEF_TIMEOUT;
-        int errorCode = libusb_interrupt_transfer(handle, epForWrite, (uint8_t *)data.data(), data.length(), &actLen, timeout);
+        uint8_t* p = (uint8_t *)data.data();
+        if(*p == 0){
+            // report ID is 0, ignore it
+            p++;
+        }
+        int errorCode = libusb_interrupt_transfer(handle, epForWrite, p, hidCaps.outputReportLength, &actLen, timeout);
         lastErr = errorCode;
         if(errorCode < 0) retVal = 0;
         else retVal = actLen;
-        qDebug()<<formatError(lastErr);
+        //qDebug()<<formatError(lastErr);
     }
     return (qint64)retVal;
 }
