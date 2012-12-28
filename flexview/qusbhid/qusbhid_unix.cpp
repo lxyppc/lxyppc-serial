@@ -38,15 +38,18 @@ static int init = libusb_init(0);
 
 QUsbHid::QUsbHid(QObject *parent,QueryMode mode) :
     QIODevice(parent),
-    m_queryMode(mode)
+    m_queryMode(mode),
+    m_path(QString("")),
+    handle(0)
 {
     initial();
 }
 
 QUsbHid::QUsbHid(const QString& path, QObject *parent,QueryMode mode) :
     QIODevice(parent),
-     m_queryMode(mode),
-    m_path(path)
+    m_queryMode(mode),
+    m_path(path),
+    handle(0)
 {
     initial();
 }
@@ -76,6 +79,8 @@ void QUsbHid::initial()
     lastErr = 0;
     m_isOpen = false;
     interface = -1;
+    epForRead = 0;
+    epForWrite = 0;
 }
 
 void QUsbHid::deinitial()
@@ -97,7 +102,6 @@ bool QUsbHid::open(OpenMode mode)
         return false;
     }
 
-    device = dev;
     libusb_get_device_descriptor(dev, &device_desc);
 
     lastErr = libusb_open(dev, &handle);
@@ -192,7 +196,6 @@ void QUsbHid::close()
         libusb_attach_kernel_driver(handle, 0);
         libusb_close(handle);
         handle = 0;
-        device = 0;
 
         if(worker){
             worker->wait(500);

@@ -179,7 +179,6 @@ protected:
 #endif
 #if (defined Q_OS_UNIX)
     libusb_device_handle*  handle;
-    libusb_device* device;
     libusb_device_descriptor device_desc;
     int epForRead;
     int epForWrite;
