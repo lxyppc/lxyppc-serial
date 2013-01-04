@@ -179,6 +179,7 @@ LQWheelEvent lqwheelevent()
     .property("pos", &QWheelEvent::pos)
     .property("x", &QWheelEvent::x)
     .property("y", &QWheelEvent::y)
+    .property("delta", &QWheelEvent::delta)
     .property("orientation", &QWheelEvent::orientation)
     .scope[ def("filter", event_filter<QWheelEvent>)]
     ;
