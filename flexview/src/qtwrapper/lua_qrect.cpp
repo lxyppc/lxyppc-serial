@@ -331,6 +331,7 @@ LQColor lqcolor()
     .property("g", &QColor::green, &QColor::setGreen)
     .property("b", &QColor::blue, &QColor::setBlue)
     .property("name", &QColor::name, &QColor::setNamedColor)
+    .property("isValid", &QColor::isValid)
     ;
 }
 

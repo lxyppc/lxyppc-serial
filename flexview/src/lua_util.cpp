@@ -129,7 +129,7 @@ static QString show_bytes(const QByteArray& arr, int base, int bytes_per_line, Q
     QString res;
     int cnt = 0;
     for(int i=0;i<arr.size();i++){
-        res += QString("%1%2").arg(arr.at(i),2 ,base,QChar('0')).arg(delimer);
+        res += QString("%1%2").arg( (unsigned char)arr.at(i),2 ,base,QChar('0')).arg(delimer);
         cnt++;
         if(cnt == bytes_per_line){
             res += newline;
