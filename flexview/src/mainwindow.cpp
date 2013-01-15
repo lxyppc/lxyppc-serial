@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     run_script_init(this);
 
+    // make sure the about menu is shown
     QMenu* menu = 0;
     QList<QAction*> list = menuBar()->actions();
     foreach(QAction* act, list){
@@ -24,15 +25,15 @@ MainWindow::MainWindow(QWidget *parent)
             menu = act->menu();
         }
     }
-/*
+
     if(menu == 0){
         menu = menuBar()->addMenu(tr("&Help"));
     }
     menu->addAction(dock->toggleViewAction());
     menu->addSeparator();
     QAction* act = menu->addAction(tr("&About..."));
-    connect(act,SIGNAL(triggered()),this,SLOT(my_about()));*/
-    this->setWindowTitle(tr("script test"));
+    connect(act,SIGNAL(triggered()),this,SLOT(my_about()));
+    this->setWindowTitle(tr("X Toolbox (Beta)"));
 }
 
 MainWindow::~MainWindow()
