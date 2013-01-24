@@ -255,7 +255,7 @@ void QUsbHid::onWinEvent(HANDLE h)
             if(rawData[0] == 0){
                 readBuffer.append(rawData+1,retVal-1);
             }else{
-                readBuffer.append(rawData+1,retVal-1);
+                readBuffer.append(rawData,retVal);
             }
         }
         if (sender() != this && bytesAvailable() > 0)
