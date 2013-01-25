@@ -70,6 +70,9 @@ QStringList lqobject_dynamicPropertyNames(QObject* w)
     return list;
 }
 
+
+
+
 LQObject lqobject()
 {
     return
@@ -397,6 +400,120 @@ LQWidget lqwidget()
             ]
             ;
 }
+
+QWidget* lquiloader_load1(QUiLoader* obj, QIODevice* device, QWidget* parent)
+{
+    return obj->load(device,parent);
+}
+
+QWidget* lquiloader_load2(QUiLoader* obj, QIODevice* device)
+{
+    return obj->load(device);
+}
+
+QWidget* lquiloader_load3(QUiLoader* obj, const QString& file, QWidget* parent)
+{
+    QWidget* w = 0;
+    QFile f(file);
+    if(f.open(QFile::ReadOnly)){
+        w = obj->load(&f,parent);
+        f.close();
+    }
+    return w;
+}
+
+QWidget* lquiloader_load4(QUiLoader* obj, const QString& file)
+{
+    return lquiloader_load3(obj, file, 0);
+}
+
+LQUiLoader lquiloader()
+{
+    return
+    class_<QUiLoader,QObject>("QUiLoader")
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    .def("addPluginPath", &QUiLoader::addPluginPath)
+    .def("clearPluginPaths", &QUiLoader::clearPluginPaths)
+    .def("load", lquiloader_load1)
+    .def("load", lquiloader_load2)
+    .def("load", lquiloader_load3)
+    .def("load", lquiloader_load4)
+    .property("pluginPaths", &QUiLoader::pluginPaths)
+    .property("languageChangeEnabled", &QUiLoader::setLanguageChangeEnabled, &QUiLoader::isLanguageChangeEnabled)
+    .property("availableLayouts", &QUiLoader::availableLayouts)
+    .property("availableWidgets", &QUiLoader::availableWidgets)
+    .property("workingDirectory", &QUiLoader::workingDirectory, &QUiLoader::setWorkingDirectory)
+    ;
+}
+
+/*
+QWidget* lqformbuilder_load1(QFormBuilder* obj, QIODevice* device, QWidget* parent)
+{
+    return obj->load(device,parent);
+}
+
+QWidget* lqformbuilder_load2(QFormBuilder* obj, QIODevice* device)
+{
+    return obj->load(device);
+}
+
+QWidget* lqformbuilder_load3(QFormBuilder* obj, const QString& file, QWidget* parent)
+{
+    QWidget* w = 0;
+    QFile f(file);
+    if(f.open(QFile::ReadOnly)){
+        w = obj->load(&f,parent);
+        f.close();
+    }
+    return w;
+}
+
+QWidget* lqformbuilder_load4(QFormBuilder* obj, const QString& file)
+{
+    return lqformbuilder_load3(obj, file, 0);
+}
+
+void lqformbuilder_save1(QFormBuilder* obj, QIODevice* device, QWidget* w)
+{
+    obj->save(device,w);
+}
+
+void lqformbuilder_save2(QFormBuilder* obj, const QString& file, QWidget* w)
+{
+    QFile f(file);
+    if(f.open(QFile::ReadWrite)){
+        obj->save(&f,w);
+        f.close();
+    }
+}
+
+LQFormBuilder lqformbuilder()
+{
+    return
+    class_<QFormBuilder>("QFormBuilder")
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    .def("addPluginPath", QFormBuilder::addPluginPath)
+    .def("clearPluginPaths", QFormBuilder::clearPluginPaths)
+    .def("load", lqformbuilder_load1)
+    .def("load", lqformbuilder_load2)
+    .def("load", lqformbuilder_load3)
+    .def("load", lqformbuilder_load4)
+    .def("save", lqformbuilder_save1)
+    .def("save", lqformbuilder_save2)
+
+    .property("pluginPaths", QFormBuilder::pluginPaths, QFormBuilder::setPluginPath)
+    .property("workingDirectory", QUiLoader::workingDirectory, QUiLoader::setWorkingDirectory)
+            ;
+}
+*/
+
+
+
+
+
+
 
 
 void lqvariant_init(const argument& arg, const object& obj)

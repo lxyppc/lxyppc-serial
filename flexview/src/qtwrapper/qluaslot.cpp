@@ -1,9 +1,9 @@
 #include "qluaslot.h"
 #include <QDebug>
 #include "../../qextserialport/qextserialenumerator.h"
-#ifdef Q_OS_WIN
+//#ifdef Q_OS_WIN
 #include "../../qusbhid/qusbhid.h"
-#endif
+//#endif
 #include <QFtp>
 
 QLuaSlot::QLuaSlot(const QString& signature, bool autoDelete) :
@@ -518,10 +518,10 @@ void QLuaSlot::general_slot(const QMouseEvent* param1)
     if(m_delete_when_done)this->deleteLater();
 }
 
-#ifdef Q_OS_WIN
+//#ifdef Q_OS_WIN
 void QLuaSlot::general_slot(const QUsbHidInfo& param1)
 {
     ::gen_slot(m_obj,m_method,param1);
     if(m_delete_when_done)this->deleteLater();
 }
-#endif
+//#endif

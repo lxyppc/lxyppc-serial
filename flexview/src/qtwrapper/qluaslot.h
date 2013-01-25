@@ -78,9 +78,9 @@ public slots:
     void general_slot(Qt::Orientation);
     void general_slot(Qt::ToolBarAreas);
     void general_slot(const QMouseEvent* param1);
-#ifdef Q_OS_WIN
+//#ifdef Q_OS_WIN
     void general_slot(const QUsbHidInfo&);
-#endif
+//#endif
 private:
     object m_obj;
     QString m_method;

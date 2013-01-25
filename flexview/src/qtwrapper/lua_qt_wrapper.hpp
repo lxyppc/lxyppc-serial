@@ -1,6 +1,8 @@
 #ifndef LUA_QT_WRAPPER_HPP
 #define LUA_QT_WRAPPER_HPP
 #include <QtGui>
+#include <QtUiTools>
+//#include <QFormBuilder>
 #include "lua.hpp"
 #include <luabind/luabind.hpp>
 #include "boost/function.hpp"

@@ -278,3 +278,4 @@ dlg:show()
 dofile("../src/util.lua")
 dofile("../src/hidviewer.lua")
 mdiArea:addSubWindow( HidViewer()  ):show()
+

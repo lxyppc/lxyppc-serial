@@ -8,9 +8,12 @@ using namespace luabind;
 typedef class_<QObject>                     LQObject;
 typedef class_<QWidget, QObject>            LQWidget;
 typedef class_<QVariant>                    LQVariant;
+typedef class_<QUiLoader, QObject>          LQUiLoader;
+//typedef class_<QFormBuilder>                LQFormBuilder;
 
 LQObject lqobject();
 LQWidget lqwidget();
 LQVariant lqvariant();
-
+LQUiLoader lquiloader();
+//LQFormBuilder lqformbuilder();
 #endif

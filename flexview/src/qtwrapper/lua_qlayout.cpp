@@ -110,10 +110,14 @@ LQLayout lqlayout()
             .def("setContentsMargins", (void (QLayout::*)(int,int,int,int))&QLayout::setContentsMargins)
             .def("addWidget", &QLayout::addWidget)
             .def("__call", lqlayout_init)
-
+            .property("objectName", &QLayout::objectName)
             .property("contentsMargins", &QLayout::contentsMargins, (void (QLayout::*)(const QMargins &))&QLayout::setContentsMargins)
             .property("spacing", &QLayout::spacing, &QLayout::setSpacing)
             .property("geometry", &QLayout::geometry, &QLayout::setGeometry)
+
+            .scope[
+                def("closestAcceptableSize", QLayout::closestAcceptableSize)
+            ]
     ;
 }
 
