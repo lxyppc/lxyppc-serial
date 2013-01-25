@@ -6,6 +6,7 @@ TEMPLATE = app
 QT += network
 QT *= xml \
     opengl
+CONFIG += uitools
 TRANSLATIONS = chs.ts
 win32:QTPLUGIN += qcncodecs \
     qjpcodecs \
