@@ -87,6 +87,7 @@
 #include <boost/mpl/find_if.hpp>
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/logical.hpp>
+#include <boost/type_traits/is_base_of.hpp>
 
 #include <luabind/config.hpp>
 #include <luabind/scope.hpp>
@@ -117,6 +118,41 @@
 #pragma warning(push)
 #pragma warning(disable: 4355)
 #endif
+#include <QString>
+#include <QObject>
+#include <QRegExp>
+#include <QList>
+//class QObject;
+//class QString;
+//template<typename T>
+//class QList;
+//class QRegExp;
+template<typename T>
+T* lqobject_find_child(QObject* obj, const QString& name)
+{
+    return obj->findChild<T*>(name);
+}
+template<typename T>
+T* lqobject_find_child2(QObject* obj)
+{
+    return obj->findChild<T*>();
+}
+
+template<typename T>
+QList<T*> lqobject_find_children(QObject* obj, const QString& name)
+{
+    return obj->findChildren<T*>(name);
+}
+template<typename T>
+QList<T*> lqobject_find_children2(QObject* obj)
+{
+    return obj->findChildren<T*>();
+}
+template<typename T>
+QList<T*> lqobject_find_children3(QObject* obj, const QRegExp & regExp)
+{
+    return obj->findChildren<T*>(regExp);
+}
 
 namespace boost
 {
@@ -559,12 +595,25 @@ namespace luabind
 
 #undef LUABIND_GEN_BASE_INFO
 
+                void bind_find_child(boost::mpl::true_){
+                    scope[ luabind::def("findChild", lqobject_find_child<T>),
+                           luabind::def("findChild", lqobject_find_child2<T>),
+                           luabind::def("findChildren", lqobject_find_children<T>),
+                           luabind::def("findChildren", lqobject_find_children2<T>),
+                           luabind::def("findChildren", lqobject_find_children3<T>)
+                           ];
+                }
+                void bind_find_child(boost::mpl::false_){}
+
 		class_(const char* name): class_base(name), scope(*this)
 		{
 #ifndef NDEBUG
 			detail::check_link_compatibility();
 #endif
-		   	init(); 
+                        init();
+
+                        bind_find_child(boost::is_base_of<QObject,T>());
+
 		}
 
 		template<class F>
