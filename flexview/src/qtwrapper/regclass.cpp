@@ -247,6 +247,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqobject(),
         lqwidget(),
         lquiloader(),
+        lqsysinfo(),
         //lqformbuilder(),
 
         lqevent(),
@@ -368,6 +369,7 @@ void register_classes(lua_State* L, char const* name = 0)
 
         lqprocessenvironment(),
         lqprocess(),
+        lqthread(),
         lqapplication(),
         lqdesktopwidget(),
         lqclipboard(),

@@ -1,6 +1,7 @@
 #include "lua_qprocess.h"
 #include "luabind/tag_function.hpp"
 #include "qluaslot.h"
+#include <QSysInfo>
 
 LQProcessEnvironment lqprocessenvironment()
 {
@@ -327,5 +328,191 @@ LQFileSystemWatcher lqfilesystemwatcher()
     .property("files", &QFileSystemWatcher::files)
     .sig_prop(lqfilesystemwatcher, directoryChanged)
     .sig_prop(lqfilesystemwatcher, fileChanged)
+    ;
+}
+
+int lqthread_current_thread_id()
+{
+    return (int)QThread::currentThreadId();
+}
+
+LQThread lqthread()
+{
+    return
+    class_<QThread, QObject>("QFileSystemWatcher")
+    .scope[
+            def("currentThreadId", lqthread_current_thread_id)
+    ]
+    ;
+}
+
+
+#if defined (Q_OS_LINUX)
+int qLinuxVersion()
+{
+    static int version = 0;
+    if(version) return version;
+    QFile f("/etc/issue");
+    if(f.open(QIODevice::ReadOnly)){
+        QByteArray line = f.readLine();
+        f.close();
+        QRegExp exp("([a-z0-9]+) (\\d+)\\.(\\d+)\\.(\\d+)", Qt::CaseInsensitive);
+        if(exp.indexIn(line.data()) != -1){
+            uint m1 = exp.cap(2).toUInt();
+            uint m2 = exp.cap(3).toUInt();
+            uint m3 = exp.cap(4).toUInt();
+            version = (m1<<16) | (m2<<8) | m3;
+        }
+    }
+    return version;
+}
+const char* linux_os_name()
+{
+    static char os_name[256] = "";
+    if(os_name[0]) return os_name;
+    QFile f("/etc/issue");
+    if(f.open(QIODevice::ReadOnly)){
+        QByteArray line = f.readLine();
+        f.close();
+        QRegExp exp("([a-z0-9]+) (\\d+)\\.(\\d+)\\.(\\d+)", Qt::CaseInsensitive);
+        if(exp.indexIn(line.data()) != -1){
+            QString name = exp.cap(1);
+            strcpy(os_name,name.toStdString().c_str());
+        }
+    }
+    return os_name;
+}
+
+#endif
+
+int lqsysinfo_ByteOrder()
+{
+    return QSysInfo::ByteOrder;
+}
+
+int lqsysinfo_WordSize()
+{
+    return QSysInfo::WordSize;
+}
+
+const char* lqsysinfo_osname()
+{
+#if defined(Q_OS_SYMBIAN)
+    return "symbian";
+#elif defined(Q_WS_WIN) || defined(Q_OS_CYGWIN)
+    return "windows";
+#elif defined(Q_OS_MAC)
+    return "macos";
+#elif defined (Q_OS_LINUX)
+    return linux_os_name();
+#else
+    return "unknown";
+#endif
+}
+
+LQSysInfo lqsysinfo()
+{
+    return
+    class_<QSysInfo>("QSysInfo")
+    .scope[
+#if defined(Q_OS_SYMBIAN)
+            def("symbianVersion", QSysInfo::symbianVersion),
+            def("s60Version", QSysInfo::s60Version),
+#endif
+#if defined(Q_WS_WIN) || defined(Q_OS_CYGWIN)
+            def("qWinVersion", QSysInfo::qWinVersion),
+#endif
+#if defined(Q_OS_MAC)
+            def("qMacVersion", qMacVersion),
+#endif
+#if defined (Q_OS_LINUX)
+            def("qLinuxVersion",qLinuxVersion ),
+#endif
+            def("qVersion", qVersion),
+            def("byteOrder", lqsysinfo_ByteOrder),
+            def("wordSize", lqsysinfo_WordSize),
+            def("qOSName", lqsysinfo_osname)
+     ]
+
+#if defined(Q_OS_MAC)
+    .enum_("LineStatus")
+    [
+            value("MV_9",QSysInfo::MacVersion::MV_9),
+            value("MV_10_0",QSysInfo::MacVersion::MV_10_0),
+            value("MV_10_1",QSysInfo::MacVersion::MV_10_1),
+            value("MV_10_2",QSysInfo::MacVersion::MV_10_2),
+            value("MV_10_3",QSysInfo::MacVersion::MV_10_3),
+            value("MV_10_4",QSysInfo::MacVersion::MV_10_4),
+            value("MV_10_5",QSysInfo::MacVersion::MV_10_5),
+            value("MV_10_6",QSysInfo::MacVersion::MV_10_6),
+
+            /* codenames */
+            value("MV_CHEETAH",QSysInfo::MacVersion::MV_CHEETAH),
+            value("MV_PUMA",QSysInfo::MacVersion::MV_PUMA),
+            value("MV_JAGUAR",QSysInfo::MacVersion::MV_JAGUAR),
+            value("MV_PANTHER",QSysInfo::MacVersion::MV_PANTHER),
+            value("MV_TIGER",QSysInfo::MacVersion::MV_TIGER),
+            value("MV_LEOPARD",QSysInfo::MacVersion::MV_LEOPARD),
+            value("MV_SNOWLEOPARD",QSysInfo::MacVersion::MV_SNOWLEOPARD)
+    ]
+#endif
+
+#if defined(Q_WS_WIN) || defined(Q_OS_CYGWIN)
+    .enum_("WinVersion")[
+        value("WV_32s",QSysInfo::WinVersion::WV_32s),
+        value("WV_95",QSysInfo::WinVersion::WV_95),
+        value("WV_98",QSysInfo::WinVersion::WV_98),
+        value("WV_Me",QSysInfo::WinVersion::WV_Me),
+        value("WV_DOS_based",QSysInfo::WinVersion::WV_DOS_based),
+
+        /* codenames */
+        value("WV_NT",QSysInfo::WinVersion::WV_NT),
+        value("WV_2000",QSysInfo::WinVersion::WV_2000),
+        value("WV_XP",QSysInfo::WinVersion::WV_XP),
+        value("WV_2003",QSysInfo::WinVersion::WV_2003),
+        value("WV_VISTA",QSysInfo::WinVersion::WV_VISTA),
+        value("WV_WINDOWS7",QSysInfo::WinVersion::WV_WINDOWS7),
+        value("WV_NT_based",QSysInfo::WinVersion::WV_NT_based),
+
+        /* version numbers */
+        value("WV_4_0",QSysInfo::WinVersion::WV_4_0),
+        value("WV_5_0",QSysInfo::WinVersion::WV_5_0),
+        value("WV_5_1",QSysInfo::WinVersion::WV_5_1),
+        value("WV_5_2",QSysInfo::WinVersion::WV_5_2),
+        value("WV_6_0",QSysInfo::WinVersion::WV_6_0),
+        value("WV_6_1",QSysInfo::WinVersion::WV_6_1),
+
+        value("WV_CE",QSysInfo::WinVersion::WV_CE),
+        value("WV_CENET",QSysInfo::WinVersion::WV_CENET),
+        value("WV_CE_5",QSysInfo::WinVersion::WV_CE_5),
+        value("WV_CE_6",QSysInfo::WinVersion::WV_CE_6),
+        value("WV_CE_based",QSysInfo::WinVersion::WV_CE_based)
+    ]
+#endif
+
+#ifdef Q_OS_SYMBIAN
+    .enum_ ("SymbianVersion") [
+        value("SV_Unknown",QSysInfo::SymbianVersion::SV_Unknown),
+        //These are the Symbian Ltd versions 9.2-9.4
+        value("SV_9_2",QSysInfo::SymbianVersion::SV_9_2),
+        value("SV_9_3",QSysInfo::SymbianVersion::SV_9_3),
+        value("SV_9_4",QSysInfo::SymbianVersion::SV_9_4),
+        //Following values are the symbian foundation versions, i.e. Symbian^1 == SV_SF_1
+        value("SV_SF_1",QSysInfo::SymbianVersion::SV_SF_1),
+        value("SV_SF_2",QSysInfo::SymbianVersion::SV_SF_2),
+        value("SV_SF_3",QSysInfo::SymbianVersion::SV_SF_3),
+        value("SV_SF_4",QSysInfo::SymbianVersion::SV_SF_4)
+    ]
+    .enum_ ("S60Version") [
+        value("SV_S60_None",QSysInfo::S60Version::SV_S60_None),
+        value("SV_S60_Unknown",QSysInfo::S60Version::SV_S60_Unknown),
+        value("SV_S60_3_1",QSysInfo::S60Version::SV_S60_3_1),
+        value("SV_S60_3_2",QSysInfo::S60Version::SV_S60_3_2),
+        value("SV_S60_5_0",QSysInfo::S60Version::SV_S60_5_0),
+        //versions beyond 5.0 are to be confirmed - it is better to use symbian version
+        value("SV_S60_5_1",QSysInfo::S60Version::SV_S60_5_1),
+        value("SV_S60_5_2",QSysInfo::S60Version::SV_S60_5_2)
+    ]
+#endif
     ;
 }
