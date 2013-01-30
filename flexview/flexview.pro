@@ -4,7 +4,7 @@
 TARGET = XToolbox
 TEMPLATE = app
 QT += network
-QT *= xml \
+QT += xml \
     opengl
 CONFIG += uitools
 TRANSLATIONS = chs.ts
@@ -12,6 +12,15 @@ win32:QTPLUGIN += qcncodecs \
     qjpcodecs \
     qkrcodecs \
     qtwcodecs
+unix:QTPLUGIN += qcncodecs \
+    qjpcodecs \
+    qkrcodecs \
+    qtwcodecs
+unix:CONFIG += static
+
+# unix:LIBS += -lglut -lGL -lGLU -lGLEW
+unix:LIBS += -lGLU
+
 SOURCES += ./src/main.cpp \
     ./src/mainwindow.cpp \
     src/qtwrapper/regclass.cpp \
@@ -268,3 +277,4 @@ OTHER_FILES += src/script.lua \
     res/app.rc \
     src/hid.lua
 RESOURCES += res.qrc
+
