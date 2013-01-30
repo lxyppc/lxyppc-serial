@@ -356,7 +356,7 @@ int qLinuxVersion()
     if(f.open(QIODevice::ReadOnly)){
         QByteArray line = f.readLine();
         f.close();
-        QRegExp exp("([a-z0-9]+) (\\d+)\\.(\\d+)\\.(\\d+)", Qt::CaseInsensitive);
+        QRegExp exp("([a-z0-9]+) (\\d+)\\.*(\\d+)*\\.*(\\d+)*", Qt::CaseInsensitive);
         if(exp.indexIn(line.data()) != -1){
             uint m1 = exp.cap(2).toUInt();
             uint m2 = exp.cap(3).toUInt();
@@ -374,13 +374,14 @@ const char* linux_os_name()
     if(f.open(QIODevice::ReadOnly)){
         QByteArray line = f.readLine();
         f.close();
-        QRegExp exp("([a-z0-9]+) (\\d+)\\.(\\d+)\\.(\\d+)", Qt::CaseInsensitive);
+        QRegExp exp("([a-z0-9]+) (\\d+)\\.*(\\d+)*\\.*(\\d+)*", Qt::CaseInsensitive);
         if(exp.indexIn(line.data()) != -1){
             QString name = exp.cap(1);
             strcpy(os_name,name.toStdString().c_str());
+            return os_name;
         }
     }
-    return os_name;
+    return "linux";
 }
 
 #endif
