@@ -1,7 +1,7 @@
 #include "luahighlighter.h"
 //#include <QDebug>
 
-#if defined((_MSC_VER)
+#if defined (_MSC_VER)
 struct NoDebug{};
 #else
 struct NoDebug;
