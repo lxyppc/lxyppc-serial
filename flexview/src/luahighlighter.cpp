@@ -1,7 +1,11 @@
 #include "luahighlighter.h"
 //#include <QDebug>
 
+#if defined((_MSC_VER)
+struct NoDebug{};
+#else
 struct NoDebug;
+#endif
 template<typename T>
 inline NoDebug& operator<<(NoDebug& n,T&){return n;}
 #define qDebug()  (*(NoDebug*)0)

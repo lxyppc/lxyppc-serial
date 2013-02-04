@@ -421,7 +421,7 @@ LQSysInfo lqsysinfo()
             def("s60Version", QSysInfo::s60Version),
 #endif
 #if defined(Q_WS_WIN) || defined(Q_OS_CYGWIN)
-            def("qWinVersion", QSysInfo::qWinVersion),
+            def("qWinVersion", QSysInfo::windowsVersion),
 #endif
 #if defined(Q_OS_MAC)
             def("qMacVersion", qMacVersion),
@@ -438,56 +438,56 @@ LQSysInfo lqsysinfo()
 #if defined(Q_OS_MAC)
     .enum_("LineStatus")
     [
-            value("MV_9",QSysInfo::MacVersion::MV_9),
-            value("MV_10_0",QSysInfo::MacVersion::MV_10_0),
-            value("MV_10_1",QSysInfo::MacVersion::MV_10_1),
-            value("MV_10_2",QSysInfo::MacVersion::MV_10_2),
-            value("MV_10_3",QSysInfo::MacVersion::MV_10_3),
-            value("MV_10_4",QSysInfo::MacVersion::MV_10_4),
-            value("MV_10_5",QSysInfo::MacVersion::MV_10_5),
-            value("MV_10_6",QSysInfo::MacVersion::MV_10_6),
+            value("MV_9",QSysInfo::MV_9),
+            value("MV_10_0",QSysInfo::MV_10_0),
+            value("MV_10_1",QSysInfo::MV_10_1),
+            value("MV_10_2",QSysInfo::MV_10_2),
+            value("MV_10_3",QSysInfo::MV_10_3),
+            value("MV_10_4",QSysInfo::MV_10_4),
+            value("MV_10_5",QSysInfo::MV_10_5),
+            value("MV_10_6",QSysInfo::MV_10_6),
 
             /* codenames */
-            value("MV_CHEETAH",QSysInfo::MacVersion::MV_CHEETAH),
-            value("MV_PUMA",QSysInfo::MacVersion::MV_PUMA),
-            value("MV_JAGUAR",QSysInfo::MacVersion::MV_JAGUAR),
-            value("MV_PANTHER",QSysInfo::MacVersion::MV_PANTHER),
-            value("MV_TIGER",QSysInfo::MacVersion::MV_TIGER),
-            value("MV_LEOPARD",QSysInfo::MacVersion::MV_LEOPARD),
-            value("MV_SNOWLEOPARD",QSysInfo::MacVersion::MV_SNOWLEOPARD)
+            value("MV_CHEETAH",QSysInfo::MV_CHEETAH),
+            value("MV_PUMA",QSysInfo::MV_PUMA),
+            value("MV_JAGUAR",QSysInfo::MV_JAGUAR),
+            value("MV_PANTHER",QSysInfo::MV_PANTHER),
+            value("MV_TIGER",QSysInfo::MV_TIGER),
+            value("MV_LEOPARD",QSysInfo::MV_LEOPARD),
+            value("MV_SNOWLEOPARD",QSysInfo::MV_SNOWLEOPARD)
     ]
 #endif
 
 #if defined(Q_WS_WIN) || defined(Q_OS_CYGWIN)
     .enum_("WinVersion")[
-        value("WV_32s",QSysInfo::WinVersion::WV_32s),
-        value("WV_95",QSysInfo::WinVersion::WV_95),
-        value("WV_98",QSysInfo::WinVersion::WV_98),
-        value("WV_Me",QSysInfo::WinVersion::WV_Me),
-        value("WV_DOS_based",QSysInfo::WinVersion::WV_DOS_based),
+        value("WV_32s",QSysInfo::WV_32s),
+        value("WV_95",QSysInfo::WV_95),
+        value("WV_98",QSysInfo::WV_98),
+        value("WV_Me",QSysInfo::WV_Me),
+        value("WV_DOS_based",QSysInfo::WV_DOS_based),
 
         /* codenames */
-        value("WV_NT",QSysInfo::WinVersion::WV_NT),
-        value("WV_2000",QSysInfo::WinVersion::WV_2000),
-        value("WV_XP",QSysInfo::WinVersion::WV_XP),
-        value("WV_2003",QSysInfo::WinVersion::WV_2003),
-        value("WV_VISTA",QSysInfo::WinVersion::WV_VISTA),
-        value("WV_WINDOWS7",QSysInfo::WinVersion::WV_WINDOWS7),
-        value("WV_NT_based",QSysInfo::WinVersion::WV_NT_based),
+        value("WV_NT",QSysInfo::WV_NT),
+        value("WV_2000",QSysInfo::WV_2000),
+        value("WV_XP",QSysInfo::WV_XP),
+        value("WV_2003",QSysInfo::WV_2003),
+        value("WV_VISTA",QSysInfo::WV_VISTA),
+        value("WV_WINDOWS7",QSysInfo::WV_WINDOWS7),
+        value("WV_NT_based",QSysInfo::WV_NT_based),
 
         /* version numbers */
-        value("WV_4_0",QSysInfo::WinVersion::WV_4_0),
-        value("WV_5_0",QSysInfo::WinVersion::WV_5_0),
-        value("WV_5_1",QSysInfo::WinVersion::WV_5_1),
-        value("WV_5_2",QSysInfo::WinVersion::WV_5_2),
-        value("WV_6_0",QSysInfo::WinVersion::WV_6_0),
-        value("WV_6_1",QSysInfo::WinVersion::WV_6_1),
+        value("WV_4_0",QSysInfo::WV_4_0),
+        value("WV_5_0",QSysInfo::WV_5_0),
+        value("WV_5_1",QSysInfo::WV_5_1),
+        value("WV_5_2",QSysInfo::WV_5_2),
+        value("WV_6_0",QSysInfo::WV_6_0),
+        value("WV_6_1",QSysInfo::WV_6_1),
 
-        value("WV_CE",QSysInfo::WinVersion::WV_CE),
-        value("WV_CENET",QSysInfo::WinVersion::WV_CENET),
-        value("WV_CE_5",QSysInfo::WinVersion::WV_CE_5),
-        value("WV_CE_6",QSysInfo::WinVersion::WV_CE_6),
-        value("WV_CE_based",QSysInfo::WinVersion::WV_CE_based)
+        value("WV_CE",QSysInfo::WV_CE),
+        value("WV_CENET",QSysInfo::WV_CENET),
+        value("WV_CE_5",QSysInfo::WV_CE_5),
+        value("WV_CE_6",QSysInfo::WV_CE_6),
+        value("WV_CE_based",QSysInfo::WV_CE_based)
     ]
 #endif
 
@@ -495,24 +495,24 @@ LQSysInfo lqsysinfo()
     .enum_ ("SymbianVersion") [
         value("SV_Unknown",QSysInfo::SymbianVersion::SV_Unknown),
         //These are the Symbian Ltd versions 9.2-9.4
-        value("SV_9_2",QSysInfo::SymbianVersion::SV_9_2),
-        value("SV_9_3",QSysInfo::SymbianVersion::SV_9_3),
-        value("SV_9_4",QSysInfo::SymbianVersion::SV_9_4),
+        value("SV_9_2",QSysInfo::SV_9_2),
+        value("SV_9_3",QSysInfo::SV_9_3),
+        value("SV_9_4",QSysInfo::SV_9_4),
         //Following values are the symbian foundation versions, i.e. Symbian^1 == SV_SF_1
-        value("SV_SF_1",QSysInfo::SymbianVersion::SV_SF_1),
-        value("SV_SF_2",QSysInfo::SymbianVersion::SV_SF_2),
-        value("SV_SF_3",QSysInfo::SymbianVersion::SV_SF_3),
-        value("SV_SF_4",QSysInfo::SymbianVersion::SV_SF_4)
+        value("SV_SF_1",QSysInfo::SV_SF_1),
+        value("SV_SF_2",QSysInfo::SV_SF_2),
+        value("SV_SF_3",QSysInfo::SV_SF_3),
+        value("SV_SF_4",QSysInfo::SV_SF_4)
     ]
     .enum_ ("S60Version") [
-        value("SV_S60_None",QSysInfo::S60Version::SV_S60_None),
-        value("SV_S60_Unknown",QSysInfo::S60Version::SV_S60_Unknown),
-        value("SV_S60_3_1",QSysInfo::S60Version::SV_S60_3_1),
-        value("SV_S60_3_2",QSysInfo::S60Version::SV_S60_3_2),
-        value("SV_S60_5_0",QSysInfo::S60Version::SV_S60_5_0),
+        value("SV_S60_None",QSysInfo::SV_S60_None),
+        value("SV_S60_Unknown",QSysInfo::SV_S60_Unknown),
+        value("SV_S60_3_1",QSysInfo::SV_S60_3_1),
+        value("SV_S60_3_2",QSysInfo::SV_S60_3_2),
+        value("SV_S60_5_0",QSysInfo::SV_S60_5_0),
         //versions beyond 5.0 are to be confirmed - it is better to use symbian version
-        value("SV_S60_5_1",QSysInfo::S60Version::SV_S60_5_1),
-        value("SV_S60_5_2",QSysInfo::S60Version::SV_S60_5_2)
+        value("SV_S60_5_1",QSysInfo::SV_S60_5_1),
+        value("SV_S60_5_2",QSysInfo::SV_S60_5_2)
     ]
 #endif
     ;

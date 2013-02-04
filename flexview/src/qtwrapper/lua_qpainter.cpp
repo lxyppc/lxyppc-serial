@@ -1,6 +1,7 @@
 #include "lua_qpainter.h"
 #include "luabind/tag_function.hpp"
 #include "luabind/out_value_policy.hpp"
+
 namespace luabind{
 template <>
 struct default_converter<QPolygon>
@@ -86,8 +87,14 @@ namespace luabind{
 #define _mc Qt::ImageConversionFlags
 #define _x const QPixmap&
 #define _d qreal
+
+#if defined(_MSC_VER)
+#define _CT(a,...)        (void(QPainter::*)(a, __VA_ARGS__))
+#define _CF(a,...)        void(QPainter*, a, __VA_ARGS__)
+#else
 #define _CT(a,arg...)        (void(QPainter::*)(a, ## arg))
 #define _CF(a,arg...)        void(QPainter*, a, ## arg)
+#endif
 
 LQPainter lqpainter()
 {
@@ -157,8 +164,13 @@ LQPainter lqpainter()
     .def("drawRoundedRect", tag_function<_CF(_ri,_d,_d)>(boost::bind(_CT(_ri,_d,_d,Qt::SizeMode)&QPainter::drawRoundedRect,_1,_2,_3,_4,_5,_6,_7,Qt::AbsoluteSize) ) )
     .def("drawText", _CT(_p,_s)&QPainter::drawText)
     .def("drawText", _CT(_pi,_s)&QPainter::drawText)
+#if defined(_MSC_VER)
+    .def("drawText", _CT(_r,_i,_s,QRect*)&QPainter::drawText)
+    .def("drawText", _CT(_ri,_i,_s,QRect*)&QPainter::drawText)
+#else
     .def("drawText", _CT(_r,_i,_s,QRect*)&QPainter::drawText, pure_out_value(_5))
     .def("drawText", _CT(_ri,_i,_s,QRect*)&QPainter::drawText, pure_out_value(_8))
+#endif
     .def("eraseRect", _CT(_r)&QPainter::eraseRect)
     .def("eraseRect", _CT(_ri)&QPainter::eraseRect)
     .def("fillRect", _CT(_r,const QBrush&)&QPainter::fillRect)

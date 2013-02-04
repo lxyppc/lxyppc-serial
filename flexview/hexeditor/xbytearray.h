@@ -62,5 +62,15 @@ private:
     int _oldSize;                           // size of data
 };
 
+#if defined(_MSC_VER)
+#ifndef and
+#define and &&
+#endif
+
+#ifndef or
+#define or ||
+#endif
+#endif
+
 /** \endcond docNever */
 #endif // XBYTEARRAY_H
