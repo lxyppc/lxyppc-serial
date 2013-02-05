@@ -213,83 +213,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="QGLViewer\VRender\BackFaceCullingOptimizer.cpp"
+				RelativePath="src\luadialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath="QGLViewer\VRender\BSPSortMethod.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\camera.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\class.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\class_info.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\class_registry.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\class_rep.cpp"
-				>
-			</File>
-			<File
-				RelativePath="hexeditor\commands.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\constraint.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\create_class.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\EPSExporter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\error.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\exception_handler.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\Exporter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\FIGExporter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\frame.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\function.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\gpc.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\inheritance.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\keyFrameInterpolator.cpp"
+				RelativePath="src\luahighlighter.cpp"
 				>
 			</File>
 			<File
@@ -301,139 +229,11 @@
 				>
 			</File>
 			<File
-				RelativePath="QGLViewer\manipulatedCameraFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\manipulatedFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\mouseGrabber.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\NVector3.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\object_rep.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\open.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\ParserGL.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\pcall.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\Primitive.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\PrimitivePositioning.cpp"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\print.c"
-				>
-			</File>
-			<File
-				RelativePath="qextserialport\qextserialenumerator_win.cpp"
-				>
-			</File>
-			<File
-				RelativePath="qextserialport\qextserialport.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\qglviewer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="hexeditor\qhexedit.cpp"
-				>
-			</File>
-			<File
-				RelativePath="hexeditor\qhexedit_p.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\qluaedit.cpp"
 				>
 			</File>
 			<File
-				RelativePath="src\qtwrapper\qluaslot.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\quaternion.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\qtwrapper\regclass.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\saveSnapshot.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\scope.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\protowrapper\serialhelper.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\stack_content_by_name.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\TopologicalSortMethod.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\vec.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\Vector2.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\Vector3.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\VisibilityOptimizer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="QGLViewer\VRender\VRender.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\weak_ref.cpp"
-				>
-			</File>
-			<File
-				RelativePath="qextserialport\win_qextserialport.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\wrapper_base.cpp"
-				>
-			</File>
-			<File
-				RelativePath="hexeditor\xbytearray.cpp"
 				>
 			</File>
 			<Filter
@@ -493,10 +293,6 @@
 					>
 				</File>
 				<File
-					RelativePath="src\protowrapper\lua_qglviewer.cpp"
-					>
-				</File>
-				<File
 					RelativePath="src\qtwrapper\lua_qlayout.cpp"
 					>
 				</File>
@@ -552,19 +348,11 @@
 					>
 				</File>
 				<File
-					RelativePath="src\protowrapper\lua_serial.cpp"
-					>
-				</File>
-				<File
-					RelativePath="src\protowrapper\lua_socket.cpp"
-					>
-				</File>
-				<File
-					RelativePath="src\protowrapper\lua_usbhid.cpp"
-					>
-				</File>
-				<File
 					RelativePath="src\lua_util.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\qluaslot.cpp"
 					>
 				</File>
 			</Filter>
@@ -613,10 +401,6 @@
 				</File>
 				<File
 					RelativePath="lua-5.1.5\src\linit.c"
-					>
-				</File>
-				<File
-					RelativePath="luabind\src\link_compatibility.cpp"
 					>
 				</File>
 				<File
@@ -680,9 +464,133 @@
 					>
 				</File>
 				<File
-					RelativePath="src\luadialog.cpp"
+					RelativePath="lua-5.1.5\src\lundump.c"
 					>
 				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lvm.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lzio.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\print.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="protowrapper"
+				>
+				<File
+					RelativePath="src\protowrapper\lua_qglviewer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_serial.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_socket.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_usbhid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\serialhelper.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="luabind"
+				>
+				<File
+					RelativePath="luabind\src\class.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\class_info.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\class_registry.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\class_rep.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\create_class.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\error.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\exception_handler.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\function.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\inheritance.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\link_compatibility.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\object_rep.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\open.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\pcall.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\scope.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\stack_content_by_name.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\weak_ref.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\wrapper_base.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="qusbhid"
+				>
+				<File
+					RelativePath="qusbhid\qusbhid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="qusbhid\qusbhidenumerator.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="luagl"
+				>
 				<File
 					RelativePath="luagl\src\luagl.c"
 					>
@@ -699,40 +607,152 @@
 					RelativePath="luagl\src\luaglu.c"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="qextserialport"
+				>
 				<File
-					RelativePath="src\luahighlighter.cpp"
+					RelativePath="qextserialport\qextserialenumerator_win.cpp"
 					>
 				</File>
 				<File
-					RelativePath="lua-5.1.5\src\lundump.c"
+					RelativePath="qextserialport\qextserialport.cpp"
 					>
 				</File>
 				<File
-					RelativePath="lua-5.1.5\src\lvm.c"
-					>
-				</File>
-				<File
-					RelativePath="lua-5.1.5\src\lzio.c"
+					RelativePath="qextserialport\win_qextserialport.cpp"
 					>
 				</File>
 			</Filter>
 			<Filter
-				Name="protowrapper"
-				>
-			</Filter>
-			<Filter
-				Name="luabind"
-				>
-			</Filter>
-			<Filter
-				Name="qusbhid"
+				Name="QGLViewer"
 				>
 				<File
-					RelativePath="qusbhid\qusbhid.cpp"
+					RelativePath="QGLViewer\camera.cpp"
 					>
 				</File>
 				<File
-					RelativePath="qusbhid\qusbhidenumerator.cpp"
+					RelativePath="QGLViewer\constraint.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\frame.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\keyFrameInterpolator.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\manipulatedCameraFrame.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\manipulatedFrame.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\mouseGrabber.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\qglviewer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\quaternion.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\saveSnapshot.cpp"
+					>
+				</File>
+				<File
+					RelativePath="QGLViewer\vec.cpp"
+					>
+				</File>
+				<Filter
+					Name="VRender"
+					>
+					<File
+						RelativePath="QGLViewer\VRender\BackFaceCullingOptimizer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\BSPSortMethod.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\EPSExporter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\Exporter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\FIGExporter.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\gpc.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\NVector3.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\ParserGL.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\Primitive.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\PrimitivePositioning.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\TopologicalSortMethod.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\Vector2.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\Vector3.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\VisibilityOptimizer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="QGLViewer\VRender\VRender.cpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="hexeditor"
+				>
+				<File
+					RelativePath="hexeditor\commands.cpp"
+					>
+				</File>
+				<File
+					RelativePath="hexeditor\qhexedit.cpp"
+					>
+				</File>
+				<File
+					RelativePath="hexeditor\qhexedit_p.cpp"
+					>
+				</File>
+				<File
+					RelativePath="hexeditor\xbytearray.cpp"
 					>
 				</File>
 			</Filter>
