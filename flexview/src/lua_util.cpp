@@ -47,7 +47,7 @@ template<typename T>
 static T toT2(const QByteArray& arr, int from){
     T v = 0;
     from--;
-    if(arr.size() + from >= (int)sizeof(T)){
+    if(arr.size() >= (int)sizeof(T) + from){
         memcpy(&v,arr.data()+from,sizeof(T));
     }
     return v;

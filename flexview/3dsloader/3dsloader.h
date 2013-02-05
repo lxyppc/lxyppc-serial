@@ -374,6 +374,9 @@ char Object3ds::Load3DS(obj_type_ptr p_object, char *p_filename)
 				}				
                 for (i=0; i<l_qty; i++)
                 {
+                    p_object->polygon[i].a = 0;
+                    p_object->polygon[i].b = 0;
+                    p_object->polygon[i].c = 0;
                                         r = fread (&p_object->polygon[i].a, sizeof (unsigned short), 1, l_file);
 					printf("Polygon point a: %d\n",p_object->polygon[i].a);
                                         r = fread (&p_object->polygon[i].b, sizeof (unsigned short), 1, l_file);
