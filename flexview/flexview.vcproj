@@ -46,7 +46,7 @@
 				AdditionalOptions="-Zm200 -w34100 -w34189"
 				Optimization="4"
 				AdditionalIncludeDirectories="&quot;$(QTDIR)\include\QtUiTools&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtNetwork&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtOpenGL&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;&quot;luagl\include&quot;;&quot;lua-5.1.5\src&quot;;&quot;luabind&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;debug&quot;;&quot;.&quot;;&quot;$(QTDIR)\mkspecs\default&quot;;&quot;.\GeneratedFiles&quot;"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,WINVER=0x0501,QGLVIEWER_STATIC,GL_GLEXT_PROTOTYPES,GL_GLEXT_LEGACY,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;WINVER=0x0501;QGLVIEWER_STATIC;GL_GLEXT_PROTOTYPES;GL_GLEXT_LEGACY;QT_XML_LIB;QT_OPENGL_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;_CRT_SECURE_NO_DEPRECATE;_XTOOL_APP"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
 				RuntimeLibrary="1"
@@ -136,10 +136,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm200 -Wno-ignored-qualifiers -Wno-strict-aliasing -w34100 -w34189"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
 				Optimization="2"
 				AdditionalIncludeDirectories="&quot;$(QTDIR)\include\QtUiTools&quot;;&quot;$(QTDIR)\include\QtCore&quot;;&quot;$(QTDIR)\include\QtNetwork&quot;;&quot;$(QTDIR)\include\QtGui&quot;;&quot;$(QTDIR)\include\QtOpenGL&quot;;&quot;$(QTDIR)\include\QtXml&quot;;&quot;$(QTDIR)\include&quot;;&quot;luagl\include&quot;;&quot;lua-5.1.5\src&quot;;&quot;luabind&quot;;&quot;$(QTDIR)\include\ActiveQt&quot;;&quot;release&quot;;&quot;.&quot;;&quot;$(QTDIR)\mkspecs\default&quot;;&quot;.\GeneratedFiles&quot;"
-				PreprocessorDefinitions="_WINDOWS,UNICODE,WIN32,QT_LARGEFILE_SUPPORT,WINVER=0x0501,QGLVIEWER_STATIC,GL_GLEXT_PROTOTYPES,GL_GLEXT_LEGACY,QT_NO_DEBUG,QT_XML_LIB,QT_OPENGL_LIB,QT_GUI_LIB,QT_NETWORK_LIB,QT_CORE_LIB,QT_HAVE_MMX,QT_HAVE_3DNOW,QT_HAVE_SSE,QT_HAVE_MMXEXT,QT_HAVE_SSE2,QT_THREAD_SUPPORT,NDEBUG"
+				PreprocessorDefinitions="_WINDOWS;UNICODE;WIN32;QT_LARGEFILE_SUPPORT;WINVER=0x0501;QGLVIEWER_STATIC;GL_GLEXT_PROTOTYPES;GL_GLEXT_LEGACY;QT_NO_DEBUG;QT_XML_LIB;QT_OPENGL_LIB;QT_GUI_LIB;QT_NETWORK_LIB;QT_CORE_LIB;QT_HAVE_MMX;QT_HAVE_3DNOW;QT_HAVE_SSE;QT_HAVE_MMXEXT;QT_HAVE_SSE2;QT_THREAD_SUPPORT;NDEBUG;_CRT_SECURE_NO_DEPRECATE;_XTOOL_APP"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
 				RuntimeLibrary="0"
@@ -152,6 +152,7 @@
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="0"
+				DisableSpecificWarnings="4100"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -292,250 +293,6 @@
 				>
 			</File>
 			<File
-				RelativePath="lua-5.1.5\src\lapi.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lauxlib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lbaselib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lcode.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ldblib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ldebug.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ldo.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ldump.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lfunc.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lgc.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\linit.c"
-				>
-			</File>
-			<File
-				RelativePath="luabind\src\link_compatibility.cpp"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\liolib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\llex.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lmathlib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lmem.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\loadlib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lobject.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lopcodes.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\loslib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lparser.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lstate.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lstring.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lstrlib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ltable.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ltablib.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\ltm.c"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_commondlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qaction.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qbutton.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qdialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qeditor.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qevent.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qfile.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qftp.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\protowrapper\lua_qglviewer.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qlayout.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qlist.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qmainwindow.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qobject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qpainter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qprocess.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qrect.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qslider.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qspin.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qtabwidget.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qtextedit.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\qtwrapper\lua_qurl.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\protowrapper\lua_serial.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\protowrapper\lua_socket.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\protowrapper\lua_usbhid.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\lua_util.cpp"
-				>
-			</File>
-			<File
-				RelativePath="src\luadialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="luagl\src\luagl.c"
-				>
-			</File>
-			<File
-				RelativePath="luagl\src\luagl_const.c"
-				>
-			</File>
-			<File
-				RelativePath="luagl\src\luagl_util.c"
-				>
-			</File>
-			<File
-				RelativePath="luagl\src\luaglu.c"
-				>
-			</File>
-			<File
-				RelativePath="src\luahighlighter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lundump.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lvm.c"
-				>
-			</File>
-			<File
-				RelativePath="lua-5.1.5\src\lzio.c"
-				>
-			</File>
-			<File
 				RelativePath="src\main.cpp"
 				>
 			</File>
@@ -620,14 +377,6 @@
 				>
 			</File>
 			<File
-				RelativePath="qusbhid\qusbhid.cpp"
-				>
-			</File>
-			<File
-				RelativePath="qusbhid\qusbhidenumerator.cpp"
-				>
-			</File>
-			<File
 				RelativePath="src\qtwrapper\regclass.cpp"
 				>
 			</File>
@@ -687,6 +436,306 @@
 				RelativePath="hexeditor\xbytearray.cpp"
 				>
 			</File>
+			<Filter
+				Name="qtwrapper"
+				>
+				<File
+					RelativePath="src\qtwrapper\lua_commondlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qaction.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qbutton.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\qtwrapper\lua_qdialog.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qeditor.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qevent.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qfile.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qftp.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_qglviewer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qlayout.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qlist.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qmainwindow.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qpainter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qprocess.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qrect.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qslider.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qspin.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qtabwidget.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qtextedit.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\qtwrapper\lua_qurl.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_serial.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_socket.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\protowrapper\lua_usbhid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="src\lua_util.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="lua"
+				>
+				<File
+					RelativePath="lua-5.1.5\src\lapi.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lauxlib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lbaselib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lcode.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ldblib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ldebug.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ldo.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ldump.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lfunc.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lgc.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\linit.c"
+					>
+				</File>
+				<File
+					RelativePath="luabind\src\link_compatibility.cpp"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\liolib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\llex.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lmathlib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lmem.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\loadlib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lobject.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lopcodes.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\loslib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lparser.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lstate.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lstring.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lstrlib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ltable.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ltablib.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\ltm.c"
+					>
+				</File>
+				<File
+					RelativePath="src\luadialog.cpp"
+					>
+				</File>
+				<File
+					RelativePath="luagl\src\luagl.c"
+					>
+				</File>
+				<File
+					RelativePath="luagl\src\luagl_const.c"
+					>
+				</File>
+				<File
+					RelativePath="luagl\src\luagl_util.c"
+					>
+				</File>
+				<File
+					RelativePath="luagl\src\luaglu.c"
+					>
+				</File>
+				<File
+					RelativePath="src\luahighlighter.cpp"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lundump.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lvm.c"
+					>
+				</File>
+				<File
+					RelativePath="lua-5.1.5\src\lzio.c"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="protowrapper"
+				>
+			</Filter>
+			<Filter
+				Name="luabind"
+				>
+			</Filter>
+			<Filter
+				Name="qusbhid"
+				>
+				<File
+					RelativePath="qusbhid\qusbhid.cpp"
+					>
+				</File>
+				<File
+					RelativePath="qusbhid\qusbhidenumerator.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -706,7 +755,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing camera.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -717,7 +766,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing camera.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -756,7 +805,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing frame.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -767,7 +816,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing frame.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -786,7 +835,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing keyFrameInterpolator.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -797,7 +846,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing keyFrameInterpolator.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -852,7 +901,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing lua_serial.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -863,7 +912,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing lua_serial.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -886,7 +935,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing luadialog.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -897,7 +946,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing luadialog.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -920,7 +969,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing luahighlighter.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -931,7 +980,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing luahighlighter.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -946,7 +995,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing mainwindow.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -957,7 +1006,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing mainwindow.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -972,7 +1021,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing manipulatedCameraFrame.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -983,7 +1032,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing manipulatedCameraFrame.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -998,7 +1047,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing manipulatedFrame.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1009,7 +1058,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing manipulatedFrame.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1074,7 +1123,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qextserialport.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1085,7 +1134,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qextserialport.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1100,7 +1149,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qglviewer.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1111,7 +1160,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qglviewer.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1126,7 +1175,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qhexedit.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1137,7 +1186,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qhexedit.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1152,7 +1201,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qhexedit_p.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1163,7 +1212,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qhexedit_p.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1178,7 +1227,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qluaedit.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1189,7 +1238,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qluaedit.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1204,7 +1253,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qluaslot.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1215,7 +1264,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qluaslot.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1234,7 +1283,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qusbhid.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1245,7 +1294,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qusbhid.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1260,7 +1309,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qusbhidenumerator.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\debug&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>
@@ -1271,7 +1320,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Moc&apos;ing qusbhidenumerator.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  &quot;$(InputPath)&quot; -o &quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;  -D_WINDOWS -DUNICODE -DWIN32 -DQT_LARGEFILE_SUPPORT -DWINVER=0x0501 -DQGLVIEWER_STATIC -DGL_GLEXT_PROTOTYPES -DGL_GLEXT_LEGACY -DQT_NO_DEBUG -DQT_XML_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_HAVE_MMX -DQT_HAVE_3DNOW -DQT_HAVE_SSE -DQT_HAVE_MMXEXT -DQT_HAVE_SSE2 -DQT_THREAD_SUPPORT -DNDEBUG -D_CRT_SECURE_NO_DEPRECATE -D_XTOOL_APP  &quot;-I$(QTDIR)\include\QtUiTools&quot; &quot;-I$(QTDIR)\include\QtCore&quot; &quot;-I$(QTDIR)\include\QtNetwork&quot; &quot;-I$(QTDIR)\include\QtGui&quot; &quot;-I$(QTDIR)\include\QtOpenGL&quot; &quot;-I$(QTDIR)\include\QtXml&quot; &quot;-I$(QTDIR)\include&quot; &quot;-I.\luagl\include&quot; &quot;-I.\lua-5.1.5\src&quot; &quot;-I.\luabind&quot; &quot;-I$(QTDIR)\include\ActiveQt&quot; &quot;-I.\release&quot; &quot;-I.&quot; &quot;-I$(QTDIR)\mkspecs\default&quot; &quot;-I.\GeneratedFiles&quot;&#x0D;&#x0A;"
 						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;$(InputPath)"
 						Outputs="&quot;$(ConfigurationName)\moc_$(InputName).cpp&quot;"
 					/>

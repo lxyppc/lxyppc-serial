@@ -334,7 +334,12 @@ LQToolBar lqtoolbar()
 #define _ri int,int,int,int
 #define  _R  (void (QIcon::*)(QPainter *, const QRect &, Qt::Alignment,QIcon::Mode,QIcon::State)const)
 #define  _RI (void (QIcon::*)(QPainter *, int,int,int,int, Qt::Alignment,QIcon::Mode,QIcon::State)const)
+#if defined(_MSC_VER)
+#define _F(a, ...) void (QIcon*,a, __VA_ARGS__)
+#else
 #define _F(a, arg...) void (QIcon*,a, ## arg)
+#endif
+
 #define _m1 (QPixmap(QIcon::*)(const QSize&, QIcon::Mode, QIcon::State) const)
 #define _m2 (QPixmap(QIcon::*)(int,int, QIcon::Mode, QIcon::State) const)
 #define _m3 (QPixmap(QIcon::*)(int, QIcon::Mode, QIcon::State) const)

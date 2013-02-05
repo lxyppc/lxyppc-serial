@@ -7,6 +7,9 @@
 #include <luabind/luabind.hpp>
 #include "boost/function.hpp"
 #include "boost/type_traits/is_enum.hpp"
+#include <boost/typeof/std/utility.hpp>
+#include <boost/function_types/parameter_types.hpp>
+#include <boost/mpl/at.hpp>
 #include "luabind/detail/constructor.hpp"
 #include "converter.hpp"
 using namespace luabind;
@@ -45,7 +48,12 @@ object list_table(lua_State* L, const QList<T>& list)
 template<class BT, class PFN>
 bool q_cast(const object& obj, PFN(BT::* pfn), BT* m){
     try{
+#if defined(_MSC_VER)
+        typedef BOOST_TYPEOF(pfn) foo_type;
+        typedef boost::mpl::at_c<boost::function_types::parameter_types<foo_type>,1>::type T;
+#else
         typedef typename boost::function_traits<PFN>::arg1_type T;
+#endif
         typedef typename boost::remove_reference<T>::type T1;
         typedef typename boost::remove_const<T1>::type T2;
         if(!is_class<T2>(obj)) return false;
@@ -284,7 +292,7 @@ struct ValueSetter
 };
 
 struct my_les{
-bool operator()(const QString& l, const QString& r){
+bool operator()(const QString& l, const QString& r)const{
     return l.compare(r, Qt::CaseInsensitive) < 0;
 }
 };

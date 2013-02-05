@@ -118,15 +118,18 @@
 #pragma warning(push)
 #pragma warning(disable: 4355)
 #endif
+#ifdef _XTOOL_APP
 #include <QString>
 #include <QObject>
 #include <QRegExp>
 #include <QList>
+
 //class QObject;
 //class QString;
 //template<typename T>
 //class QList;
 //class QRegExp;
+
 template<typename T>
 T* lqobject_find_child(QObject* obj, const QString& name)
 {
@@ -153,6 +156,7 @@ QList<T*> lqobject_find_children3(QObject* obj, const QRegExp & regExp)
 {
     return obj->findChildren<T*>(regExp);
 }
+#endif
 
 namespace boost
 {
@@ -594,7 +598,7 @@ namespace luabind
 		}
 
 #undef LUABIND_GEN_BASE_INFO
-
+#ifdef _XTOOL_APP
                 void bind_find_child(boost::mpl::true_){
                     scope[ luabind::def("findChild", lqobject_find_child<T>),
                            luabind::def("findChild", lqobject_find_child2<T>),
@@ -604,6 +608,7 @@ namespace luabind
                            ];
                 }
                 void bind_find_child(boost::mpl::false_){}
+#endif
 
 		class_(const char* name): class_base(name), scope(*this)
 		{
@@ -611,9 +616,9 @@ namespace luabind
 			detail::check_link_compatibility();
 #endif
                         init();
-
+#ifdef _XTOOL_APP
                         bind_find_child(boost::is_base_of<QObject,T>());
-
+#endif
 		}
 
 		template<class F>

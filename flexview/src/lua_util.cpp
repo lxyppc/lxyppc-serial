@@ -9,8 +9,6 @@ typedef unsigned short uint16_t;
 typedef unsigned char uint8_t;
 #endif
 
-
-
 static const char* toString(const QByteArray& arr)
 {
     return arr.data();
@@ -164,7 +162,6 @@ static QString show_bytes4(const QByteArray& arr)
 {
     return show_bytes3(arr, 16);
 }
-
 
 LQUtil lqutil()
 {

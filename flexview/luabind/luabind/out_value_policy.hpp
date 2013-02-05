@@ -36,7 +36,7 @@ namespace luabind { namespace detail
 		char storage[N];
 	};
 
-#if defined(__GNUC__) && ( __GNUC__ == 3 && __GNUC_MINOR__ == 1 )
+#if (defined(__GNUC__) && ( __GNUC__ == 3 && __GNUC_MINOR__ == 1 )) || defined(_MSC_VER)
 
 	template<class U>
 	char_array<sizeof(U)> indirect_sizeof_test(by_reference<U>);

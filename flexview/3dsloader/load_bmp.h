@@ -16,7 +16,10 @@
 #include <QGLWidget>
 #ifdef Q_OS_WIN
 #include <windows.h>
+#if defined(_MSC_VER)
+#else
 #include "GL/glext.h"
+#endif
 #endif
 
 

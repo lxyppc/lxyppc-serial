@@ -266,79 +266,79 @@ QColor getColor(const QColor &initial, QWidget *parent, const QString &title,
     return QColorDialog::getColor(initial,parent,title,options);
 }
 
-extern lua_State* __pL;
-
-
-object getOpenFileNames2(object& selectedFilter, QWidget *parent = 0,
+QStringList getOpenFileNames2(QString& selectedFilter, QWidget *parent = 0,
                         const QString &caption = QString(),
                         const QString &dir = QString(),
                         const QString &filter = QString(),
                         QFileDialog::Options options = 0)
 {
     QString fit;
-    object obj = luabind::newtable(__pL);
     QStringList r = QFileDialog::getOpenFileNames(parent,caption,dir,filter,&fit,options);
-    for(int i=0;i<r.count(); i++){
-        obj[i+1] = r.at(i).toLocal8Bit().constData();
-    }
-    obj["filter"] = fit.toLocal8Bit().constData();
-    selectedFilter = obj["filter"];
-    obj["filter"] = nil;
-    return obj;
+    selectedFilter = fit;
+    return r;
+}
+
+QStringList getOpenFileNames3(QString& selectedFilter)
+{
+    QString fit;
+    QStringList r = QFileDialog::getOpenFileNames(0,QString(),QString(),QString(),&fit,0);
+    selectedFilter = fit;
+    //if(selectedFilter)strcpy(selectedFilter ,fit.toLocal8Bit().data());
+    return r;
 }
 
 
-object getOpenFileNames(object& filter)
+QStringList getOpenFileNames(QString& filter)
 {
     return getOpenFileNames2(filter);
 }
 
-object getOpenFileNames(object& filter,const QString &caption)
+QStringList getOpenFileNames(QString& filter,const QString &caption)
 {
     return getOpenFileNames2(filter, 0, caption);
 }
 
-object getOpenFileNames(object& filter,const QString &caption, const QString &dir)
+QStringList getOpenFileNames(QString& filter,const QString &caption, const QString &dir)
 {
     return getOpenFileNames2(filter, 0, caption, dir);
 }
 
-object getOpenFileNames(object& filter,const QString &caption, const QString &dir,const QString &fit)
+QStringList getOpenFileNames(QString& filter,const QString &caption, const QString &dir,const QString &fit)
 {
     return getOpenFileNames2(filter, 0, caption, dir, fit);
 }
 
-object getOpenFileNames(object& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+QStringList getOpenFileNames(QString& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
 {
     return getOpenFileNames2(filter, 0, caption, dir, fit, options);
 }
 
-object getOpenFileNames(object& filter, QWidget* w)
+QStringList getOpenFileNames(QString& filter, QWidget* w)
 {
     return getOpenFileNames2(filter, w);
 }
 
-object getOpenFileNames(object& filter, QWidget* w,const QString &caption)
+QStringList getOpenFileNames(QString& filter, QWidget* w,const QString &caption)
 {
     return getOpenFileNames2(filter, w, caption);
 }
 
-object getOpenFileNames(object& filter, QWidget* w,const QString &caption, const QString &dir)
+QStringList getOpenFileNames(QString& filter, QWidget* w,const QString &caption, const QString &dir)
 {
     return getOpenFileNames2(filter, w, caption, dir);
 }
 
-object getOpenFileNames(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
+QStringList getOpenFileNames(QString& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
 {
     return getOpenFileNames2(filter, w, caption, dir, fit);
 }
 
-object getOpenFileNames(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+QStringList getOpenFileNames(QString& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
 {
     return getOpenFileNames2(filter, w, caption, dir, fit, options);
 }
 
-QString getOpenFileName2(object& selectedFilter,
+QString getOpenFileName2(QString& selectedFilter,
                          QWidget *parent = 0,
                          const QString &caption = QString(),
                          const QString &dir = QString(),
@@ -348,64 +348,62 @@ QString getOpenFileName2(object& selectedFilter,
     QString fit;
     QString res;
     res = QFileDialog::getOpenFileName(parent,caption,dir,filter,&fit,options);
-    lua_pushstring(__pL, fit.toLocal8Bit().constData());
-    detail::stack_pop pop(__pL,1);
-    selectedFilter = object(luabind::from_stack(__pL, -1));
+    selectedFilter = fit;
     return res;
 }
 
-QString getOpenFileName(object& filter)
+QString getOpenFileName(QString& filter)
 {
     return getOpenFileName2(filter);
 }
 
-QString getOpenFileName(object& filter,const QString &caption)
+QString getOpenFileName(QString& filter,const QString &caption)
 {
     return getOpenFileName2(filter, 0, caption);
 }
 
-QString getOpenFileName(object& filter,const QString &caption, const QString &dir)
+QString getOpenFileName(QString& filter,const QString &caption, const QString &dir)
 {
     return getOpenFileName2(filter, 0, caption, dir);
 }
 
-QString getOpenFileName(object& filter,const QString &caption, const QString &dir,const QString &fit)
+QString getOpenFileName(QString& filter,const QString &caption, const QString &dir,const QString &fit)
 {
     return getOpenFileName2(filter, 0, caption, dir, fit);
 }
 
-QString getOpenFileName(object& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+QString getOpenFileName(QString& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
 {
     return getOpenFileName2(filter, 0, caption, dir, fit, options);
 }
 
-QString getOpenFileName(object& filter, QWidget* w)
+QString getOpenFileName(QString& filter, QWidget* w)
 {
     return getOpenFileName2(filter, w);
 }
 
-QString getOpenFileName(object& filter, QWidget* w,const QString &caption)
+QString getOpenFileName(QString& filter, QWidget* w,const QString &caption)
 {
     return getOpenFileName2(filter, w, caption);
 }
 
-QString getOpenFileName(object& filter, QWidget* w,const QString &caption, const QString &dir)
+QString getOpenFileName(QString& filter, QWidget* w,const QString &caption, const QString &dir)
 {
     return getOpenFileName2(filter, w, caption, dir);
 }
 
-QString getOpenFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
+QString getOpenFileName(QString& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
 {
     return getOpenFileName2(filter, w, caption, dir, fit);
 }
 
-QString getOpenFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+QString getOpenFileName(QString& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
 {
     return getOpenFileName2(filter, w, caption, dir, fit, options);
 }
 
 
-QString getSaveFileName2(object& selectedFilter,
+QString getSaveFileName2(QString& selectedFilter,
                          QWidget *parent = 0,
                          const QString &caption = QString(),
                          const QString &dir = QString(),
@@ -415,58 +413,56 @@ QString getSaveFileName2(object& selectedFilter,
     QString fit;
     QString res;
     res = QFileDialog::getSaveFileName(parent,caption,dir,filter,&fit,options);
-    lua_pushstring(__pL, fit.toLocal8Bit().constData());
-    detail::stack_pop pop(__pL,1);
-    selectedFilter = object(luabind::from_stack(__pL, -1));
+    selectedFilter = fit;
     return res;
 }
 
-QString getSaveFileName(object& filter)
+QString getSaveFileName(QString& filter)
 {
     return getSaveFileName2(filter);
 }
 
-QString getSaveFileName(object& filter,const QString &caption)
+QString getSaveFileName(QString& filter,const QString &caption)
 {
     return getSaveFileName2(filter, 0, caption);
 }
 
-QString getSaveFileName(object& filter,const QString &caption, const QString &dir)
+QString getSaveFileName(QString& filter,const QString &caption, const QString &dir)
 {
     return getSaveFileName2(filter, 0, caption, dir);
 }
 
-QString getSaveFileName(object& filter,const QString &caption, const QString &dir,const QString &fit)
+QString getSaveFileName(QString& filter,const QString &caption, const QString &dir,const QString &fit)
 {
     return getSaveFileName2(filter, 0, caption, dir, fit);
 }
 
-QString getSaveFileName(object& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+QString getSaveFileName(QString& filter,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
 {
     return getSaveFileName2(filter, 0, caption, dir, fit, options);
 }
 
-QString getSaveFileName(object& filter, QWidget* w)
+QString getSaveFileName(QString& filter, QWidget* w)
 {
     return getSaveFileName2(filter, w);
 }
 
-QString getSaveFileName(object& filter, QWidget* w,const QString &caption)
+QString getSaveFileName(QString& filter, QWidget* w,const QString &caption)
 {
     return getSaveFileName2(filter, w, caption);
 }
 
-QString getSaveFileName(object& filter, QWidget* w,const QString &caption, const QString &dir)
+QString getSaveFileName(QString& filter, QWidget* w,const QString &caption, const QString &dir)
 {
     return getSaveFileName2(filter, w, caption, dir);
 }
 
-QString getSaveFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
+QString getSaveFileName(QString& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit)
 {
     return getSaveFileName2(filter, w, caption, dir, fit);
 }
 
-QString getSaveFileName(object& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
+QString getSaveFileName(QString& filter, QWidget* w,const QString &caption, const QString &dir,const QString &fit,QFileDialog::Options options)
 {
     return getSaveFileName2(filter, w, caption, dir, fit, options);
 }
@@ -772,41 +768,40 @@ LQCommonDlg  lqcommondlg()
         def("getColor", (QColor (*)(const QColor &,QWidget *))getColor ),
         def("getColor", (QColor (*)(const QColor &,QWidget *,const QString &))getColor ),
         def("getColor", (QColor (*)(const QColor &,QWidget *,const QString &, QColorDialog::ColorDialogOptions))getColor ),
+        
+        def("getOpenFileNames",(QStringList (*)(QString&))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,const QString &, const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,const QString &, const QString &,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,QWidget*))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,QWidget*,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,QWidget*,const QString &, const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,QWidget*,const QString &, const QString &,const QString &))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileNames",(QStringList (*)(QString&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileNames, pure_out_value(_1)),
 
-        def("getOpenFileNames",(object (*)(object&))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,const QString &))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,const QString &, const QString &))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,const QString &, const QString &,const QString &))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,QWidget*))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &, const QString &))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &, const QString &,const QString &))getOpenFileNames, pure_out_value(_1)),
-        def("getOpenFileNames",(object (*)(object&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileNames, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,const QString &, const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,const QString &, const QString &,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,QWidget*))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,QWidget*,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,QWidget*,const QString &, const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,QWidget*,const QString &, const QString &,const QString &))getOpenFileName, pure_out_value(_1)),
+        def("getOpenFileName",(QString (*)(QString&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileName, pure_out_value(_1)),
+     
 
-        def("getOpenFileName",(QString (*)(object&))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,const QString &))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,const QString &, const QString &))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,const QString &, const QString &,const QString &))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,QWidget*))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &, const QString &))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &))getOpenFileName, pure_out_value(_1)),
-        def("getOpenFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getOpenFileName, pure_out_value(_1)),
-
-
-        def("getSaveFileName",(QString (*)(object&))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,const QString &))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,const QString &, const QString &))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,const QString &, const QString &,const QString &))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,const QString &, const QString &,const QString &,QFileDialog::Options))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,QWidget*))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &, const QString &))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &))getSaveFileName, pure_out_value(_1)),
-        def("getSaveFileName",(QString (*)(object&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getSaveFileName, pure_out_value(_1)),
-
+        def("getSaveFileName",(QString (*)(QString&))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,const QString &, const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,const QString &, const QString &,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,const QString &, const QString &,const QString &,QFileDialog::Options))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,QWidget*))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,QWidget*,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,QWidget*,const QString &, const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,QWidget*,const QString &, const QString &,const QString &))getSaveFileName, pure_out_value(_1)),
+        def("getSaveFileName",(QString (*)(QString&,QWidget*,const QString &, const QString &,const QString &,QFileDialog::Options))getSaveFileName, pure_out_value(_1)),
 
         def("getDir", (QString(*)()) getDir ),
         def("getDir", (QString(*)(const QString &)) getDir ),
