@@ -119,6 +119,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="del $(OutDir)\XToolbox1.exe"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -202,6 +203,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="upx -9 -o $(OutDir)\XToolbox1.exe $(OutDir)\XToolbox.exe"
 			/>
 		</Configuration>
 	</Configurations>
