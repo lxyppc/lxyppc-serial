@@ -6,9 +6,11 @@ typedef class_<QPainter> LQPainter;
 typedef class_<QImage> LQImage;
 typedef class_<QPixmap> LQPixmap;
 typedef class_<QBitmap,QPixmap> LQBitmap;
+typedef class_<QMovie,QObject> LQMovie;
 
 LQPainter lqpainter();
 LQImage lqimage();
 LQPixmap lqpixmap();
 LQBitmap lqbitmap();
+LQMovie  lqmovie();
 #endif // LUA_QPAINTER_H

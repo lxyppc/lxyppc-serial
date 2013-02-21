@@ -518,6 +518,24 @@ void QLuaSlot::general_slot(const QMouseEvent* param1)
     if(m_delete_when_done)this->deleteLater();
 }
 
+void QLuaSlot::general_slot(const QRect& param1)
+{
+    ::gen_slot(m_obj,m_method,param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(QImageReader::ImageReaderError param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
+void QLuaSlot::general_slot(QMovie::MovieState param1)
+{
+    ::gen_slot(m_obj,m_method,(int)param1);
+    if(m_delete_when_done)this->deleteLater();
+}
+
 //#ifdef Q_OS_WIN
 void QLuaSlot::general_slot(const QUsbHidInfo& param1)
 {

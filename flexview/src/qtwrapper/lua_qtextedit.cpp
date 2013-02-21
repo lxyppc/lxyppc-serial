@@ -86,6 +86,7 @@ LQLabel lqlabel()
     .def("clear", &QLabel::clear)
     .def("setPixmap", &QLabel::setPixmap)
     .def("setNum", (void(QLabel::*)(double))&QLabel::setNum)
+    .def("setMovie", &QLabel::setMovie)
 
     .property("text", &QLabel::text, &QLabel::setText)
     .property("indent", &QLabel::indent, &QLabel::setIndent)
@@ -99,6 +100,7 @@ LQLabel lqlabel()
 
     .class_<QLabel,QFrame>::property("buddy", &QLabel::buddy, &QLabel::setBuddy)
     .property("pixmap", &QLabel::pixmap, &QLabel::setPixmap)
+    .property("movie", &QLabel::movie, &QLabel::setMovie)
     ;
 }
 

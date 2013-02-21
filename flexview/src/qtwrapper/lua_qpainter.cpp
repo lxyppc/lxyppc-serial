@@ -1,6 +1,7 @@
 #include "lua_qpainter.h"
 #include "luabind/tag_function.hpp"
 #include "luabind/out_value_policy.hpp"
+#include "qluaslot.h"
 
 namespace luabind{
 template <>
@@ -545,4 +546,75 @@ LQBitmap lqbitmap()
         def("fromImage", lqbitmap_fromImage2)
     ]
             ;
+}
+
+int QMovie_cacheMode(QMovie* obj) { return (int)obj->cacheMode(); }
+void QMovie_setCacheMode(QMovie* obj, int mode) { obj->setCacheMode(QMovie::CacheMode(mode)); }
+
+int QMovie_state(QMovie* obj)
+{
+    return (int)obj->state();
+}
+
+SIGNAL_PROPERYT(lqmovie, error, QMovie, "(QImageReader::ImageReaderError)")
+SIGNAL_PROPERYT(lqmovie, finished, QMovie, "()")
+SIGNAL_PROPERYT(lqmovie, frameChanged, QMovie, "(int)")
+SIGNAL_PROPERYT(lqmovie, resized, QMovie, "(const QSize &)")
+SIGNAL_PROPERYT(lqmovie, started, QMovie, "()")
+SIGNAL_PROPERYT(lqmovie, stateChanged, QMovie, "(QMovie::MovieState)")
+SIGNAL_PROPERYT(lqmovie, updated, QMovie, "(const QRect &)")
+
+
+QStringList lqmovie_supportedFormats()
+{
+    QStringList res;
+    QList<QByteArray> r =QMovie::supportedFormats();
+    foreach(QByteArray a, r){
+        res.append( QString::fromAscii(a.data()));
+    }
+    return res;
+}
+
+LQMovie  lqmovie()
+{
+    return
+    class_<QMovie,QObject>("QMovie")
+    .def(constructor<>())
+    .def(constructor<QObject*>())
+    .def(constructor<const QString&>())
+    .def(constructor<const QString&, const QByteArray&>())
+    .def(constructor<const QString&, const QByteArray&, QObject*>())
+
+    .def("jumpToFrame", &QMovie::jumpToFrame)
+    .def("jumpToNextFrame", &QMovie::jumpToNextFrame)
+    .def("setPaused", &QMovie::setPaused)
+    .def("start", &QMovie::start)
+    .def("stop", &QMovie::stop)
+
+    .property("backgroundColor", &QMovie::backgroundColor, &QMovie::setBackgroundColor)
+    .property("cacheMode", QMovie_cacheMode, QMovie_setCacheMode)
+    .property("currentFrameNumber", &QMovie::currentFrameNumber)
+    .property("currentImage", &QMovie::currentImage)
+    .property("currentPixmap", &QMovie::currentPixmap)
+    .property("fileName", &QMovie::fileName, &QMovie::setFileName)
+    .property("format", &QMovie::format, &QMovie::setFormat)
+    .property("frameCount", &QMovie::frameCount)
+    .property("frameRect", &QMovie::frameRect)
+    .property("isValid", &QMovie::isValid)
+    .property("loopCount", &QMovie::loopCount)
+    .property("nextFrameDelay", &QMovie::nextFrameDelay)
+    .property("scaledSize", &QMovie::scaledSize, &QMovie::setScaledSize)
+    .property("speed", &QMovie::speed, &QMovie::setSpeed)
+    .property("state", QMovie_state)
+    .sig_prop(lqmovie,error)
+    .sig_prop(lqmovie,finished)
+    .sig_prop(lqmovie,frameChanged)
+    .sig_prop(lqmovie,resized)
+    .sig_prop(lqmovie,started)
+    .sig_prop(lqmovie,stateChanged)
+    .sig_prop(lqmovie,updated)
+    .scope[
+        def("supportedFormats", lqmovie_supportedFormats)
+    ]
+    ;
 }
