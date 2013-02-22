@@ -262,6 +262,22 @@ HEADERS *= luagl/include/luagl.h \
     luagl/include/luaglu.h
 
 # lua gl source end
+
+
+# qr encode source
+INCLUDEPATH += ./qrencode
+DEFINES += HAVE_CONFIG_H
+SOURCES +=  ./qrencode/split.c \
+    ./qrencode/rscode.c \
+    ./qrencode/qrspec.c \
+    ./qrencode/qrinput.c \
+    ./qrencode/qrencode.c \
+    ./qrencode/mqrspec.c \
+    ./qrencode/mmask.c \
+    ./qrencode/mask.c \
+    ./qrencode/bitstream.c \
+    ./src/qrencoder.cpp
+# qr encode source end
 INCLUDEPATH += ./lua-5.1.5/src \
     ./luabind
 QMAKE_CXXFLAGS += -Wno-ignored-qualifiers \
