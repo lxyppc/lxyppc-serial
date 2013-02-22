@@ -618,3 +618,71 @@ LQMovie  lqmovie()
     ]
     ;
 }
+
+
+LQREncoder lqrencoder()
+{
+    return
+    class_<QREncoder>("QREncoder")
+    .def(constructor<>())
+    .def(constructor<const QString&>())
+    .def(constructor<const QString&,int>())
+    .def(constructor<const QString&,int,int>())
+    .def(constructor<const QString&,int,int,int>())
+    .def(constructor<const QString&,int,int,int,int>())
+    .def(constructor<const QString&,int,int,int,int,const QColor&>())
+    .def(constructor<const QString&,int,int,int,int,const QColor&,const QColor&>())
+    .def(constructor<const QByteArray&>())
+    .def(constructor<const QByteArray&,int>())
+    .def(constructor<const QByteArray&,int,int>())
+    .def(constructor<const QByteArray&,int,int,int>())
+    .def(constructor<const QByteArray&,int,int,int,int>())
+    .def(constructor<const QByteArray&,int,int,int,int,const QColor&>())
+    .def(constructor<const QByteArray&,int,int,int,int,const QColor&,const QColor&>())
+    .property("margin", &QREncoder::margin, &QREncoder::setMargin)
+    .property("content", &QREncoder::content, &QREncoder::setContent)
+    .property("string", &QREncoder::string, &QREncoder::setString)
+    .property("mode", &QREncoder::mode, &QREncoder::setMode)
+    .property("level", &QREncoder::level, &QREncoder::setLevel)
+    .property("casesensitive", &QREncoder::casesensitive, &QREncoder::setCasesensitive)
+    .property("color", &QREncoder::color, &QREncoder::setColor)
+    .property("foregroundColor", &QREncoder::foregroundColor, &QREncoder::setForegroundColor)
+    .property("backgroundColor", &QREncoder::backgroundColor, &QREncoder::setBackgroundColor)
+    .def("toImage", (QImage(QREncoder::*)()const)&QREncoder::toImage)
+    .scope[
+        def("toImage", &QREncoder::toImage1),
+        def("toImage", &QREncoder::toImage2),
+        def("toImage", &QREncoder::toImage3),
+        def("toImage", &QREncoder::toImage4),
+        def("toImage", &QREncoder::toImage5),
+        def("toImage", &QREncoder::toImage51),
+        def("toImage", &QREncoder::toImage52),
+        def("toImage", &QREncoder::toImage6),
+        def("toImage", &QREncoder::toImage7),
+        def("toImage", &QREncoder::toImage8),
+        def("toImage", &QREncoder::toImage9),
+        def("toImage", &QREncoder::toImage10),
+        def("toImage", &QREncoder::toImage11),
+        def("toImage", &QREncoder::toImage12)
+    ]
+    .enum_("QRencodeMode")
+    [
+        value("QR_MODE_NUL",QR_MODE_NUL),
+	    value("QR_MODE_NUM",QR_MODE_NUM),
+	    value("QR_MODE_AN",QR_MODE_AN),
+	    value("QR_MODE_8",QR_MODE_8),
+	    value("QR_MODE_KANJI",QR_MODE_KANJI),
+	    value("QR_MODE_STRUCTURE",QR_MODE_STRUCTURE),
+	    value("QR_MODE_ECI",QR_MODE_ECI),
+	    value("QR_MODE_FNC1FIRST",QR_MODE_FNC1FIRST),
+	    value("QR_MODE_FNC1SECOND",QR_MODE_FNC1SECOND)
+    ]
+    .enum_("QRecLevel")
+    [
+        value("QR_ECLEVEL_L",QR_ECLEVEL_L),
+	    value("QR_ECLEVEL_M",QR_ECLEVEL_M),
+	    value("QR_ECLEVEL_Q",QR_ECLEVEL_Q),
+	    value("QR_ECLEVEL_H",QR_ECLEVEL_H)
+    ]
+    ;
+}

@@ -366,6 +366,7 @@ void register_classes(lua_State* L, char const* name = 0)
         lqpixmap(),
         lqbitmap(),
         lqmovie(),
+        lqrencoder(),
         //lqvariant(),
 
         lqprocessenvironment(),
@@ -478,6 +479,13 @@ void run_script_init(MainWindow* mainwindow)
     mwindow = mainwindow;
     set_pcall_callback(pcall_handler);
     QFile file("script.lua");
+    QStringList args = QCoreApplication::arguments();
+    if(args.count() > 1){
+        file.setFileName(args.at(1));
+        if(!file.exists()){
+            file.setFileName("script.lua");
+        }
+    }
     if(!file.exists()){
         file.setFileName("../src/script.lua");
     }
