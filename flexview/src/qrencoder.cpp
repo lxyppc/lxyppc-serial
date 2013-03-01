@@ -21,7 +21,7 @@ QImage QREncoder::toImage() const
         int w = code->width+m_margin*2;
         image = image.copy(-m_margin,-m_margin,w,w);
         image = image.scaled(w*m_size, w*m_size);
+        QRcode_free(code);
     }
-    QRcode_free(code);
     return image;
 }
