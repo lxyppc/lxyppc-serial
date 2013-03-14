@@ -73,7 +73,7 @@ typedef UINT64 uint64_t;
  *
  * Reduction in size, reduces speed.
  */
-#define POLARSSL_MPI_WINDOW_SIZE                           6        /**< Maximum windows size used. */
+#define POLARSSL_MPI_WINDOW_SIZE                           5        /**< Maximum windows size used. */
 
 /*
  * Maximum size of MPIs allowed in bits and bytes for user-MPIs.

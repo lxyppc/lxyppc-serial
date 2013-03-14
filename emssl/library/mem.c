@@ -19,9 +19,9 @@ static int alloc_cnt = 0;
 static int free_cnt = 0;
 
 
-static unsigned short used_map[4096];
+static unsigned short used_map[1];
 
-static unsigned char mem_pool[8192];
+static unsigned char mem_pool[4096+1024];
 
 unsigned char* get_static_mem()
 {
@@ -97,7 +97,7 @@ void x_free_( void* pool, void* p )
         }
 }
 
-void* x_mem_init()
+void* x_mem_init(void)
 {
 	printf("\nMemory pool inited\n");
 	memcnt = 0;
@@ -172,7 +172,7 @@ static void display_mem_info(const char* desc, void* p, size_t size)
         size_t mp = (unsigned char*)mark - mem_pool;
         size_t vp = mp + 2;
         (void)vp;
-        //printf("Memory at %d(%d), len = %d, alloc = %d, used = %d\n", mp, vp, mark->length, mark->alloc, mark->used);
+        printf("Memory at %d(%d), len = %d, alloc = %d, used = %d\n", mp, vp, mark->length, mark->alloc, mark->used);
 
         switch(mark->length){
         case RND1:
@@ -192,10 +192,10 @@ static void display_mem_info(const char* desc, void* p, size_t size)
 
 void* _x_malloc(void* pool, size_t size)
 {
-    (void)pool;
     size_t s = size_cap(size);
     mem_mark* r = 0;
     mem_mark* mark = (mem_mark*)mem_pool;
+    (void)pool;
     do{
         mark = skip_used( mark );
         if(!mark->alloc){

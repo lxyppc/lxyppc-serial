@@ -28,7 +28,7 @@ void* x_malloc( void* pool, size_t size );
 void x_free( void* pool, void* p );
 void* x_realloc(void* pool, void*p, size_t size);
 
-void* x_mem_init();
+void* x_mem_init(void);
 void x_mem_free(void* pool);
 
 
