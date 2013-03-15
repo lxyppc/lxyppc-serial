@@ -790,6 +790,11 @@
 #endif /* SSE2 */
 #endif /* MSVC */
 
+
+#if defined ( __CC_ARM )
+#define  EXTERN_MUL_HELP
+#endif
+
 #endif /* POLARSSL_HAVE_ASM */
 
 #if !defined(MULADDC_CORE)

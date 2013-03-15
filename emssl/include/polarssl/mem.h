@@ -30,6 +30,8 @@ void* x_realloc(void* pool, void*p, size_t size);
 
 void* x_mem_init(void);
 void x_mem_free(void* pool);
+void x_memset(void*p, int v, size_t len);
+void x_memcpy(void* dest, const char* src, size_t len);
 
 
 #ifdef __cplusplus

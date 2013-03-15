@@ -178,7 +178,7 @@
  *
  * Enable the RSA prime-number generation code.
  */
-#define POLARSSL_GENPRIME
+//#define POLARSSL_GENPRIME
 
 /**
  * \def POLARSSL_FS_IO
@@ -236,7 +236,7 @@
  *
  * Enable the checkup functions (*_self_test).
  */
-#define POLARSSL_SELF_TEST
+//#define POLARSSL_SELF_TEST
 
 /**
  * \def POLARSSL_SSL_ALL_ALERT_MESSAGES
@@ -889,9 +889,14 @@
 #define   X_MALLOC(pool, size)		x_malloc((pool), (size))
 #define   X_FREE(pool, p)		x_free((pool), (p))
 #define   X_REALLOC(pool, p ,size )     x_realloc((pool), (p), size)
+#define   MEMSET(p, v, size)		x_memset((p), (v), (size))
 #else
 #define   X_MALLOC(pool, size)		malloc(size)
 #define   X_FREE(pool, p)		free(p)
 #define   X_REALLOC(pool, p ,size )     realloc((p), (size))
+#define   MEMSET(p, v, size)		memset((p), (v), (size))
 #endif
+
+#define  PRINTF(fmt, args...) //printf(fmt, ##args)
+
 #endif /* config.h */

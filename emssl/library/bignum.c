@@ -76,7 +76,7 @@ void mpi_free( mpi *X )
 
     if( X->p != NULL )
     {
-        memset( X->p, 0, X->n * ciL );
+        MEMSET( X->p, 0, X->n * ciL );
         X_FREE(NULL, X->p );
     }
 
@@ -104,14 +104,14 @@ int mpi_grow( mpi *X, size_t nblimbs )
         }else{
             if( ( p = (t_uint *) X_MALLOC(NULL, nblimbs * ciL ) ) == NULL )
                 return( POLARSSL_ERR_MPI_MALLOC_FAILED );
-            memset( p, 0, nblimbs * ciL );
+            MEMSET( p, 0, nblimbs * ciL );
         }
 
         // done by realloc
         //if( X->p != NULL )
         //{
         //    memcpy( p, X->p, X->n * ciL );
-        //    memset( X->p, 0, X->n * ciL );
+        //    MEMSET( X->p, 0, X->n * ciL );
         //    X_FREE(NULL, X->p );
         //}
 
@@ -142,7 +142,7 @@ int mpi_copy( mpi *X, const mpi *Y )
 
     MPI_CHK( mpi_grow( X, i ) );
 
-    memset( X->p, 0, X->n * ciL );
+    MEMSET( X->p, 0, X->n * ciL );
     memcpy( X->p, Y->p, i * ciL );
 
 cleanup:
@@ -170,7 +170,7 @@ int mpi_lset( mpi *X, t_sint z )
     int ret;
 
     MPI_CHK( mpi_grow( X, 1 ) );
-    memset( X->p, 0, X->n * ciL );
+    MEMSET( X->p, 0, X->n * ciL );
 
     X->p[0] = ( z < 0 ) ? -z : z;
     X->s    = ( z < 0 ) ? -1 : 1;
@@ -457,7 +457,7 @@ int mpi_read_file( mpi *X, int radix, FILE *fin )
      */
     char s[ POLARSSL_MPI_RW_BUFFER_SIZE ];
 
-    memset( s, 0, sizeof( s ) );
+    MEMSET( s, 0, sizeof( s ) );
     if( fgets( s, sizeof( s ) - 1, fin ) == NULL )
         return( POLARSSL_ERR_MPI_FILE_IO_ERROR );
 
@@ -490,7 +490,7 @@ int mpi_write_file( const char *p, const mpi *X, int radix, FILE *fout )
     char s[ POLARSSL_MPI_RW_BUFFER_SIZE ];
 
     n = sizeof( s );
-    memset( s, 0, n );
+    MEMSET( s, 0, n );
     n -= 2;
 
     MPI_CHK( mpi_write_string( X, radix, s, (size_t *) &n ) );
@@ -509,7 +509,7 @@ int mpi_write_file( const char *p, const mpi *X, int radix, FILE *fout )
             return( POLARSSL_ERR_MPI_FILE_IO_ERROR );
     }
     else
-        printf( "%s%s", p, s );
+        PRINTF( "%s%s", p, s );
 
 cleanup:
 
@@ -552,7 +552,7 @@ int mpi_write_binary( const mpi *X, unsigned char *buf, size_t buflen )
     if( buflen < n )
         return( POLARSSL_ERR_MPI_BUFFER_TOO_SMALL );
 
-    memset( buf, 0, buflen );
+    MEMSET( buf, 0, buflen );
 
     for( i = buflen - 1, j = 0; n > 0; i--, j++, n-- )
         buf[i] = (unsigned char)( X->p[j / ciL] >> ((j % ciL) << 3) );
@@ -945,6 +945,9 @@ int mpi_sub_int( mpi *X, const mpi *A, t_sint b )
 /*
  * Helper for mpi multiplication
  */ 
+#ifdef EXTERN_MUL_HELP
+void mpi_mul_hlp( size_t i, t_uint *s, t_uint *d, t_uint b );
+#else
 static void mpi_mul_hlp( size_t i, t_uint *s, t_uint *d, t_uint b )
 {
     t_uint c = 0, t = 0;
@@ -1005,7 +1008,7 @@ static void mpi_mul_hlp( size_t i, t_uint *s, t_uint *d, t_uint b )
     }
     while( c != 0 );
 }
-
+#endif
 /*
  * Baseline multiplication: X = A * B  (HAC 14.12)
  */
@@ -1345,7 +1348,7 @@ static void mpi_montmul( mpi *A, const mpi *B, const mpi *N, t_uint mm, const mp
     size_t i, n, m;
     t_uint u0, u1, *d;
 
-    memset( T->p, 0, T->n * ciL );
+    MEMSET( T->p, 0, T->n * ciL );
 
     d = T->p;
     n = N->n;
@@ -1415,7 +1418,7 @@ int mpi_exp_mod( mpi *X, const mpi *A, const mpi *E, const mpi *N, mpi *_RR )
      */
     mpi_montg_init( &mm, N );
     mpi_init( &RR ); mpi_init( &T );
-    memset( W, 0, sizeof( W ) );
+    MEMSET( W, 0, sizeof( W ) );
 
     i = mpi_msb( E );
 
@@ -2025,18 +2028,18 @@ int mpi_self_test( int verbose )
         "30879B56C61DE584A0F53A2447A51E" ) );
 
     if( verbose != 0 )
-        printf( "  MPI test #1 (mul_mpi): " );
+        PRINTF( "  MPI test #1 (mul_mpi): " );
 
     if( mpi_cmp_mpi( &X, &U ) != 0 )
     {
         if( verbose != 0 )
-            printf( "failed\n" );
+            PRINTF( "failed\n" );
 
         return( 1 );
     }
 
     if( verbose != 0 )
-        printf( "passed\n" );
+        PRINTF( "passed\n" );
 
     MPI_CHK( mpi_div_mpi( &X, &Y, &A, &N ) );
 
@@ -2049,19 +2052,19 @@ int mpi_self_test( int verbose )
         "9EE50D0657C77F374E903CDFA4C642" ) );
 
     if( verbose != 0 )
-        printf( "  MPI test #2 (div_mpi): " );
+        PRINTF( "  MPI test #2 (div_mpi): " );
 
     if( mpi_cmp_mpi( &X, &U ) != 0 ||
         mpi_cmp_mpi( &Y, &V ) != 0 )
     {
         if( verbose != 0 )
-            printf( "failed\n" );
+            PRINTF( "failed\n" );
 
         return( 1 );
     }
 
     if( verbose != 0 )
-        printf( "passed\n" );
+        PRINTF( "passed\n" );
 
     MPI_CHK( mpi_exp_mod( &X, &A, &E, &N, NULL ) );
 
@@ -2071,18 +2074,18 @@ int mpi_self_test( int verbose )
         "325D24D6A3C12710F10A09FA08AB87" ) );
 
     if( verbose != 0 )
-        printf( "  MPI test #3 (exp_mod): " );
+        PRINTF( "  MPI test #3 (exp_mod): " );
 
     if( mpi_cmp_mpi( &X, &U ) != 0 )
     {
         if( verbose != 0 )
-            printf( "failed\n" );
+            PRINTF( "failed\n" );
 
         return( 1 );
     }
 
     if( verbose != 0 )
-        printf( "passed\n" );
+        PRINTF( "passed\n" );
 
 #if defined(POLARSSL_GENPRIME)
     MPI_CHK( mpi_inv_mod( &X, &A, &N ) );
@@ -2093,22 +2096,22 @@ int mpi_self_test( int verbose )
         "C5B8A74DAC4D09E03B5E0BE779F2DF61" ) );
 
     if( verbose != 0 )
-        printf( "  MPI test #4 (inv_mod): " );
+        PRINTF( "  MPI test #4 (inv_mod): " );
 
     if( mpi_cmp_mpi( &X, &U ) != 0 )
     {
         if( verbose != 0 )
-            printf( "failed\n" );
+            PRINTF( "failed\n" );
 
         return( 1 );
     }
 
     if( verbose != 0 )
-        printf( "passed\n" );
+        PRINTF( "passed\n" );
 #endif
 
     if( verbose != 0 )
-        printf( "  MPI test #5 (simple gcd): " );
+        PRINTF( "  MPI test #5 (simple gcd): " );
 
     for ( i = 0; i < GCD_PAIR_COUNT; i++)
     {
@@ -2120,25 +2123,25 @@ int mpi_self_test( int verbose )
 	    if( mpi_cmp_int( &A, gcd_pairs[i][2] ) != 0 )
 	    {
 		    if( verbose != 0 )
-			    printf( "failed at %d\n", i );
+			    PRINTF( "failed at %d\n", i );
 
 		    return( 1 );
 	    }
     }
 
     if( verbose != 0 )
-        printf( "passed\n" );
+        PRINTF( "passed\n" );
 
 cleanup:
 
     if( ret != 0 && verbose != 0 )
-        printf( "Unexpected error, return code = %08X\n", ret );
+        PRINTF( "Unexpected error, return code = %08X\n", ret );
 
     mpi_free( &A ); mpi_free( &E ); mpi_free( &N ); mpi_free( &X );
     mpi_free( &Y ); mpi_free( &U ); mpi_free( &V );
 
     if( verbose != 0 )
-        printf( "\n" );
+        PRINTF( "\n" );
 
     return( ret );
 }

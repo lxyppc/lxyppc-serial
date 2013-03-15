@@ -18,10 +18,8 @@ static int xcnt = 0;
 static int alloc_cnt = 0;
 static int free_cnt = 0;
 
-
-static unsigned short used_map[1];
-
 static unsigned char mem_pool[4096+1024];
+static unsigned short used_map[1];
 
 unsigned char* get_static_mem()
 {
@@ -91,7 +89,7 @@ void x_free_( void* pool, void* p )
     (void)pool;
         remove_mem(p);
         if(is_static_mem(p)){
-            printf("Static memory not enough\n");
+            PRINTF("Static memory not enough\n");
         }else{
             free(p);
         }
@@ -99,12 +97,13 @@ void x_free_( void* pool, void* p )
 
 void* x_mem_init(void)
 {
-	printf("\nMemory pool inited\n");
+	PRINTF("\nMemory pool inited\n");
 	memcnt = 0;
 	maxcnt = 0;
-        xcnt = 0;
-        alloc_cnt = 0;
-        free_cnt = 0;
+    xcnt = 0;
+    alloc_cnt = 0;
+    free_cnt = 0;
+    MEMSET(mem_pool, 0 , sizeof(mem_pool));
 	return NULL;
 }
 
@@ -113,20 +112,20 @@ void x_mem_free(void* pool)
 	mem_list* t = first;
 	int i;
 	(void)pool;
-        memset(mem_pool, 0 , sizeof(mem_pool));
+    MEMSET(mem_pool, 0 , sizeof(mem_pool));
 	for(;t;){
 		mem_list* x = t->next;
 		free(t);
 		t=x;
 	}
-        printf("Memory pool free. cnt = %d(%d), max = %d, %d(%d)\n",memcnt,xcnt,maxcnt,alloc_cnt,free_cnt);
-        for(i=0; i<alloc_cnt; i++){
-                printf("%d, ",used_map[i]);
-                if( (i&15) == 15 ) printf("\n");
-        }
-        if( (i&15) != 15 )printf("\n");
-	first = NULL;
-	last = NULL;
+    PRINTF("Memory pool free. cnt = %d(%d), max = %d, %d(%d)\n",memcnt,xcnt,maxcnt,alloc_cnt,free_cnt);
+    for(i=0; i<alloc_cnt; i++){
+        PRINTF("%d, ",used_map[i]);
+        if( (i&15) == 15 ) PRINTF("\n");
+    }
+    if( (i&15) != 15 )PRINTF("\n");
+    first = NULL;
+    last = NULL;
 	alloc_cnt = 0;
 	free_cnt = 0;
 }
@@ -137,9 +136,13 @@ void x_mem_free(void* pool)
 
 unsigned char * p_pool = mem_pool;
 typedef struct _mem_mark{
-    unsigned short length : 14;
-    unsigned short used : 1;
-    unsigned short alloc : 1;
+    //unsigned short length : 14;
+    //unsigned short used : 1;
+    //unsigned short alloc : 1;
+    
+    unsigned char  used;
+    unsigned char  alloc;
+    unsigned short length;
 }mem_mark;
 
 size_t size_cap(size_t size)
@@ -150,11 +153,16 @@ size_t size_cap(size_t size)
     return size;
 }
 
+#define  get_nex_mark(mark) \
+    (mark + mark->length/(sizeof(mem_mark)) + 1)
+
+#define  mark_from_mem(p)   \
+    ((mem_mark*)(p) - 1)
 
 static mem_mark* skip_used(mem_mark* mark)
 {
     while(mark->used){
-        mark = mark + mark->length/2 + 1;
+        mark = get_nex_mark(mark);
     }
     return mark;
 }
@@ -167,12 +175,12 @@ static void display_mem_info(const char* desc, void* p, size_t size)
     size_t r3 = 0;
     size_t r4 = 0;
     mem_mark* mark = (mem_mark*)mem_pool;
-    printf("%s at %d, size = %d\n", desc, x, size);
+    PRINTF("%s at %d, size = %d\n", desc, x, size);
     do{
         size_t mp = (unsigned char*)mark - mem_pool;
-        size_t vp = mp + 2;
+        size_t vp = mp + sizeof(mem_mark);
         (void)vp;
-        printf("Memory at %d(%d), len = %d, alloc = %d, used = %d\n", mp, vp, mark->length, mark->alloc, mark->used);
+        PRINTF("Memory at %d(%d), len = %d, alloc = %d, used = %d\n", mp, vp, mark->length, mark->alloc, mark->used);
 
         switch(mark->length){
         case RND1:
@@ -184,10 +192,10 @@ static void display_mem_info(const char* desc, void* p, size_t size)
         default:
             r4++; break;
         }
-        mark = mark + mark->length/2 + 1;
+        mark = get_nex_mark(mark);
     }while(mark->alloc || mark->used);
-    printf("%d(%d), %d(%d), %d(%d), other(%d)",RND1,r1,RND2,r2,RND3,r3,r4);
-    printf("================\n");
+    PRINTF("%d(%d), %d(%d), %d(%d), other(%d)",RND1,r1,RND2,r2,RND3,r3,r4);
+    PRINTF("================\n");
 }
 
 void* _x_malloc(void* pool, size_t size)
@@ -207,7 +215,7 @@ void* _x_malloc(void* pool, size_t size)
             mark->used = 1;
             r = mark;
         }else{
-            mark = mark + mark->length/2 + 1;
+            mark = get_nex_mark(mark);
             r = 0;
         }
     }while(r == 0);
@@ -225,7 +233,7 @@ void* _x_malloc(void* pool, size_t size)
 void* _x_realloc(void* pool, void*p, size_t size)
 {
     void* r = 0;
-    mem_mark* mark = ((mem_mark*)p) - 1;
+    mem_mark* mark = mark_from_mem(p);
     if(mark->length > size) return p;
     mark->used = 0;
     display_mem_info("Re free", p, size);
@@ -238,8 +246,8 @@ void* _x_realloc(void* pool, void*p, size_t size)
 
 void _x_free(void* pool, void*p)
 {
-    mem_mark* mark = ((mem_mark*)p) - 1;
-    mem_mark* next = mark + mark->length/2 + 1;
+    mem_mark* mark = mark_from_mem(p);
+    mem_mark* next = get_nex_mark(mark);
     mark->used = 0;
     (void)pool;
     if(next->alloc == 0 && next->used == 0){
@@ -248,6 +256,11 @@ void _x_free(void* pool, void*p)
     display_mem_info("free", p, 0);
 }
 
+void  x_memset(void* p, int v, size_t len)
+{
+    unsigned char* x = (unsigned char*)p;
+    while(len--) *x++ = (unsigned char)v;
+}
 
 void* x_malloc(void* pool, size_t size)
 {
