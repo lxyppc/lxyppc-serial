@@ -27,7 +27,6 @@
 
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
 #include <polarssl/rsa.h>
 #include <polarssl/md2.h>
 #include <polarssl/md4.h>
@@ -40,7 +39,7 @@
 #include <polarssl/error.h>
 #include <polarssl/mem.h>
 #include <polarssl/config.h>
-
+#include <polarssl/bn_mul.h>
 #include <math.h>
 #include <stdlib.h>
 
@@ -133,6 +132,22 @@ int unhexify(unsigned char *obuf, const char *ibuf)
 
 #define XX "0a15582a2c95e3a265a12b71a5c721f5e07f00f66e9360e496ca7bd6f31b433d0cb1fadb4a9dd50366491b8cb407d75ba0e52b0fee5ff71f3caf5bbefb421dfb0e59a45ff1c7de97ca3b40902cf3e4099150870179437ce4e414fbd0c0291c4b43331db77e06424c13ca6da4ad7e1b4eb9477ee9275d630783ce1196c7db6ce3"
 
+void mpi_mul_hlp(size_t i, t_uint *s, t_uint *d, t_uint b);
+//void mpi_mul_hlp( size_t i, t_uint *s, t_uint *d, t_uint b );
+
+void asm_test(size_t i)
+{
+    while(i--){
+        printf("123");
+    }
+}
+
+t_uint a[4] = {0x11111111, 0x11111111,0x11111111,0x11111111,};
+t_uint b[4] = {0x0000000c, 0x0000000c,0x11111111,0x11111111,};
+t_uint c[8] = {0};
+
+
+
 int main(void)
 {
     /* 2 bit for pre-emption priority, 2 bits for subpriority */
@@ -141,12 +156,18 @@ int main(void)
     int r = 0;
     uint32_t tick;
     rsa_context ctx;
-    enable_tick_count();
+    (void)r;
+    (void)ctx;
+    (void)tick;
+    //asm_test(17);
+    //mpi_mul_hlp(4, a, c+1, b[1]);
+    //mpi_mul_hlp(4, a, c, b[0]);
+    //enable_tick_count();
     unhexify(data, XX);
     x_mem_init();
-    tick = get_tick_count();
-    rsa_calc_str(PRI_N, PUB_E, data, out_data);
-    tick = get_tick_count() - tick;
+    //tick = get_tick_count();
+    rsa_calc_str(PRI_N, PRI_E, data, out_data);
+    //tick = get_tick_count() - tick;
     //log_info("rsa_calc_str", r);
     //log_buf("dec_data", out_data, 128);
     x_mem_free(0);
@@ -154,20 +175,15 @@ int main(void)
 }
 
 
-void enable_tick_count(void)
-{
-    //RCC_ClocksTypeDef RCC_Clocks;
-    //RCC_GetClocksFreq(&RCC_Clocks);
-    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-    //tick_per_us = RCC_Clocks.SYSCLK_Frequency/1000000;
-}
+#if defined(POLARSSL_HAVE_ASM)
+#if defined(__arm__)
+#warning POLARSSL_HAVE_ASM __arm__
+#endif
+#endif
 
-uint32_t get_tick_count(void)
-{
-    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-    return DWT->CYCCNT;
-}
+#if defined(__TARGET_CPU_CORTEX_M3 )
+#warning __TARGET_CPU_CORTEX_M3
+#endif
 
 #ifdef  USE_FULL_ASSERT
 
