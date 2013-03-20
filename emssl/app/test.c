@@ -311,9 +311,11 @@ int main()
         log_info("rsa_check_pubkey", r);
         r = rsa_check_privkey( &ctx );
         log_info("rsa_check_privkey", r);
+        ctx.padding = 0;
         r = rsa_pkcs1_encrypt( &ctx, &rnd_pseudo_rand, &rnd_info, RSA_PUBLIC, msg_len, message_str, output );
         log_info("rsa_pkcs1_encrypt", r);
         output_len = 0;
+        ctx.padding = 0;
         r = rsa_pkcs1_decrypt( &ctx, RSA_PRIVATE, &output_len, output, output_data, 1000);
         log_info("rsa_pkcs1_decrypt", r);
         hexify( output_str, output_data, output_len);

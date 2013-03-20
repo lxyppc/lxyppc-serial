@@ -1,7 +1,19 @@
 #include "polarssl/config.h"
 
 #ifdef POLARSSL_MEM_C
+
+#ifdef  EMBEDDED_SYSTEM
+#ifdef PRINTF
+#undef PRINTF
+#endif
+#define PRINTF(...)
+#define EXIT(x, reason, args...)     while(1);
+#else
+#define EXIT(x, reason, args...)     do{ printf(reason, ## args); exit(x);}while(0)
+#endif
+
 #include "polarssl/mem.h"
+
 
 typedef struct _mem_list
 {
@@ -18,7 +30,7 @@ static int xcnt = 0;
 static int alloc_cnt = 0;
 static int free_cnt = 0;
 
-static unsigned char mem_pool[4096*2];
+static unsigned char mem_pool[4096*4];
 static unsigned short used_map[1];
 
 unsigned char* get_static_mem()
@@ -113,6 +125,7 @@ void x_mem_free(void* pool)
 {
     mem_list* t = first;
     int i;
+    int step = 16;
     (void)pool;
     for(;t;){
         mem_list* x = t->next;
@@ -127,8 +140,8 @@ void x_mem_free(void* pool)
     }
     if( (i&15) != 15 )PRINTF("\n");
 
-    int step = 16;
-    for(i=0; i<sizeof(mem_pool); i+= step){
+
+    for(i=0; i<(int)sizeof(mem_pool); i+= step){
         int j;
         const char* mark = "_";
         for(j=0;j<step;j++){
@@ -372,10 +385,11 @@ void* x_malloc__(void* pool, size_t size)
 {
     size_t s = size_cap(size);
     void* m = 0;
+    mem_link* link;
     if(p_mem == 0){
         p_mem = mem_start;
     }
-    mem_link* link = (mem_link*)p_mem;
+    link = (mem_link*)p_mem;
     (void)pool;
     switch(s){
     case RND1:
@@ -410,7 +424,8 @@ void* x_malloc__(void* pool, size_t size)
         break;
     }
     if(m) return m;
-    if(p_mem + s - mem_pool > sizeof(mem_pool)) {
+    if(p_mem + s - mem_pool > (int)sizeof(mem_pool)) {
+        EXIT(1, "mem fail, require %d\n", p_mem + s - mem_pool);
         return 0;
     }
     p_mem += (s + sizeof(mem_link));

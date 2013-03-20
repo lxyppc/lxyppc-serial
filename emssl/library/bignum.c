@@ -97,28 +97,18 @@ int mpi_grow( mpi *X, size_t nblimbs )
 
     if( X->n < nblimbs )
     {
-
         if( X->p != NULL ){
-            if( ( p = (t_uint *) X_REALLOC(NULL, X->p, nblimbs * ciL ) ) == NULL ){
-                X->p = p;
+            if( (X->p = X_REALLOC(NULL, X->p, nblimbs * ciL)) == NULL ){
                 return( POLARSSL_ERR_MPI_MALLOC_FAILED );
             }
+            MEMSET(X->p + X->n, 0, (nblimbs - X->n)*ciL);
         }else{
-            if( ( p = (t_uint *) X_MALLOC(NULL, nblimbs * ciL ) ) == NULL )
+            if( ( X->p = (t_uint *) X_MALLOC(NULL, nblimbs * ciL ) ) == NULL )
                 return( POLARSSL_ERR_MPI_MALLOC_FAILED );
-            MEMSET( p, 0, nblimbs * ciL );
+            MEMSET( X->p, 0, X->n * ciL );
         }
 
-        // done by realloc
-        //if( X->p != NULL )
-        //{
-        //    memcpy( p, X->p, X->n * ciL );
-        //    MEMSET( X->p, 0, X->n * ciL );
-        //    X_FREE(NULL, X->p );
-        //}
-
         X->n = nblimbs;
-        X->p = p;
     }
 
     return( 0 );
