@@ -243,13 +243,18 @@ void log_info(const char* desc, int r)
 	char buf[1024];
 	error_strerror(r,buf,1024);
 	printf("%s = %d(%s)\n",desc,r,buf);
+        fflush(stdout);
 }
 
 void log_buf(const char* desc, const unsigned char* buf, size_t len)
 {
-        unsigned char x[1024*4];
+        //unsigned char x[1024*4];
+        char* x = malloc(len*2+10);
+        memset(x,0,len*2+10);
         hexify(x,buf,len);
         printf("%s(%d): %s\n",desc, len, x);
+        fflush(stdout);
+        free(x);
 }
 
 int main()
@@ -264,6 +269,7 @@ int main()
 	size_t output_len = 0;
 	int r = 0;
     rnd_pseudo_info rnd_info;
+    ctr_drbg_context ctr_drbg;
 
 	memset( &rnd_info, 0, sizeof( rnd_pseudo_info ) );
 	rsa_init( &ctx, RSA_PKCS_V15, 0 );
@@ -298,7 +304,22 @@ int main()
         //log_buf("sign", output_data, 128);
         r = rsa_pkcs1_verify(&ctx, RSA_PUBLIC, SIG_RSA_SHA1, sizeof(hash), hash, output_data);
         log_info("rsa_pkcs1_verify", r);
-	rsa_free( &ctx );
+
+        r = rsa_gen_key(&ctx, &rnd_pseudo_rand, &rnd_info, 1024, 65537);
+        log_info("rsa_gen_key", r);
+        r = rsa_check_pubkey( &ctx );
+        log_info("rsa_check_pubkey", r);
+        r = rsa_check_privkey( &ctx );
+        log_info("rsa_check_privkey", r);
+        r = rsa_pkcs1_encrypt( &ctx, &rnd_pseudo_rand, &rnd_info, RSA_PUBLIC, msg_len, message_str, output );
+        log_info("rsa_pkcs1_encrypt", r);
+        output_len = 0;
+        r = rsa_pkcs1_decrypt( &ctx, RSA_PRIVATE, &output_len, output, output_data, 1000);
+        log_info("rsa_pkcs1_decrypt", r);
+        hexify( output_str, output_data, output_len);
+        log_buf("dec_data", output_data, output_len);
+
+        rsa_free( &ctx);
 	return 0;
 }
 int rsa_calc(const unsigned char* n, const unsigned char* e, const unsigned char* data, size_t bits, size_t e_len, unsigned char* output);

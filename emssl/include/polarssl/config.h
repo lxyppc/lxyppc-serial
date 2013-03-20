@@ -178,7 +178,7 @@
  *
  * Enable the RSA prime-number generation code.
  */
-//#define POLARSSL_GENPRIME
+#define POLARSSL_GENPRIME
 
 /**
  * \def POLARSSL_FS_IO
@@ -869,7 +869,7 @@
  * Module:  library/xtea.c
  * Caller:
  */
-#define POLARSSL_MEM_C
+#define POLARSSL_XTEA_C
 /* \} name */
 
 
@@ -881,7 +881,7 @@
  * Module:  library/mem.c
  * Caller:
  */
-#define POLARSSL_MEM_C
+//#define POLARSSL_MEM_C
 /* \} name */
 
 
@@ -897,6 +897,7 @@
 #define   MEMSET(p, v, size)		memset((p), (v), (size))
 #endif
 
-#define  PRINTF(fmt, args...) //printf(fmt, ##args)
+#define  PRINTF(fmt, args...) printf(fmt, ##args)
+#define  FFLUSH(fd)             fflush(fd)
 
 #endif /* config.h */

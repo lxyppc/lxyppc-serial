@@ -63,7 +63,9 @@ int rsa_calc_str(const char* n, const char* e, const unsigned char* data, unsign
         ret = POLARSSL_ERR_RSA_BAD_INPUT_DATA;
         goto cleanup;
     }
+    printf("===========================>>>>>>>\n");
     MPI_CHK(mpi_exp_mod( &V, &V, &E, &N, &RN ));
+    printf("<<<<<<<===========================\n");
     MPI_CHK(mpi_write_binary( &V, output, l ));
 cleanup:
     mpi_free( &N );

@@ -99,8 +99,10 @@ int mpi_grow( mpi *X, size_t nblimbs )
     {
 
         if( X->p != NULL ){
-            if( ( p = (t_uint *) X_REALLOC(NULL, X->p, nblimbs * ciL ) ) == NULL )
+            if( ( p = (t_uint *) X_REALLOC(NULL, X->p, nblimbs * ciL ) ) == NULL ){
+                X->p = p;
                 return( POLARSSL_ERR_MPI_MALLOC_FAILED );
+            }
         }else{
             if( ( p = (t_uint *) X_MALLOC(NULL, nblimbs * ciL ) ) == NULL )
                 return( POLARSSL_ERR_MPI_MALLOC_FAILED );
@@ -1429,6 +1431,7 @@ int mpi_exp_mod( mpi *X, const mpi *A, const mpi *E, const mpi *N, mpi *_RR )
         wsize = POLARSSL_MPI_WINDOW_SIZE;
 
     j = N->n + 1;
+
     MPI_CHK( mpi_grow( X, j ) );
     MPI_CHK( mpi_grow( &W[1],  j ) );
     MPI_CHK( mpi_grow( &T, j * 2 ) );
