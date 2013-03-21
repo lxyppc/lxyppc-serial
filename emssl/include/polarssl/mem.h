@@ -32,6 +32,10 @@ void* x_mem_init(void);
 void x_mem_free(void* pool);
 void x_memset(void*p, int v, size_t len);
 void x_memcpy(void* dest, const char* src, size_t len);
+    
+#if defined ( __CC_ARM )
+#define  EMBEDDED_SYSTEM
+#endif
 
 
 #ifdef __cplusplus

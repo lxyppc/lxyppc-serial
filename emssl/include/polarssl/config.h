@@ -881,7 +881,7 @@
  * Module:  library/mem.c
  * Caller:
  */
-#define POLARSSL_MEM_C
+//#define POLARSSL_MEM_C
 /* \} name */
 
 

@@ -1,4 +1,5 @@
 #include "polarssl/config.h"
+#include "polarssl/mem.h"
 
 #ifdef POLARSSL_MEM_C
 
@@ -11,8 +12,6 @@
 #else
 #define EXIT(x, reason, args...)     do{ printf(reason, ## args); exit(x);}while(0)
 #endif
-
-#include "polarssl/mem.h"
 
 
 typedef struct _mem_list
@@ -30,7 +29,7 @@ static int xcnt = 0;
 static int alloc_cnt = 0;
 static int free_cnt = 0;
 
-static unsigned char mem_pool[4096*4];
+static unsigned char mem_pool[4096];
 static unsigned short used_map[1];
 
 unsigned char* get_static_mem()

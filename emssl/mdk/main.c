@@ -146,8 +146,11 @@ t_uint a[4] = {0x11111111, 0x11111111,0x11111111,0x11111111,};
 t_uint b[4] = {0x0000000c, 0x0000000c,0x11111111,0x11111111,};
 t_uint c[8] = {0};
 
-
-
+void init_stack(uint32_t* stack_end);
+uint32_t stack_usage(uint32_t* stack_end, uint32_t* stack_start);
+extern uint32_t __initial_sp;
+extern uint32_t Stack_Mem;
+volatile uint32_t stack_used = 0;
 int main(void)
 {
     /* 2 bit for pre-emption priority, 2 bits for subpriority */
@@ -165,12 +168,14 @@ int main(void)
     //enable_tick_count();
     unhexify(data, XX);
     x_mem_init();
+    init_stack(&Stack_Mem);
     //tick = get_tick_count();
     rsa_calc_str(PRI_N, PRI_E, data, out_data);
     //tick = get_tick_count() - tick;
     //log_info("rsa_calc_str", r);
     //log_buf("dec_data", out_data, 128);
     x_mem_free(0);
+    stack_used = stack_usage(&Stack_Mem, &__initial_sp);
     return 0;
 }
 
