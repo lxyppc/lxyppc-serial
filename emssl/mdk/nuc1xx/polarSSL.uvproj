@@ -410,6 +410,11 @@
               <FileType>1</FileType>
               <FilePath>..\main.c</FilePath>
             </File>
+            <File>
+              <FileName>mem_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mem_util.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

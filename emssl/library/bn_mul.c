@@ -178,29 +178,5 @@ void mpi_mul_hlpx(size_t i, t_uint *s, t_uint *d, t_uint b)
 
 #endif   // defined( __TARGET_CPU_CORTEX_M0 )
 
-
-__asm void init_stack(uint32_t* stack_end)
-{
-    mov    r2, sp
-    movs   r1, #0xcc
-init_stack_1
-    subs   r2, r2, #1
-    strb   r1, [r2]
-    cmp    r2, r0
-    bne    init_stack_1
-    bx lr
-}
-
-__asm uint32_t stack_usage(uint32_t* stack_end, uint32_t* stack_start)
-{
-stack_usage_1
-    adds r0, r0, #1
-    ldrb r2, [r0]
-    cmp  r2, #0xcc
-    beq  stack_usage_1
-    subs r0, r1, r0
-    bx lr
-}
-
 #endif  // defined(EXTERN_MUL_HELP)
 
