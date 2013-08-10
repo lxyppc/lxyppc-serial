@@ -248,6 +248,75 @@ LQAbstractScrollArea lqabstractscrollarea()
     ;
 }
 
+static setter_map<QScrollArea> lqscrollarea_set_map;
+QScrollArea* lqscrollarea_init(QScrollArea* widget, const object& obj)
+{
+    lqwidget_init(widget,obj);
+    lq_general_init(widget, obj, lqscrollarea_set_map);
+    return widget;
+}
+
+template<>
+void table_init_general<QScrollArea>(const luabind::argument & arg, const object& obj)
+{
+    lqscrollarea_init(construct<QScrollArea>(arg), obj);
+}
+
+void QScrollArea_ensureVisible1(QScrollArea* widget, int x, int y)
+{
+    widget->ensureVisible(x,y);
+}
+void QScrollArea_ensureVisible2(QScrollArea* widget, int x, int y, int xmargin)
+{
+    widget->ensureVisible(x,y,xmargin);
+}
+void QScrollArea_ensureVisible3(QScrollArea* widget, int x, int y, int xmargin, int ymargin)
+{
+    widget->ensureVisible(x,y,xmargin,ymargin);
+}
+
+void QScrollArea_ensureWidgetVisible1(QScrollArea* widget, QWidget * childWidget)
+{
+    widget->ensureWidgetVisible(childWidget);
+}
+void QScrollArea_ensureWidgetVisible2(QScrollArea* widget, QWidget * childWidget, int xmargin)
+{
+    widget->ensureWidgetVisible(childWidget,xmargin);
+}
+void QScrollArea_ensureWidgetVisible3(QScrollArea* widget, QWidget * childWidget, int xmargin, int ymargin)
+{
+    widget->ensureWidgetVisible(childWidget,xmargin,ymargin);
+}
+
+ENUM_FILTER(QScrollArea,alignment,setAlignment)
+LQScrollArea lqscrollarea()
+{
+    return
+    myclass_<QScrollArea,QAbstractScrollArea>("QScrollArea", lqscrollarea_set_map)
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+    .def("__call", lqscrollarea_init)
+    .def("__init", table_init_general<QScrollArea>)
+
+    .def("ensureVisible", QScrollArea_ensureVisible1)
+    .def("ensureVisible", QScrollArea_ensureVisible2)
+    .def("ensureVisible", QScrollArea_ensureVisible3)
+    .def("ensureVisible", QScrollArea_ensureWidgetVisible1)
+    .def("ensureVisible", QScrollArea_ensureWidgetVisible2)
+    .def("ensureVisible", QScrollArea_ensureWidgetVisible3)
+
+    .def("ensureWidgetVisible", QScrollArea_ensureWidgetVisible1)
+    .def("ensureWidgetVisible", QScrollArea_ensureWidgetVisible2)
+    .def("ensureWidgetVisible", QScrollArea_ensureWidgetVisible3)
+    .def("takeWidget", &QScrollArea::takeWidget)
+
+    .property("alignment", QScrollArea_alignment, QScrollArea_setAlignment)
+    .property("widgetResizable", &QScrollArea::widgetResizable, &QScrollArea::setWidgetResizable)
+
+    .class_<QScrollArea,QAbstractScrollArea>::property("widget", &QScrollArea::widget, &QScrollArea::setWidget)
+    ;
+}
+
 SIGNAL_PROPERYT(lqmdiarea, subWindowActivated, QMdiArea, "(QMdiSubWindow*)")
 LQMdiArea lqmdiarea()
 {

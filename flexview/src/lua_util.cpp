@@ -172,9 +172,9 @@ LQUtil lqutil()
         def("toBase64", toBase64),
         def("fromBase64", fromBase64),
         def("fromString", fromString),
-        def("and", my_and),
-        def("or", my_or),
-        def("xor", my_xor),
+        def("bitand", my_and),
+        def("bitor", my_or),
+        def("bitxor", my_xor),
 
         def("toUint32", toT<uint32_t>),
         def("toUint16", toT<uint16_t>),
