@@ -339,7 +339,7 @@ int lqthread_current_thread_id()
 LQThread lqthread()
 {
     return
-    class_<QThread, QObject>("QFileSystemWatcher")
+    class_<QThread, QObject>("QThread")
     .scope[
             def("currentThreadId", lqthread_current_thread_id)
     ]
