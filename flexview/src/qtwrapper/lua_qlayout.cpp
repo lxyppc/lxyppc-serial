@@ -101,19 +101,58 @@ void table_init_general<QHBoxLayout>(const luabind::argument & arg, const object
     lqhboxlayout_init(construct<QHBoxLayout>(arg), obj);
 }
 
+bool	lqlayout_setAlignment1 (QLayout* layout, QWidget * w, int alignment )
+{
+    return layout->setAlignment(w, (Qt::Alignment)alignment);
+}
+
+void	lqlayout_setAlignment2 (QLayout* layout, int alignment )
+{
+    layout->setAlignment((Qt::Alignment)alignment);
+}
+
+bool	lqlayout_setAlignment3 (QLayout* layout, QLayout * l, int alignment )
+{
+    return layout->setAlignment(l, (Qt::Alignment)alignment);
+}
+
+bool lqlayout_removeItem(QLayout* layout, int index)
+{
+    QLayoutItem* item = layout->takeAt(index);
+    if(item){
+        delete item;
+        return true;
+    }
+    return false;
+}
+
 LQLayout lqlayout()
 {
     return
-    myclass_<QLayout,QLayoutWarp>("QLayout",lqlayout_set_map)
+    myclass_<QLayout, QLayoutWarp, QObject >("QLayout",lqlayout_set_map)
             .def(constructor<>())
             .def(constructor<QWidget*>())
             .def("setContentsMargins", (void (QLayout::*)(int,int,int,int))&QLayout::setContentsMargins)
             .def("addWidget", &QLayout::addWidget)
             .def("__call", lqlayout_init)
-            .property("objectName", &QLayout::objectName)
+
+            .def("indexOf", &QLayout::indexOf)
+            .def("removeWidget", &QLayout::removeWidget)
+            .def("update", &QLayout::update)
+            .def("setAlignment", lqlayout_setAlignment1)
+            .def("setAlignment", lqlayout_setAlignment2)
+            .def("setAlignment", lqlayout_setAlignment3)
+
+            //.property("objectName", &QLayout::objectName)
             .property("contentsMargins", &QLayout::contentsMargins, (void (QLayout::*)(const QMargins &))&QLayout::setContentsMargins)
             .property("spacing", &QLayout::spacing, &QLayout::setSpacing)
             .property("geometry", &QLayout::geometry, &QLayout::setGeometry)
+            .property("contentsRect", &QLayout::contentsRect)
+            .property("count", &QLayout::count)
+            .property("enabled", &QLayout::isEnabled, &QLayout::setEnabled)
+            .class_<QLayout, QLayoutWarp,QObject >::property("menuBar", &QLayout::menuBar, &QLayout::setMenuBar)
+            .property("parentWidget", &QLayout::parentWidget)
+
 
             .scope[
                 def("closestAcceptableSize", QLayout::closestAcceptableSize)
@@ -221,6 +260,8 @@ void lqgridlayout_addLayout2(QGridLayout*  w, QLayout* l, int r, int c, int rs, 
 void lqgridlayout_addWidget1(QGridLayout*  w, QWidget* l, int r, int c){ w->addWidget(l,r,c);}
 void lqgridlayout_addWidget2(QGridLayout*  w, QWidget* l, int r, int c, int rs, int cs){ w->addWidget(l,r,c,rs,cs);}
 
+ENUM_FILTER(QGridLayout, originCorner, setOriginCorner )
+
 LQGridLayout lqgridlayout()
 {
     return
@@ -256,6 +297,7 @@ LQGridLayout lqgridlayout()
     .property("verticalSpacing", &QGridLayout::verticalSpacing, &QGridLayout::setVerticalSpacing)
     .property("hSpacing", &QGridLayout::horizontalSpacing, &QGridLayout::setHorizontalSpacing)
     .property("vSpacing", &QGridLayout::verticalSpacing, &QGridLayout::setVerticalSpacing)
+    .property("originCorner", QGridLayout_originCorner, &QGridLayout_setOriginCorner)
     ;
 }
 
@@ -336,6 +378,7 @@ void table_init_general<QFormLayout>(const luabind::argument & arg, const object
 }
 ENUM_FILTER(QFormLayout,rowWrapPolicy,setRowWrapPolicy)
 ENUM_FILTER(QFormLayout,labelAlignment,setLabelAlignment)
+ENUM_FILTER(QFormLayout,formAlignment,setFormAlignment)
 namespace luabind{
     QT_EMUN_CONVERTER(QFormLayout::ItemRole)
 }
@@ -367,8 +410,10 @@ LQFormLayout lqformlayout()
     .property("rowCount", &QFormLayout::rowCount)
     .property("rowWrapPolicy", QFormLayout_rowWrapPolicy, QFormLayout_setRowWrapPolicy)
     .property("labelAlignment", QFormLayout_labelAlignment, QFormLayout_setLabelAlignment)
+    .property("formAlignment", QFormLayout_formAlignment, QFormLayout_setFormAlignment)
     .property("spacing", &QFormLayout::spacing, &QFormLayout::setSpacing)
     .property("verticalSpacing", &QFormLayout::verticalSpacing, &QFormLayout::setVerticalSpacing)
+    .property("horizontalSpacing", &QFormLayout::horizontalSpacing, &QFormLayout::setHorizontalSpacing)
             ;
 }
 
@@ -391,6 +436,33 @@ void lqboxlayout_init_general(const luabind::argument & arg)
     construct<QBoxLayout>(arg,QBoxLayout::Direction(0));
 }
 
+ENUM_FILTER(QBoxLayout, direction, setDirection)
+
+void lqboxlayout_insertWidget1(QBoxLayout* layout, int index, QWidget* widget)
+{
+    layout->insertWidget(index,widget);
+}
+
+void lqboxlayout_insertWidget2(QBoxLayout* layout, int index, QWidget* widget, int stretch)
+{
+    layout->insertWidget(index,widget, stretch);
+}
+
+void lqboxlayout_insertWidget3(QBoxLayout* layout, int index, QWidget* widget, int stretch, int alignment)
+{
+    layout->insertWidget(index,widget, stretch, (Qt::Alignment)alignment);
+}
+
+void lqboxlayout_insertStretch1(QBoxLayout* layout, int index)
+{
+    layout->insertStretch(index);
+}
+
+void lqboxlayout_insertStretch2(QBoxLayout* layout, int index, int stretch)
+{
+    layout->insertStretch(index, stretch);
+}
+
 LQBoxLayout  lqboxlayout()
 {
     return
@@ -403,9 +475,24 @@ LQBoxLayout  lqboxlayout()
         .def("addWidget", (void	(QBoxLayout::*)( QWidget *, int, Qt::Alignment)) &QBoxLayout::addWidget)
         .def("addWidget", lqboxlayout_add_widget2)
         .def("addWidget", lqboxlayout_add_widget)
+        .def("addStretch", &QBoxLayout::addStretch)
+        .def("addSpacing", &QBoxLayout::addSpacing)
+        .def("addStrut", &QBoxLayout::addStrut)
+        .def("insertSpacing", &QBoxLayout::insertSpacing)
+        .def("insertStretch", lqboxlayout_insertStretch1)
+        .def("insertStretch", lqboxlayout_insertStretch2)
+        .def("insertWidget", lqboxlayout_insertWidget1)
+        .def("insertWidget", lqboxlayout_insertWidget2)
+        .def("insertWidget", lqboxlayout_insertWidget3)
+        .def("setStretchFactor", (bool (QBoxLayout::*)(QWidget*, int) )&QBoxLayout::setStretchFactor)
+        .def("setStretchFactor", (bool (QBoxLayout::*)(QLayout*, int) )&QBoxLayout::setStretchFactor)
+
         .def("setStretch", &QBoxLayout::setStretch)
+        .def("setSpacing", &QBoxLayout::setSpacing)
         .def("stretch", &QBoxLayout::stretch)
         .property("layoutStrech", layoutStretch, setLayoutStretch)
+        .property("direction", QBoxLayout_direction, QBoxLayout_setDirection)
+        .property("direction", QBoxLayout_direction, QBoxLayout_setDirection)
     ;
 }
 

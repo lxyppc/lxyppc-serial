@@ -232,9 +232,13 @@ QFont createFont()
     return QFont();
 }
 
-static int my_and(int x, int y) { return x & y;}
-static int my_or(int x, int y) { return x | y;}
-static int my_xor(int x, int y) { return x ^ y;}
+unsigned int my_and(unsigned int x, unsigned int y);
+unsigned int my_or(unsigned int x, unsigned int y);
+unsigned int my_xor(unsigned int x, unsigned int y);
+unsigned int my_lsl(unsigned int x, unsigned int y);
+unsigned int my_lsr(unsigned int x, unsigned int y);
+unsigned int my_rol(unsigned int x, unsigned int y);
+unsigned int my_ror(unsigned int x, unsigned int y);
 
 class_<QComboBox, QWidget> lqcombobox();
 void register_classes(lua_State* L, char const* name = 0)
@@ -450,7 +454,11 @@ void register_classes(lua_State* L, char const* name = 0)
         def("fromString", fromString),
         def("bit_and", my_and),
         def("bit_or", my_or),
-        def("bit_xor", my_xor)
+        def("bit_xor", my_xor),
+        def("lsl", my_lsl),
+        def("lsr", my_lsr),
+        def("rol", my_rol),
+        def("ror", my_ror)
     ];
 }
 

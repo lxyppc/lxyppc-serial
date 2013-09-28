@@ -31,7 +31,7 @@ struct QLayoutWarp : public QLayout, public luabind::wrap_base
     virtual QSpacerItem *spacerItem(){ return call_member<QSpacerItem*>(this, "spacerItem");}
 };
 
-typedef class_<QLayout, QLayoutWarp>        LQLayout;
+typedef class_<QLayout, QLayoutWarp, QObject>            LQLayout;
 typedef class_<QStackedLayout, QLayout>     LQStackedLayout;
 typedef class_<QGridLayout, QLayout>        LQGridLayout;
 typedef class_<QFormLayout, QLayout>        LQFormLayout;

@@ -29,9 +29,13 @@ static QByteArray fromString(const QString& str)
     return str.toAscii();
 }
 
-static int my_and(int x, int y) { return x & y;}
-static int my_or(int x, int y) { return x | y;}
-static int my_xor(int x, int y) { return x ^ y;}
+unsigned int my_and(unsigned int x, unsigned int y) { return x & y;}
+unsigned int my_or(unsigned int x, unsigned int y) { return x | y;}
+unsigned int my_xor(unsigned int x, unsigned int y) { return x ^ y;}
+unsigned int my_lsl(unsigned int x, unsigned int y) { return x << y;}
+unsigned int my_lsr(unsigned int x, unsigned int y) { return x >> y;}
+unsigned int my_rol(unsigned int x, unsigned int y) { return (x << y) | (x >> (32 -y));}
+unsigned int my_ror(unsigned int x, unsigned int y) { return (x >> y) | (x << (32 -y));}
 
 
 template<typename T>
@@ -175,6 +179,10 @@ LQUtil lqutil()
         def("bitand", my_and),
         def("bitor", my_or),
         def("bitxor", my_xor),
+        def("lsl", my_lsl),
+        def("lsr", my_lsr),
+        def("rol", my_rol),
+        def("ror", my_ror),
 
         def("toUint32", toT<uint32_t>),
         def("toUint16", toT<uint16_t>),
