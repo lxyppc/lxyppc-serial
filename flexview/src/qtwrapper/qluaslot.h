@@ -81,6 +81,9 @@ public slots:
     void general_slot(const QRect&);
     void general_slot(QImageReader::ImageReaderError);
     void general_slot(QMovie::MovieState);
+    void general_slot(const QModelIndex& param1);
+    void general_slot(QHeaderView::ResizeMode param1);
+    void general_slot(Qt::SortOrder param1);
 //#ifdef Q_OS_WIN
     void general_slot(const QUsbHidInfo&);
 //#endif

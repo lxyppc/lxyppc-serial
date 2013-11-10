@@ -364,7 +364,7 @@ object lqlistwidget_selecteditems(QListWidget* w)
 LQListWidget lqlistwidget()
 {
     return
-    myclass_<QListWidget, QFrame>("QListWidget",lqlistwidget_set_map)
+    myclass_<QListWidget, QListView>("QListWidget",lqlistwidget_set_map)
     .def(constructor<>())
     .def(constructor<QWidget*>())
     .def("__call", lqlistwidget_init)
@@ -566,6 +566,7 @@ LQTreeWidgetItem lqtreewidgetitem()
     .property("whatsThis", &QTreeWidgetItem::whatsThis, &QTreeWidgetItem::setWhatsThis)
 
     .property("type", &QTreeWidgetItem::type)
+    .property("parent", &QTreeWidgetItem::parent)
     //.class_<QTreeWidgetItem>::def(smp.find(sp)->first.c_str(), &QTreeWidgetItem::setIcon)
     ;
 }
@@ -602,6 +603,15 @@ void lqtreewidget_scrollToItem2(QTreeWidget* w, QTreeWidgetItem* i)
     w->scrollToItem(i);
 }
 
+QStringList lqtreewidget_get_header(QTreeWidget* w)
+{
+    QStringList list;
+    QTreeWidgetItem* item = w->headerItem();
+    for(int i=0;i<w->columnCount();i++){
+        list.append( item->text(i) );
+    }
+    return list;
+}
 
 void lqtreewidget_test(QTreeWidget* w)
 {
@@ -615,7 +625,7 @@ QT_EMUN_CONVERTER(Qt::ItemFlags)
 LQTreeWidget lqtreewidget()
 {
     return
-    myclass_<QTreeWidget, QFrame>("QTreeWidget",lqtreewidget_set_map)
+    myclass_<QTreeWidget, QTreeView>("QTreeWidget",lqtreewidget_set_map)
     .def(constructor<>())
     .def(constructor<QWidget*>())
     .def("__call", lqtreewidget_init)
@@ -643,7 +653,7 @@ LQTreeWidget lqtreewidget()
     .def("setCurrentItem", (void (QTreeWidget::*)(QTreeWidgetItem *))&QTreeWidget::setCurrentItem)
     .def("setCurrentItem", (void (QTreeWidget::*)(QTreeWidgetItem *,int))&QTreeWidget::setCurrentItem)
     .def("setCurrentItem", (void (QTreeWidget::*)(QTreeWidgetItem *,int,QItemSelectionModel::SelectionFlags))&QTreeWidget::setCurrentItem)
-    .def("setHeaderItem", &QTreeWidget::setHeaderItem)
+    .def("setHeaderItem", &QTreeWidget::setHeaderItem, adopt(_2))
     .def("setHeaderLabel", &QTreeWidget::setHeaderLabel)
     .def("setHeaderLabels", &QTreeWidget::setHeaderLabels)
     .def("sortColumn", &QTreeWidget::sortColumn)
@@ -669,8 +679,8 @@ LQTreeWidget lqtreewidget()
     .sig_prop(lqtreewidget, itemExpanded)
     .sig_prop(lqtreewidget, itemPressed)
     .sig_prop(lqtreewidget, itemSelectionChanged)
-    .class_<QTreeWidget, QFrame>::property("headerItem", &QTreeWidget::headerItem, &QTreeWidget::setHeaderItem)
-    .property("header", &QTreeWidget::headerItem ,&QTreeWidget::setHeaderLabels)
+    .class_<QTreeWidget, QTreeView>::property("headerItem", &QTreeWidget::headerItem, &QTreeWidget::setHeaderItem)
+    .property("headerLabels", lqtreewidget_get_header ,&QTreeWidget::setHeaderLabels)
     ;
 }
 
@@ -824,7 +834,7 @@ QStringList lqtablewidget_get_v_header(QTableWidget* w)
 LQTableWidget lqtablewidget()
 {
     return
-    myclass_<QTableWidget, QFrame>("QTableWidget",lqtablewidget_set_map)
+    myclass_<QTableWidget, QTableView>("QTableWidget",lqtablewidget_set_map)
     .def(constructor<>())
     .def(constructor<QWidget*>())
     .def(constructor<int,int>())
@@ -908,7 +918,7 @@ LQTableWidget lqtablewidget()
     .sig_prop(lqtablewidget, itemPressed)
     .sig_prop(lqtablewidget, itemSelectionChanged)
 
-    .class_<QTableWidget, QFrame>::property("itemPrototype", &QTableWidget::itemPrototype, &QTableWidget::setItemPrototype)
+    .class_<QTableWidget, QTableView>::property("itemPrototype", &QTableWidget::itemPrototype, &QTableWidget::setItemPrototype)
     .property("horizontalHeader", lqtablewidget_get_h_header, &QTableWidget::setHorizontalHeaderLabels)
     .property("verticalHeader", lqtablewidget_get_v_header, &QTableWidget::setVerticalHeaderLabels)
     .property("hHeader", lqtablewidget_get_h_header, &QTableWidget::setHorizontalHeaderLabels)
@@ -916,3 +926,403 @@ LQTableWidget lqtablewidget()
     ;
 }
 
+QVariant    lqmodelindex_data1(QModelIndex* w)
+{
+    return w->data();
+}
+
+QVariant    lqmodelindex_data2(QModelIndex* w, int role)
+{
+    return w->data( role );
+}
+
+
+LQModelIndex    lqmodelindex()
+{
+    return
+    class_<QModelIndex>("QModelIndex")
+    .def(constructor<>())
+    .def(constructor<const QModelIndex&>())
+
+    .def("child", &QModelIndex::child)
+    .def("data", lqmodelindex_data1)
+    .def("data", lqmodelindex_data2)
+    .def("sibling", &QModelIndex::sibling)
+
+    .def("__lt", &QModelIndex::operator <)
+    .def("__eq", &QModelIndex::operator ==)
+
+    .property("column", &QModelIndex::column)
+    .property("flags", &QModelIndex::flags)
+    .property("isValid", &QModelIndex::isValid)
+    .property("model", &QModelIndex::model)
+    .property("parent", &QModelIndex::parent)
+    .property("row", &QModelIndex::row)
+    ;
+}
+
+ENUM_FILTER(QAbstractItemView,defaultDropAction,setDefaultDropAction)
+ENUM_FILTER(QAbstractItemView,editTriggers,setEditTriggers)
+ENUM_FILTER(QAbstractItemView,horizontalScrollMode,setHorizontalScrollMode)
+ENUM_FILTER(QAbstractItemView,selectionBehavior ,setSelectionBehavior )
+ENUM_FILTER(QAbstractItemView,selectionMode ,setSelectionMode )
+ENUM_FILTER(QAbstractItemView,textElideMode ,setTextElideMode )
+ENUM_FILTER(QAbstractItemView,verticalScrollMode ,setVerticalScrollMode )
+
+
+SIGNAL_PROPERYT(lqabstractitemview, activated, QAbstractItemView, "(const QModelIndex&)")
+SIGNAL_PROPERYT(lqabstractitemview, clicked, QAbstractItemView, "(const QModelIndex&)")
+SIGNAL_PROPERYT(lqabstractitemview, doubleClicked, QAbstractItemView, "(const QModelIndex&)")
+SIGNAL_PROPERYT(lqabstractitemview, entered, QAbstractItemView, "(const QModelIndex&)")
+SIGNAL_PROPERYT(lqabstractitemview, pressed, QAbstractItemView, "(const QModelIndex&)")
+SIGNAL_PROPERYT(lqabstractitemview, viewportEntered, QAbstractItemView, "()")
+
+LQAbstractItemView  lqabstractitemview()
+{
+    return
+    class_<QAbstractItemView, QAbstractItemView_wrap, QAbstractScrollArea>("QAbstractItemView")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+
+    .property("alternatingRowColors", &QAbstractItemView::alternatingRowColors, &QAbstractItemView::setAlternatingRowColors)
+    .property("autoScroll", &QAbstractItemView::hasAutoScroll, &QAbstractItemView::setAutoScroll )
+    .property("autoScrollMargin", &QAbstractItemView::autoScrollMargin, &QAbstractItemView::setAutoScrollMargin )
+    .property("defaultDropAction", QAbstractItemView_defaultDropAction, QAbstractItemView_setDefaultDropAction )
+    .property("dragDropOverwriteMode", &QAbstractItemView::dragDropOverwriteMode, &QAbstractItemView::setDragDropOverwriteMode )
+    .property("dragEnabled", &QAbstractItemView::dragEnabled, &QAbstractItemView::setDragEnabled )
+    .property("editTriggers", QAbstractItemView_editTriggers, QAbstractItemView_setEditTriggers )
+    .property("horizontalScrollMode", QAbstractItemView_horizontalScrollMode, QAbstractItemView_setHorizontalScrollMode )
+    .property("iconSize", &QAbstractItemView::iconSize, &QAbstractItemView::setIconSize )
+    .property("selectionBehavior", QAbstractItemView_selectionBehavior, QAbstractItemView_setSelectionBehavior )
+    .property("selectionMode", QAbstractItemView_selectionMode, QAbstractItemView_setSelectionMode )
+    .property("showDropIndicator", &QAbstractItemView::showDropIndicator, &QAbstractItemView::setDropIndicatorShown )
+    .property("tabKeyNavigation", &QAbstractItemView::tabKeyNavigation, &QAbstractItemView::setTabKeyNavigation )
+    .property("textElideMode", QAbstractItemView_textElideMode, QAbstractItemView_setTextElideMode )
+    .property("verticalScrollMode", QAbstractItemView_verticalScrollMode, QAbstractItemView_setVerticalScrollMode)
+
+    .property("currentIndex", &QAbstractItemView::currentIndex, &QAbstractItemView::setCurrentIndex)
+    .def("setCurrentIndex", &QAbstractItemView::setCurrentIndex)
+    .def("closePersistentEditor", &QAbstractItemView::closePersistentEditor)
+    .def("indexAt", &QAbstractItemView::indexAt)
+    .def("indexWidget", &QAbstractItemView::indexWidget)
+    .def("setIndexWidget", &QAbstractItemView::setIndexWidget)
+    .property("rootIndex", &QAbstractItemView::rootIndex)
+    .property("setRootIndex", &QAbstractItemView::setRootIndex)
+    .def("sizeHintForColumn", &QAbstractItemView::sizeHintForColumn)
+    .def("sizeHintForIndex", &QAbstractItemView::sizeHintForIndex)
+    .def("sizeHintForRow", &QAbstractItemView::sizeHintForRow)
+
+    .def("clearSelection", &QAbstractItemView::clearSelection)
+    .def("edit", (void (QAbstractItemView::*)(const QModelIndex &))&QAbstractItemView::edit)
+    .def("scrollToTop", &QAbstractItemView::scrollToTop)
+    .def("scrollToBottom", &QAbstractItemView::scrollToBottom)
+    .def("update", (void (QAbstractItemView::*)(const QModelIndex &))&QAbstractItemView::update)
+    .def("update", (void (QAbstractItemView::*)())&QAbstractItemView::update)
+
+    .sig_prop(lqabstractitemview, activated)
+    .sig_prop(lqabstractitemview, clicked)
+    .sig_prop(lqabstractitemview, doubleClicked)
+    .sig_prop(lqabstractitemview, entered)
+    .sig_prop(lqabstractitemview, pressed)
+    .sig_prop(lqabstractitemview, viewportEntered)
+    ;
+}
+
+
+void lqcolumnview_scrollTo1(QColumnView* w, const QModelIndex & index, int hint)
+{
+    w->scrollTo(index, QColumnView::ScrollHint(hint));
+}
+
+void lqcolumnview_scrollTo2(QColumnView* w, const QModelIndex & index)
+{
+    w->scrollTo(index);
+}
+
+LQColumnView  lqcolumnview()
+{
+    return
+    class_<QColumnView, QAbstractItemView>("QColumnView")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+
+    .property("columnWidths", &QColumnView::columnWidths, &QColumnView::setColumnWidths)
+    .property("previewWidget", &QColumnView::previewWidget, &QColumnView::setPreviewWidget)
+    .property("resizeGripsVisible", &QColumnView::resizeGripsVisible, &QColumnView::setResizeGripsVisible)
+
+    .def("indexAt", &QColumnView::indexAt)
+    .def("scrollTo", lqcolumnview_scrollTo1)
+    .def("scrollTo", lqcolumnview_scrollTo2)
+    .def("selectAll", &QColumnView::selectAll)
+    .def("setRootIndex", &QColumnView::setRootIndex)
+    .property("sizeHint", &QColumnView::sizeHint)
+    .def("visualRect", &QColumnView::visualRect)
+    ;
+}
+
+int lqheaderview_logicalIndexAt1(QHeaderView* w, int position)
+{
+    return w->logicalIndexAt(position);
+}
+
+int lqheaderview_logicalIndexAt2(QHeaderView* w, int x, int y)
+{
+    return w->logicalIndexAt(x,y);
+}
+
+int lqheaderview_logicalIndexAt3(QHeaderView* w, const QPoint & pos)
+{
+    return w->logicalIndexAt(pos);
+}
+
+void lqheaderview_setResizeMode1(QHeaderView* w, int mode)
+{
+    w->setResizeMode(QHeaderView::ResizeMode(mode));
+}
+
+void lqheaderview_setResizeMode2(QHeaderView* w, int index, int mode)
+{
+    w->setResizeMode(index, QHeaderView::ResizeMode(mode));
+}
+
+int lqheaderview_sortIndicatorOrder(QHeaderView* w)
+{
+    return (int)w->sortIndicatorOrder();
+}
+
+void lqheaderview_resizeSections2(QHeaderView* w, int mode)
+{
+    w->resizeSections(QHeaderView::ResizeMode(mode));
+}
+
+SIGNAL_PROPERYT(lqabstractitemview, geometriesChanged, QHeaderView, "()")
+SIGNAL_PROPERYT(lqabstractitemview, sectionAutoResize, QHeaderView, "(int, QHeaderView::ResizeMode)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionClicked, QHeaderView, "(int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionCountChanged, QHeaderView, "(int,int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionDoubleClicked, QHeaderView, "(int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionEntered, QHeaderView, "(int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionHandleDoubleClicked, QHeaderView, "(int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionMoved, QHeaderView, "(int,int,int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionPressed, QHeaderView, "(int)")
+SIGNAL_PROPERYT(lqabstractitemview, sectionResized, QHeaderView, "(int,int,int)")
+SIGNAL_PROPERYT(lqabstractitemview, sortIndicatorChanged, QHeaderView, "(int,Qt::SortOrder)")
+
+LQHeaderView lqheaderview()
+{
+    return
+    class_<QHeaderView, QAbstractItemView>("QHeaderView")
+    .def(constructor<Qt::Orientation>())
+    .def(constructor<Qt::Orientation, QWidget*>())
+
+    .property("cascadingSectionResizes", &QHeaderView::cascadingSectionResizes, &QHeaderView::setCascadingSectionResizes)
+    .property("defaultAlignment", &QHeaderView::defaultAlignment, &QHeaderView::setDefaultAlignment)
+    .property("defaultSectionSize", &QHeaderView::defaultSectionSize, &QHeaderView::setDefaultSectionSize)
+    .property("highlightSections", &QHeaderView::highlightSections, &QHeaderView::setHighlightSections)
+    .property("minimumSectionSize", &QHeaderView::minimumSectionSize, &QHeaderView::setMinimumSectionSize)
+    .property("showSortIndicator", &QHeaderView::isSortIndicatorShown, &QHeaderView::setSortIndicatorShown)
+    .property("stretchLastSection", &QHeaderView::stretchLastSection, &QHeaderView::setStretchLastSection)
+    .property("clickable", &QHeaderView::isClickable, &QHeaderView::setClickable)
+    .property("movable", &QHeaderView::isMovable, &QHeaderView::setMovable)
+
+    .property("count", &QHeaderView::count)
+    .property("hiddenSectionCount", &QHeaderView::hiddenSectionCount)
+    .def("isSectionHidden", &QHeaderView::isSectionHidden)
+    .def("setSectionHidden", &QHeaderView::setSectionHidden)
+    .def("hideSection", &QHeaderView::hideSection)
+    .property("length", &QHeaderView::length)
+    .def("logicalIndex", &QHeaderView::logicalIndex)
+    .def("logicalIndexAt", lqheaderview_logicalIndexAt1)
+    .def("logicalIndexAt", lqheaderview_logicalIndexAt2)
+    .def("logicalIndexAt", lqheaderview_logicalIndexAt3)
+    .def("moveSection", &QHeaderView::moveSection)
+    .property("offset", &QHeaderView::offset, &QHeaderView::setOffset)
+    .def("setOffset", &QHeaderView::setOffset)
+    .property("orientation", &QHeaderView::orientation)
+    .def("resizeMode", &QHeaderView::resizeMode)
+    .def("setResizeMode", lqheaderview_setResizeMode1)
+    .def("setResizeMode", lqheaderview_setResizeMode2)
+
+    .def("resizeSection", &QHeaderView::resizeSection)
+    .def("resizeSections", lqheaderview_resizeSections2)
+    .def("restoreState", &QHeaderView::restoreState)
+    .def("saveState", (QByteArray(QHeaderView::* )()const)&QHeaderView::saveState)
+
+    .def("setSortIndicator", &QHeaderView::setSortIndicator)
+    .def("sortIndicatorOrder", lqheaderview_sortIndicatorOrder)
+    .def("sortIndicatorSection", &QHeaderView::sortIndicatorSection)
+    .def("sectionPosition", &QHeaderView::sectionPosition)
+    .def("sectionSize", &QHeaderView::sectionSize)
+    .def("sectionSizeHint", &QHeaderView::sectionSizeHint)
+    .def("sectionViewportPosition", &QHeaderView::sectionViewportPosition)
+    .def("showSection", &QHeaderView::showSection)
+    .def("swapSections", &QHeaderView::swapSections)
+    .def("visualIndex", &QHeaderView::visualIndex)
+    .def("visualIndexAt", &QHeaderView::visualIndexAt)
+
+    .def("headerDataChanged", &QHeaderView::headerDataChanged)
+    .def("setOffsetToLastSection", &QHeaderView::setOffsetToLastSection)
+    .def("setOffsetToSectionPosition", &QHeaderView::setOffsetToSectionPosition)
+
+    .sig_prop(lqabstractitemview, geometriesChanged)
+    .sig_prop(lqabstractitemview, sectionAutoResize)
+    .sig_prop(lqabstractitemview, sectionClicked)
+    .sig_prop(lqabstractitemview, sectionCountChanged)
+    .sig_prop(lqabstractitemview, sectionDoubleClicked)
+    .sig_prop(lqabstractitemview, sectionEntered)
+    .sig_prop(lqabstractitemview, sectionHandleDoubleClicked)
+    .sig_prop(lqabstractitemview, sectionMoved)
+    .sig_prop(lqabstractitemview, sectionPressed)
+    .sig_prop(lqabstractitemview, sectionResized)
+    .sig_prop(lqabstractitemview, sortIndicatorChanged)
+    ;
+}
+
+
+ENUM_FILTER(QListView,flow,setFlow)
+ENUM_FILTER(QListView,layoutMode,setLayoutMode)
+ENUM_FILTER(QListView,movement,setMovement)
+ENUM_FILTER(QListView,resizeMode,setResizeMode)
+ENUM_FILTER(QListView,viewMode,setViewMode)
+LQListView lqlistview()
+{
+    return
+    class_<QListView, QAbstractItemView>("QListView")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+
+            .property("batchSize", &QListView::batchSize, &QListView::setBatchSize)
+            .property("flow", QListView_flow, QListView_setFlow)
+            .property("gridSize", &QListView::gridSize, &QListView::setGridSize)
+            .property("isWrapping", &QListView::isWrapping, &QListView::setWrapping)
+            .property("layoutMode", QListView_layoutMode, QListView_setLayoutMode)
+            .property("modelColumn", &QListView::modelColumn, &QListView::setModelColumn)
+            .property("movement", QListView_movement, QListView_setMovement)
+            .property("resizeMode", QListView_resizeMode, QListView_setResizeMode)
+            .property("selectionRectVisible", &QListView::isSelectionRectVisible, &QListView::setSelectionRectVisible)
+            .property("spacing", &QListView::spacing, &QListView::setSpacing)
+            .property("uniformItemSizes", &QListView::uniformItemSizes, &QListView::setUniformItemSizes)
+            .property("viewMode", QListView_viewMode, QListView_setViewMode)
+            .property("wordWrap", &QListView::wordWrap, &QListView::setWordWrap)
+
+    ;
+}
+
+ENUM_FILTER(QTableView,gridStyle,setGridStyle)
+
+void lqtableview_sortByColumn1(QTableView* w, int column, int order)
+{
+    w->sortByColumn(column, Qt::SortOrder(order));
+}
+void lqtableview_sortByColumn2(QTableView* w, int column)
+{
+    w->sortByColumn(column);
+}
+LQTableView lqtableview()
+{
+    return
+    class_<QTableView, QAbstractItemView>("QTableView")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+            .property("cornerButtonEnabled", &QTableView::isCornerButtonEnabled, &QTableView::setCornerButtonEnabled)
+            .property("gridStyle", QTableView_gridStyle, QTableView_setGridStyle)
+            .property("showGrid", &QTableView::showGrid, &QTableView::setShowGrid)
+            .property("sortingEnabled", &QTableView::isSortingEnabled, &QTableView::setSortingEnabled)
+            .property("wordWrap", &QTableView::wordWrap, &QTableView::wordWrap)
+            .property("horizontalHeader", &QTableView::horizontalHeader, &QTableView::setHorizontalHeader)
+            .property("verticalHeader", &QTableView::verticalHeader, &QTableView::setVerticalHeader)
+
+
+            .def("clearSpans", &QTableView::clearSpans)
+            .def("columnAt", &QTableView::columnAt)
+            .def("columnSpan", &QTableView::columnSpan)
+            .def("columnViewportPosition", &QTableView::columnViewportPosition)
+            .def("columnWidth", &QTableView::columnWidth)
+            .def("setColumnWidth", &QTableView::setColumnWidth)
+            .def("isColumnHidden", &QTableView::isColumnHidden)
+            .def("setColumnHidden", &QTableView::setColumnHidden)
+            .def("isRowHidden", &QTableView::isRowHidden)
+            .def("setRowHidden", &QTableView::setRowHidden)
+            .def("rowAt", &QTableView::rowAt)
+            .def("rowHeight", &QTableView::rowHeight)
+            .def("setRowHeight", &QTableView::setRowHeight)
+            .def("rowSpan", &QTableView::rowSpan)
+            .def("rowViewportPosition", &QTableView::rowViewportPosition)
+            .def("setSpan", &QTableView::setSpan)
+            .def("showGrid", &QTableView::showGrid)
+            .def("sortByColumn", lqtableview_sortByColumn1)
+            .def("sortByColumn", lqtableview_sortByColumn2)
+
+            .def("hideColumn", &QTableView::hideColumn)
+            .def("hideRow", &QTableView::hideRow)
+            .def("resizeColumnToContents", &QTableView::resizeColumnToContents)
+            .def("resizeColumnsToContents", &QTableView::resizeColumnsToContents)
+            .def("resizeRowToContents", &QTableView::resizeRowToContents)
+            .def("resizeRowsToContents", &QTableView::resizeRowsToContents)
+            .def("selectColumn", &QTableView::selectColumn)
+            .def("selectRow", &QTableView::selectRow)
+            .def("setShowGrid", &QTableView::setShowGrid)
+            .def("showColumn", &QTableView::showColumn)
+            .def("showRow", &QTableView::showRow)
+
+    ;
+}
+void lqtreeview_sortByColumn1(QTreeView* w, int column, int order )
+{
+    w->sortByColumn(column, Qt::SortOrder(order));
+}
+
+void lqtreeview_sortByColumn2(QTreeView* w, int column )
+{
+    w->sortByColumn(column);
+}
+
+SIGNAL_PROPERYT(lqtreeview, collapsed, QTreeView, "(const QModelIndex&)")
+SIGNAL_PROPERYT(lqtreeview, expanded, QTreeView, "(const QModelIndex&)")
+
+LQTreeView lqtreeview()
+{
+    return
+    class_<QTreeView, QAbstractItemView>("QTreeView")
+    .def(constructor<>())
+    .def(constructor<QWidget*>())
+            .property("allColumnsShowFocus", &QTreeView::allColumnsShowFocus, &QTreeView::setAllColumnsShowFocus)
+            .property("animated", &QTreeView::isAnimated, &QTreeView::setAnimated)
+            .property("autoExpandDelay", &QTreeView::autoExpandDelay, &QTreeView::setAutoExpandDelay)
+            .property("expandsOnDoubleClick", &QTreeView::expandsOnDoubleClick, &QTreeView::setExpandsOnDoubleClick)
+            .property("headerHidden", &QTreeView::isHeaderHidden, &QTreeView::setHeaderHidden)
+            .property("indentation", &QTreeView::indentation, &QTreeView::setIndentation)
+            .property("itemsExpandable", &QTreeView::itemsExpandable, &QTreeView::setItemsExpandable)
+            .property("rootIsDecorated", &QTreeView::rootIsDecorated, &QTreeView::setRootIsDecorated)
+            .property("sortingEnabled", &QTreeView::isSortingEnabled, &QTreeView::setSortingEnabled)
+            .property("uniformRowHeights", &QTreeView::uniformRowHeights, &QTreeView::setUniformRowHeights)
+            .property("wordWrap", &QTreeView::wordWrap, &QTreeView::setWordWrap)
+            .property("header", &QTreeView::header, &QTreeView::setHeader)
+
+            .def("columnAt", &QTreeView::columnAt)
+            .def("columnViewportPosition", &QTreeView::columnViewportPosition)
+            .def("columnWidth", &QTreeView::columnWidth)
+            .def("indexAbove", &QTreeView::indexAbove)
+            .def("indexBelow", &QTreeView::indexBelow)
+            .def("isColumnHidden", &QTreeView::isColumnHidden)
+            .def("setColumnHidden", &QTreeView::setColumnHidden)
+            .def("isExpanded", &QTreeView::isExpanded)
+            .def("isFirstColumnSpanned", &QTreeView::isFirstColumnSpanned)
+            .def("setFirstColumnSpanned", &QTreeView::setFirstColumnSpanned)
+            .def("isRowHidden", &QTreeView::isRowHidden)
+            .def("setRowHidden", &QTreeView::setRowHidden)
+            .def("sortByColumn", lqtreeview_sortByColumn1)
+            .def("sortByColumn", lqtreeview_sortByColumn2)
+
+            .def("collapse", &QTreeView::collapse)
+            .def("collapseAll", &QTreeView::collapseAll)
+            .def("expand", &QTreeView::expand)
+            .def("expandAll", &QTreeView::expandAll)
+            .def("expandToDepth", &QTreeView::expandToDepth)
+            .def("hideColumn", &QTreeView::hideColumn)
+            .def("resizeColumnToContents", &QTreeView::resizeColumnToContents)
+            .def("showColumn", &QTreeView::showColumn)
+
+            .sig_prop(lqtreeview, collapsed)
+            .sig_prop(lqtreeview, expanded)
+    ;
+}

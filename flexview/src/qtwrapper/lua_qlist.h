@@ -94,15 +94,54 @@ struct QTableWidgetItem_wrap : public QTableWidgetItem, wrap_base
     }
 };
 
+struct QAbstractItemView_wrap : public QAbstractItemView, wrap_base
+{
+    QAbstractItemView_wrap(QWidget* w = 0):QAbstractItemView(w) {}
+    QRect visualRect(const QModelIndex &index) const { return QRect(); }
+    void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible){}
+    QModelIndex indexAt(const QPoint &point) const { return QModelIndex(); }
+
+protected:
+    QModelIndex moveCursor(CursorAction cursorAction,
+                                   Qt::KeyboardModifiers modifiers) { return QModelIndex(); }
+
+    int horizontalOffset() const {  return call_member<int>(this, "horizontalOffset"); }
+    int verticalOffset() const {  return call_member<int>(this, "verticalOffset"); }
+
+    bool isIndexHidden(const QModelIndex &index) const  { return call_member<bool>(this, "isIndexHidden", index); }
+
+    void setSelection(const QRect &rect, QItemSelectionModel::SelectionFlags command) { call_member<void>(this, "setSelection", rect, command); }
+    QRegion visualRegionForSelection(const QItemSelection &selection) const { return QRegion(); }
+};
+
+typedef class_<QModelIndex> LQModelIndex;
+typedef class_<QAbstractItemView,QAbstractItemView_wrap,QAbstractScrollArea> LQAbstractItemView;
+
+typedef class_<QColumnView, QAbstractItemView> LQColumnView;
+typedef class_<QHeaderView, QAbstractItemView> LQHeaderView;
+
+typedef class_<QListView, QAbstractItemView> LQListView;
+typedef class_<QTableView, QAbstractItemView> LQTableView;
+typedef class_<QTreeView, QAbstractItemView> LQTreeView;
+
 typedef class_<QComboBox, QWidget> LQComboBox;
-typedef class_<QListWidget, QFrame> LQListWidget;
+typedef class_<QListWidget, QListView> LQListWidget;
 typedef class_<QListWidgetItem,QListWidgetItem_wrap> LQListWidgetItem;
-typedef class_<QTreeWidget, QFrame> LQTreeWidget;
+typedef class_<QTreeWidget, QTreeView> LQTreeWidget;
 typedef class_<QTreeWidgetItem,QTreeWidgetItem_wrap> LQTreeWidgetItem;
-typedef class_<QTableWidget, QFrame> LQTableWidget;
+typedef class_<QTableWidget, QTableView> LQTableWidget;
 typedef class_<QTableWidgetItem,QTableWidgetItem_wrap> LQTableWidgetItem;
 typedef class_<QTableWidgetSelectionRange> LQTableWidgetSelectionRange;
 
+LQModelIndex    lqmodelindex();
+LQAbstractItemView  lqabstractitemview();
+
+LQColumnView  lqcolumnview();
+LQHeaderView lqheaderview();
+
+LQListView lqlistview();
+LQTableView lqtableview();
+LQTreeView lqtreeview();
 
 LQComboBox lqcombobox();
 LQListWidgetItem lqlistwidgetitem();
