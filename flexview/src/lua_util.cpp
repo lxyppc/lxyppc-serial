@@ -11,6 +11,25 @@ typedef unsigned char uint8_t;
 
 static const char* toString(const QByteArray& arr)
 {
+    QTextCodec* codec = 0;
+    codec = QTextCodec::codecForLocale();
+    if(codec){
+        return codec->toUnicode(arr).toLocal8Bit().constData();
+    }
+    return arr.data();
+}
+
+static const char* toString2(const QByteArray& arr, const char* name)
+{
+    QTextCodec* codec = 0;
+    codec = QTextCodec::codecForName(name);
+    if(codec){
+        return codec->toUnicode(arr).toLocal8Bit().constData();
+    }
+    codec = QTextCodec::codecForLocale();
+    if(codec){
+        return codec->toUnicode(arr).toLocal8Bit().constData();
+    }
     return arr.data();
 }
 
@@ -26,6 +45,25 @@ static QByteArray fromBase64(const QByteArray& arr)
 
 static QByteArray fromString(const QString& str)
 {
+    QTextCodec* codec = 0;
+    codec = QTextCodec::codecForLocale();
+    if(codec){
+        return codec->fromUnicode(str);
+    }
+    return str.toAscii();
+}
+
+static QByteArray fromString2(const QString& str, const char* name)
+{
+    QTextCodec* codec = 0;
+    codec = QTextCodec::codecForName(name);
+    if(codec){
+        return codec->fromUnicode(str);
+    }
+    codec = QTextCodec::codecForLocale();
+    if(codec){
+        return codec->fromUnicode(str);
+    }
     return str.toAscii();
 }
 
@@ -173,9 +211,11 @@ LQUtil lqutil()
     class_<QUtil>("QUtil")
     .scope[
         def("toString", toString),
+        def("toString", toString2),
         def("toBase64", toBase64),
         def("fromBase64", fromBase64),
         def("fromString", fromString),
+        def("fromString", fromString2),
         def("bitand", my_and),
         def("bitor", my_or),
         def("bitxor", my_xor),
