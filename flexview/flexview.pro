@@ -53,7 +53,8 @@ SOURCES += ./src/main.cpp \
     src/qtwrapper/lua_qfile.cpp \
     src/qtwrapper/lua_qftp.cpp \
     src/protowrapper/lua_qglviewer.cpp \
-    src/lua_util.cpp
+    src/lua_util.cpp \
+    src/qtwrapper/lua_qlibrary.cpp
 HEADERS += ./src/mainwindow.h \
     src/qtwrapper/converter.hpp \
     src/qtwrapper/qluaslot.h \
@@ -293,4 +294,3 @@ OTHER_FILES += src/script.lua \
     res/app.rc \
     src/hid.lua
 RESOURCES += res.qrc
-

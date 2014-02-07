@@ -254,6 +254,9 @@ void register_classes(lua_State* L, char const* name = 0)
         lqsysinfo(),
         //lqformbuilder(),
 
+        lqinvoker(),
+        lqlibrary(),
+
         lqevent(),
         lqinputevent(),
         lqcloseevent(),

@@ -20,5 +20,6 @@
 #include "lua_qurl.h"
 #include "lua_qfile.h"
 #include "lua_qftp.h"
+#include "lua_qlibrary.h"
 #endif
 
