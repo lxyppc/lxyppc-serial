@@ -174,6 +174,17 @@ QString lqtextedit_selected_text(QTextEdit* w)
 {
     return w->textCursor().selectedText();
 }
+
+QString lqtextedit_cursor_block_text(QTextEdit* w)
+{
+    return w->textCursor().block().text();
+}
+
+QRect lqtextedit_cursorRect(QTextEdit* w)
+{
+    return w->cursorRect();
+}
+
 LQTextEdit lqtextedit()
 {
     return
@@ -258,6 +269,17 @@ QString lqplaintextedit_selected_text(QPlainTextEdit* w)
 {
     return w->textCursor().selectedText();
 }
+
+QString lqplaintextedit_cursor_block_text(QPlainTextEdit* w)
+{
+    return w->textCursor().block().text();
+}
+
+QRect lqplaintextedit_cursorRect(QPlainTextEdit* w)
+{
+    return w->cursorRect();
+}
+
 LQPlainTextEdit lqplaintextedit()
 {
     return
@@ -287,6 +309,8 @@ LQPlainTextEdit lqplaintextedit()
 
 
     .property("selectedText", lqplaintextedit_selected_text)
+    .property("cursorBlockText", lqplaintextedit_cursor_block_text)
+    .property("cursorRect", lqplaintextedit_cursorRect)
 
     .property("backgroundVisible", &QPlainTextEdit::backgroundVisible, &QPlainTextEdit::setBackgroundVisible)
     .property("blockCount", &QPlainTextEdit::blockCount)
